@@ -1,0 +1,76 @@
+  name: GitHub Actions
+  run-name: EduPlanner
+
+  #设置环境
+  env: 
+    PROJECT_NAME: EduPlanner
+
+  #设置触发时机
+  on:
+    push:
+      tags:
+        '*'
+    pull_request:
+      branches: [ main ]
+
+  #每个 workflow 由多个 job 组成
+  #默认并行运行
+  jobs:
+    unit-test:
+      runs-on: ubuntu-latest
+      # 定义任务的步骤 串行
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 18.16.0
+
+        - name: angular-test
+          run: |
+            pwd
+            cd web
+            env
+            pwd
+            npm install
+            npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+            npm run build
+            
+    dingding-error:
+      runs-on: ubuntu-latest
+      needs: [unit-test]
+      if: ${{ failure() }}
+      steps:
+        - uses: actions/checkout@v4
+        - name: Send dingding notify error
+          uses: zcong1993/actions-ding@master
+          with:
+            dingToken: c78ef9e11a1b591c00e603f461c0b1b85e2879350767aae79399526728508c3c
+            body: |
+              {
+                "msgtype": "text",
+                "text": {
+                    "content": '[打叉][打叉][打叉]  执行失败\n提交者: ${{ github.triggering_actor }}\n任务: ${{ github.event.pull_request.title }}\n${{ github.ref_type }}: ${{ github.head_ref }}\n${{ github.event_name }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }}'
+                }
+              }
+              
+
+    dingding-success:
+      runs-on: ubuntu-latest
+      if: ${{ success() }}
+      needs: [unit-test]
+      steps:
+        - uses: actions/checkout@v4
+        - name: Send dingding notify success
+          uses: zcong1993/actions-ding@master
+          with:
+            dingToken: c78ef9e11a1b591c00e603f461c0b1b85e2879350767aae79399526728508c3c
+            body: |
+              {
+               "msgtype": "text",
+               "text": {
+                   "content": '[微笑][微笑][微笑]  执行成功\n提交者: ${{ github.triggering_actor }}\n任务: ${{ github.event.pull_request.title }}\n${{ github.ref_type }}: ${{ github.head_ref }}\n${{ github.event_name }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }}'
+               }
+              }
