@@ -1,0 +1,39 @@
+.color {
+  background-color: rgba(33, 166, 75, 0.7);
+}
+/*头部背景条显示高度*/
+.height {
+  height: 100px;
+  display: flex; /*启用flexbox*/
+  align-items: center;/*居中显示*/
+  justify-content: flex-start;/*水平靠左对齐*/
+}
+/*导航栏字体大小，颜色*/
+.nav-link {
+  font-size: 1.25rem;
+  color:  #000000ec;
+}
+/*导航栏被点亮是变颜色*/
+.nav-link.active {
+  background-color: rgba(42, 122, 69, 0.93);
+}
+/*防止屏幕放大时导航栏的内容换行*/
+.nav-pills .nav-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.spacing > svg {
+  margin-right: 0.3em;
+}
+.col-auto {
+  flex: 0 0 200px;
+  max-width: 200px
+}
+/*内容区域自适应剩余空间*/
+.content {
+  flex-grow: 1; /* 右侧内容区域扩展，占据剩余空间 */
+  padding: 20px; /* 内容区域内边距 */
+  background-color: #ffffff; /* 内容区域背景色 */
+  overflow-y: auto; /* 如果内容超出页面，启用垂直滚动 */
+}

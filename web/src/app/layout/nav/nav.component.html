@@ -1,0 +1,10 @@
+<ul class="nav flex-column nav-pills p-2">
+  <li class="nav-item" *ngFor="let menu of menus">
+    <a class="nav-link spacing"
+       [routerLink]="menu.link"
+       routerLinkActive="active"
+       [routerLinkActiveOptions]="{exact: menu.exact}">
+      <i [class]="menu.icon"></i>{{ menu.name }}
+    </a>
+  </li>
+</ul>

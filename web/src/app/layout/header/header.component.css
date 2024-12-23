@@ -1,0 +1,10 @@
+.color {
+  background-color: rgba(33, 166, 75, 0.7);
+}
+/*头部背景条显示高度*/
+.height {
+  height: 100px;
+  display: flex; /*启用flexbox*/
+  align-items: center;/*居中显示*/
+  justify-content: flex-start;/*水平靠左对齐*/
+}
