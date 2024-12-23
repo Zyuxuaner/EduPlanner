@@ -5,20 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LayoutComponent } from './layout/layout.component';
-import { HeaderComponent } from './layout/header/header.component';
-import { NavComponent } from './layout/nav/nav.component';
+import {HeaderModule} from "./layout/header/header.module";
+import {NavModule} from "./layout/nav/nav.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     LayoutComponent,
-    HeaderComponent,
-    NavComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HeaderModule,
+    NavModule
   ],
   providers: [],
   bootstrap: [AppComponent]
