@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-12 text-right">
+    <a class="btn btn-primary mr-2" routerLink="./add"><i class="fas fa-plus"></i>新增</a>
+  </div>
+
+  <table class="table table-striped mt-2">
+    <thead>
+    <tr class="table-primary">
+      <th>序号</th>
+      <th>学校</th>
+      <th>学期名称</th>
+      <th>开学日期</th>
+      <th>结束日期</th>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let term of terms; index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ term.school.name }}</td>
+      <td>{{ term.name }}</td>
+      <td>{{ term.startTime | date: 'yyyy-MM-dd' }}</td>
+      <td>{{ term.endTime | date: 'yyyy-MM-dd' }}</td>
+      <td *ngIf="term.status; else termIsFreeze">
+        <span class="badge badge-pill badge-success">激活</span>
+      </td>
+      <td>
+        <a class="btn btn-outline-primary btn-sm" (click)="onEdit(term.id)">
+          <i class="fa fa-pen"></i>编辑
+        </a>
+        <span class="btn btn-outline-danger btn-sm" (click)="onDelete(term.id)">
+          <i class="far fa-trash-alt"></i>删除
+        </span>
+        <span *ngIf="term.status === 0" class="btn btn-sm btn-outline-success" (click)="onActive(term.id)">
+          <i class="fa fa-refresh" aria-hidden="true"></i>激活
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <ng-template #termIsFreeze>
+    <td>
+      <span class="badge badge-pill badge-danger">冻结</span>
+    </td>
+  </ng-template>
+</div>

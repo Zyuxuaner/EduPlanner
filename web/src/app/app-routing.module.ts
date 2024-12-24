@@ -16,6 +16,11 @@ const routes: Routes = [
       {
         path: 'admin',
         component: AdminComponent
+      },
+      {
+
+        path: 'term',
+        loadChildren: () => import('./term/term.module').then(m => m.TermModule)
       }
     ]
   }
