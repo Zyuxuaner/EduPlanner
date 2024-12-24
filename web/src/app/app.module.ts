@@ -7,6 +7,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LayoutComponent } from './layout/layout.component';
 import {HeaderModule} from "./layout/header/header.module";
 import {NavModule} from "./layout/nav/nav.module";
+import {AdminModule} from "./admin/admin.module";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {NavModule} from "./layout/nav/nav.module";
     BrowserModule,
     AppRoutingModule,
     HeaderModule,
-    NavModule
+    NavModule,
+    AdminModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,48 @@
+<nav class="navbar navbar-light bg-light">
+  <form class="form-inline">
+    <input name="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入姓名" aria-label="Search" >
+    <input name="searchTeacherNo" class="form-control mr-sm-2" type="search" placeholder="请输入工号" aria-label="Search" >
+    <span class="btn btn-outline-success my-2 my-sm-0">
+          <i class="fa fa-search" aria-hidden="true"></i>查询
+        </span>
+  </form>
+</nav>
+
+<div class="row">
+  <div class="col-12 text-right">
+    <a class="btn btn-primary mr-2" routerLink="./add"><i class="fas fa-plus"></i>新增</a>
+  </div>
+
+  <table class="table table-striped mt-2">
+    <thead>
+    <tr class="table-primary">
+      <th>序号</th>
+      <th>姓名</th>
+      <th>用户名</th>
+      <th>工号</th>
+      <th>角色</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let admin of admins; index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ admin.name }}</td>
+      <td>{{ admin.user.username}}</td>
+      <td>{{ admin.ano}}</td>
+      <td>{{ getRoleName(admin.user.role) }}</td>
+      <td>
+        <a class="btn btn-outline-primary btn-sm" *ngIf="admin.user.role !== 1">
+          <i class="fa fa-pen"></i>编辑
+        </a>
+        <span class="btn btn-outline-success btn-sm" *ngIf="admin.user.role !== 1">
+          <i class="fa fa-refresh"></i>重置密码
+        </span>
+        <span class="btn btn-outline-danger btn-sm" *ngIf="admin.user.role !== 1">
+          <i class="far fa-trash-alt"></i>删除
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
