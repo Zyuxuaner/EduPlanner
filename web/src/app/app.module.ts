@@ -8,6 +8,8 @@ import { LayoutComponent } from './layout/layout.component';
 import {HeaderModule} from "./layout/header/header.module";
 import {NavModule} from "./layout/nav/nav.module";
 import {AdminModule} from "./admin/admin.module";
+import {ApiMockModule} from "./api/api-mock.module";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import {AdminModule} from "./admin/admin.module";
     AppRoutingModule,
     HeaderModule,
     NavModule,
-    AdminModule
+    AdminModule,
+    ApiMockModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
