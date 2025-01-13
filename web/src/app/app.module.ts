@@ -10,6 +10,7 @@ import {NavModule} from "./layout/nav/nav.module";
 import {AdminModule} from "./admin/admin.module";
 import {ApiMockModule} from "./api/api-mock.module";
 import {HttpClientModule} from "@angular/common/http";
+import {ClazzModule} from "./clazz/clazz.module";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {HttpClientModule} from "@angular/common/http";
     NavModule,
     AdminModule,
     ApiMockModule,
-    HttpClientModule
+    HttpClientModule,
+    ClazzModule
   ],
   providers: [],
   bootstrap: [AppComponent]
