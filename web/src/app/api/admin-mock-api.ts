@@ -1,5 +1,4 @@
 import {ApiInjector, MockApiInterface} from "@yunzhi/ng-mock-api";
-import {Admin} from "../entity/admin";
 
 export class AdminMockApi implements MockApiInterface {
   getInjectors(): ApiInjector[] {

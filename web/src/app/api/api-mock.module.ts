@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {MockApiInterceptor} from "@yunzhi/ng-mock-api";
 import {AdminMockApi} from "./admin-mock-api";
+import {ClazzMockApi} from "./clazz-mock-api";
 
 const api = [
-  AdminMockApi
+  AdminMockApi,
+  ClazzMockApi
 ]
 
 @NgModule({
