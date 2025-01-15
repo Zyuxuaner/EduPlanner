@@ -1,0 +1,39 @@
+<div class="container vh-100 d-flex" style="margin-top: 75px;">
+  <div class="row w-100">
+    <div class="col-md-7 offset-md-2">
+      <span class="border border-info rounded p-4 bg-light d-block">
+        <form class="container-sm" (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+          <div class="mb-3 row mt-1">
+            <label for="school_id" class="col-sm-2 col-form-label" id="school_id">学校：</label>
+            <div class="col-sm-10">
+              <app-school-select formControlName="school_id"></app-school-select>
+              <div class="text-danger mt-1"
+                   *ngIf="formGroup.get('school_id')?.invalid">
+                必须指定一个学校
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="clazz" class="col-sm-2 col-form-label">班级：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="clazz" id="clazz" formControlName="clazz">
+              <div class="text-danger"
+                   *ngIf="formGroup.get('clazz')?.invalid">
+                班级不能为空
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <div class="col-sm-10 offset-2">
+              <button class="btn btn-primary"
+                      [disabled]="formGroup.invalid">保存
+              </button>
+            </div>
+          </div>
+        </form>
+      </span>
+    </div>
+  </div>
+</div>
+
