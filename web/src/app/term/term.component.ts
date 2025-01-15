@@ -14,13 +14,13 @@ export class TermComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllTerms();
+    this.getAll();
   }
 
-  getAllTerms(): void {
+  getAll(): void {
     this.termService.getAll().subscribe(data => {
       this.terms = data;
-    })
+    });
   }
 
   onDelete(id: number): void {
