@@ -12,7 +12,7 @@ export class AddComponent implements OnInit {
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     username: new FormControl('', Validators.required),
-    ano: new FormControl('', Validators.required),
+    ano: new FormControl('', [Validators.required,Validators.pattern(/^\d{6}$/)]),
     role: new FormControl(2, Validators.required)
   });
 
@@ -26,7 +26,8 @@ export class AddComponent implements OnInit {
   onSubmit() {
     const admin = this.formGroup.value as { name: string; username: string; ano: string; role: number };
     this.adminService.add(admin).subscribe(value => {
-      console.log(value)
+      console.log(value);
+      alert('添加成功');
       this.router.navigate(['/admin']);
     });
   }
