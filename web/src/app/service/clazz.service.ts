@@ -11,6 +11,10 @@ export class ClazzService {
 
   constructor(private httpClient: HttpClient) { }
 
+  add(clazz: {name: string, schoolId: number}): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/add`, clazz);
+  }
+
   getAll(): Observable<Clazz[]> {
     return this.httpClient.get<Clazz[]>(`${this.baseUrl}/getAll`);
   }

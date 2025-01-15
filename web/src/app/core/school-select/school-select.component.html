@@ -1,0 +1,7 @@
+<nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择学校"
+           [formControl]="schoolIdControl">
+  <nz-option nzCustomContent *ngFor="let school of schools" [nzLabel]="school.name"
+             [nzValue]="school.id">
+    {{ school.name }}
+  </nz-option>
+</nz-select>

@@ -1,27 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClazzComponent } from './clazz.component';
-import {RouterModule} from "@angular/router";
+import { AddComponent } from './add.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {SchoolSelectModule} from "../core/school-select/school-select.module";
+import {SchoolSelectModule} from "../../core/school-select/school-select.module";
+import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
-describe('ClazzComponent', () => {
-  let component: ClazzComponent;
-  let fixture: ComponentFixture<ClazzComponent>;
+describe('AddComponent', () => {
+  let component: AddComponent;
+  let fixture: ComponentFixture<AddComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClazzComponent ],
+      declarations: [ AddComponent ],
       imports: [
         HttpClientTestingModule,
         SchoolSelectModule,
+        ReactiveFormsModule,
         BrowserAnimationsModule
       ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ClazzComponent);
+    fixture = TestBed.createComponent(AddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
