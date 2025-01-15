@@ -32,7 +32,7 @@ export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
   }
 
   registerOnChange(fn: (schoolId: number) => void): void {
-    this.schoolIdControl.setValue((value: number) => {
+    this.schoolIdControl.valueChanges.subscribe((value: number) => {
       fn(value);
     });
   }
