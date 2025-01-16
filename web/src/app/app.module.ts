@@ -18,6 +18,7 @@ import zh from '@angular/common/locales/zh';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SchoolSelectModule} from "./core/school-select/school-select.module";
+import {ClazzSelectModule} from "./core/clazz-select/clazz-select.module";
 
 registerLocaleData(zh);
 
@@ -38,7 +39,8 @@ registerLocaleData(zh);
     ClazzModule,
     FormsModule,
     BrowserAnimationsModule,
-    SchoolSelectModule
+    SchoolSelectModule,
+    ClazzSelectModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN }

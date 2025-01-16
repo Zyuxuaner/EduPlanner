@@ -1,30 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StudentComponent } from './student.component';
+import { ClazzSelectComponent } from './clazz-select.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {NzSelectModule} from "ng-zorro-antd/select";
 import {ReactiveFormsModule} from "@angular/forms";
-import {SchoolSelectModule} from "../core/school-select/school-select.module";
-import {ClazzSelectModule} from "../core/clazz-select/clazz-select.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
-describe('StudentComponent', () => {
-  let component: StudentComponent;
-  let fixture: ComponentFixture<StudentComponent>;
+describe('ClazzSelectComponent', () => {
+  let component: ClazzSelectComponent;
+  let fixture: ComponentFixture<ClazzSelectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [ ClazzSelectComponent ],
       imports: [
         HttpClientTestingModule,
+        NzSelectModule,
         ReactiveFormsModule,
-        SchoolSelectModule,
-        ClazzSelectModule,
         BrowserAnimationsModule
-      ],
-      declarations: [ StudentComponent ]
+      ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(StudentComponent);
+    fixture = TestBed.createComponent(ClazzSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
