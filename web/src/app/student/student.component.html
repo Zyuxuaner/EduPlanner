@@ -1,10 +1,15 @@
 <nav class="navbar navbar-light bg-light">
-  <form class="form-inline">
-    <div>
-      <input [(ngModel)]="searchName" name="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入学生姓名" aria-label="Search" >
-      <input [(ngModel)]="searchStudentSno" name="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入学生学号" aria-label="Search" >
+  <form class="form-inline" [formGroup]="formGroup">
+    <div class="mr-2" >
+      <app-school-select formControlName="schoolId" (schoolIdChange)="onSchoolChange($event)"></app-school-select>
     </div>
-
+    <div class="mr-2">
+      <app-clazz-select formControlName="clazzId" [setSchoolId]="schoolId"></app-clazz-select>
+    </div>
+    <div>
+      <input formControlName="searchName" name="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入学生姓名" aria-label="Search" >
+      <input formControlName="searchStudentSno" name="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入学生学号" aria-label="Search" >
+    </div>
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="onSearch()">搜索</button>
   </form>
 </nav>

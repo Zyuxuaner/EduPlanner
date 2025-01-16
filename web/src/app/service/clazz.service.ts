@@ -18,4 +18,9 @@ export class ClazzService {
   getAll(): Observable<Clazz[]> {
     return this.httpClient.get<Clazz[]>(`${this.baseUrl}/getAll`);
   }
+
+  getAllClazzBySchoolId(schoolId: number): Observable<Clazz[]> {
+    console.log("service:", schoolId);
+    return this.httpClient.get<Clazz[]>(`${this.baseUrl}/getClazzBySchoolId/${schoolId}`);
+  }
 }

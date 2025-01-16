@@ -1,4 +1,4 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, EventEmitter, forwardRef, OnInit, Output} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {School} from "../../entity/school";
 import {SchoolService} from "../../service/school.service";
@@ -16,12 +16,19 @@ import {SchoolService} from "../../service/school.service";
 export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
   schoolIdControl = new FormControl();
   schools: School[] = [];
+
+  @Output() schoolIdChange = new EventEmitter<number>();
+
   constructor(private schoolService: SchoolService,) {
   }
 
   ngOnInit(): void {
     this.schoolService.getAll().subscribe(schools => {
       this.schools = schools;
+
+      this.schoolIdControl.valueChanges.subscribe(value => {
+        this.schoolIdChange.emit(value);
+      });
     })
   }
 
