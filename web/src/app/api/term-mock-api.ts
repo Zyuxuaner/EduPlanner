@@ -25,7 +25,7 @@ export class TermMockApi implements MockApiInterface {
             endTime: term.endTime,
             school: {
               id: term.school.id,
-              name: '随机教师'
+              name: '随机学校'
             },
           }
         }

@@ -1,4 +1,6 @@
 import {ApiInjector, MockApiInterface} from "@yunzhi/ng-mock-api";
+import {School} from "../entity/school";
+import {Clazz} from "../entity/clazz";
 
 export class StudentMockApi implements MockApiInterface {
   getInjectors(): ApiInjector[] {
@@ -23,6 +25,28 @@ export class StudentMockApi implements MockApiInterface {
             user: {id: 1, username: 'wangwu', password: '123455', role: 3}
           },
         ]
+      },
+      {
+        method: 'POST',
+        url: '/student/add',
+        result: (urlMatcher: any, options: {body: {school: School, clazz: Clazz, name: string, username: string, sno: string}}) => {
+          const student = options.body;
+          return {
+            id: Math.floor(Math.random() * 10000),
+            name: student.name,
+            username: student.username,
+            sno: student.sno,
+            school: {
+              id: student.school.id,
+              name: '随机学校'
+            },
+            clazz: {
+              id: student.clazz.id,
+              school: student.clazz.school,
+              name: '随机班级'
+            }
+          }
+        }
       }
     ];
   }
