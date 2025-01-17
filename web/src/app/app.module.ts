@@ -19,6 +19,8 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SchoolSelectModule} from "./core/school-select/school-select.module";
 import {ClazzSelectModule} from "./core/clazz-select/clazz-select.module";
+import { CourseTableComponent } from './course-table/course-table.component';
+import {CourseTableModule} from "./course-table/course-table.module";
 
 registerLocaleData(zh);
 
@@ -26,7 +28,7 @@ registerLocaleData(zh);
   declarations: [
     AppComponent,
     DashboardComponent,
-    LayoutComponent,
+    LayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +42,8 @@ registerLocaleData(zh);
     FormsModule,
     BrowserAnimationsModule,
     SchoolSelectModule,
-    ClazzSelectModule
+    ClazzSelectModule,
+    CourseTableModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN }
