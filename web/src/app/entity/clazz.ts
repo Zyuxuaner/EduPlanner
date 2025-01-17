@@ -5,3 +5,8 @@ export interface Clazz {
   school: School;
   name: string;
 }
+
+export class ClazzImpl implements Clazz {
+  constructor(public id: number, public school: School, public name: string) {
+  }
+}

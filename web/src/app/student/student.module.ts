@@ -5,12 +5,14 @@ import {StudentRoutingModule} from "./student-routing.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ClazzSelectModule} from "../core/clazz-select/clazz-select.module";
 import {SchoolSelectModule} from "../core/school-select/school-select.module";
+import { AddComponent } from './add/add.component';
 
 
 
 @NgModule({
   declarations: [
-    StudentComponent
+    StudentComponent,
+    AddComponent
   ],
     imports: [
         CommonModule,
