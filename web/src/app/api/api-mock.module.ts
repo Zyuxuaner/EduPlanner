@@ -7,13 +7,15 @@ import {ClazzMockApi} from "./clazz-mock-api";
 import {TermMockApi} from "./term-mock-api";
 import {SchoolMockApi} from "./school-mock-api";
 import {StudentMockApi} from "./student-mock-api";
+import {CourseMockApi} from "./course-mock-api";
 
 const api = [
   AdminMockApi,
   ClazzMockApi,
   TermMockApi,
   SchoolMockApi,
-  StudentMockApi
+  StudentMockApi,
+  CourseMockApi
 ]
 
 @NgModule({
