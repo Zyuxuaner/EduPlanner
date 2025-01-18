@@ -1,0 +1,13 @@
+/* 确保输入框的右侧有足够的空间放置图标 */
+.form-group input.form-control {
+  padding-right: 2.5rem; /* 确保输入框右侧有足够空间 */
+}
+
+/* 使用绝对定位来固定图标位置 */
+.password-toggle-icon {
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+}

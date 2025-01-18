@@ -6,6 +6,7 @@ import {NavModule} from "./nav/nav.module";
 import {HeaderComponent} from "./header/header.component";
 import {NavComponent} from "./nav/nav.component";
 import {RouterTestingModule} from "@angular/router/testing";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -21,7 +22,8 @@ describe('LayoutComponent', () => {
       imports: [
         HeaderModule,
         NavModule,
-        RouterTestingModule
+        RouterTestingModule,
+        HttpClientTestingModule
       ]
     })
     .compileComponents();
