@@ -6,6 +6,17 @@ export class CourseMockApi implements MockApiInterface {
         return [
           {
             method: 'GET',
+            url: '/course/getAll',
+            result: [
+              {id: 1, name: '语文', type: 1, range: '1节-2节', week: '周三', weeks: '2-7全', term: {id: 1, name: '2023-2024学年第一学期'}},
+              {id: 2, name: '数学', type: 1, range: '4节-6节', week: '周二', weeks: '2-16全', term: {id: 1, name: '2023-2024学年第一学期'}},
+              {id: 3, name: '英语', type: 2, range: '1节-2节', week: '周四', weeks: '8-16全', term: {id: 3, name: '2023-2024学年第一学期'}},
+              {id: 4, name: '物理', type: 1, range: '1节-2节', week: '周三', weeks: '2-7全', term: {id: 1, name: '2023-2024学年第一学期'}},
+              {id: 5, name: '化学',type: 2, range: '1节-2节', week: '周二', weeks: '1-18全', term: {id: 4, name: '2023-2024学年第一学期'}}
+            ]
+          },
+          {
+            method: 'GET',
             url: '/course/getAllStudentsCourse',
             result: (urlMather: any, option: { params: HttpParams}) => {
               const schoolId = option.params.get('schoolId');

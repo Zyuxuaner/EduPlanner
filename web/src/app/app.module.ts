@@ -19,8 +19,8 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SchoolSelectModule} from "./core/school-select/school-select.module";
 import {ClazzSelectModule} from "./core/clazz-select/clazz-select.module";
-import { CourseTableComponent } from './course-table/course-table.component';
 import {CourseTableModule} from "./course-table/course-table.module";
+import {CourseModule} from "./course/course.module";
 
 registerLocaleData(zh);
 
@@ -43,7 +43,8 @@ registerLocaleData(zh);
     BrowserAnimationsModule,
     SchoolSelectModule,
     ClazzSelectModule,
-    CourseTableModule
+    CourseTableModule,
+    CourseModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN }
