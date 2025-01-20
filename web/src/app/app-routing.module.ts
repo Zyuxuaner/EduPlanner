@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import {LayoutComponent} from "./layout/layout.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {LoginComponent} from "./login/login.component";
+import {SchoolComponent} from "./school/school.component";
+import {SchoolAddComponent} from "./school-add/school-add.component";
 
 const routes: Routes = [
   {
@@ -40,7 +42,15 @@ const routes: Routes = [
       {
         path:'courseTable',
         loadChildren: () => import('./course-table/course-table.module').then(m => m.CourseTableModule)
-      }
+      },
+      {
+        path: 'school',
+        component: SchoolComponent
+      },
+      {
+        path: 'school/add',
+        component: SchoolAddComponent
+      },
     ]
   }
 ];

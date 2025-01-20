@@ -13,4 +13,8 @@ export class SchoolService {
   getAll(): Observable<School[]> {
     return this.httpClient.get<School[]>(`${this.url}/getAll`);
   }
+
+  add(school: {name: string | null}): Observable<any> {
+    return this.httpClient.post(`${this.url}/add`, school);
+  }
 }

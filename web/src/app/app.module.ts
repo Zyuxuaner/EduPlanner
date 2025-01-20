@@ -22,6 +22,8 @@ import {ClazzSelectModule} from "./core/clazz-select/clazz-select.module";
 import {CourseTableModule} from "./course-table/course-table.module";
 import {CourseModule} from "./course/course.module";
 import { LoginComponent } from './login/login.component';
+import {SchoolModule} from "./school/school.module";
+import {SchoolAddModule} from "./school-add/school-add.module";
 
 registerLocaleData(zh);
 
@@ -47,7 +49,10 @@ registerLocaleData(zh);
     ClazzSelectModule,
     CourseTableModule,
     CourseModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ClazzSelectModule,
+    SchoolModule,
+    SchoolAddModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN }
