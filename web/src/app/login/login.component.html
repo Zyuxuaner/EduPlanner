@@ -1,0 +1,35 @@
+<div class="d-flex justify-content-center mt-5">
+  <form class="border border-success p-3 w-50" [formGroup]="formGroup">
+    <div class="form-group">
+      <label for="username">用户名：</label>
+      <input type="text" class="form-control" name="username" formControlName="username" id="username">
+      <small id="Help" class="form-text text-muted">我们不会分享你的登录信息</small>
+      <small *ngIf="formGroup.get('username')?.invalid && formGroup.get('username')?.touched" class="form-text text-danger">
+        <span *ngIf="formGroup.get('username')?.errors?.['required']">请输入用户名</span>
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="password">密码：</label>
+      <div class="position-relative">
+        <input
+          formControlName="password"
+          name="password"
+          [type]="showPassword ? 'text' : 'password'"
+          class="form-control"
+          id="password"
+          style="padding-right: 2.5rem;">
+        <!-- 小眼睛图标 -->
+        <span
+          class="position-absolute password-toggle-icon"
+          (click)="togglePasswordVisibility()">
+          <i class="fa-solid" [ngClass]="{ 'fa-eye': !showPassword, 'fa-eye-slash': showPassword }"></i>
+        </span>
+      </div>
+      <small *ngIf="formGroup.get('password')?.invalid && (formGroup.get('password')?.dirty || formGroup.get('password')?.touched)" class="form-text text-danger">
+        <span *ngIf="formGroup.get('password')?.errors?.['required']">请输入密码</span>
+        <div *ngIf="formGroup.get('password')?.errors?.['pattern']" class="text-danger mt-1">请输入6位有效密码</div>
+      </small>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid" (click)="onLogin()">登录</button>
+  </form>
+</div>

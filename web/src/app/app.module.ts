@@ -15,12 +15,13 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { zh_CN } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SchoolSelectModule} from "./core/school-select/school-select.module";
 import {ClazzSelectModule} from "./core/clazz-select/clazz-select.module";
 import {CourseTableModule} from "./course-table/course-table.module";
 import {CourseModule} from "./course/course.module";
+import { LoginComponent } from './login/login.component';
 
 registerLocaleData(zh);
 
@@ -28,7 +29,8 @@ registerLocaleData(zh);
   declarations: [
     AppComponent,
     DashboardComponent,
-    LayoutComponent
+    LayoutComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,8 @@ registerLocaleData(zh);
     SchoolSelectModule,
     ClazzSelectModule,
     CourseTableModule,
-    CourseModule
+    CourseModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN }
