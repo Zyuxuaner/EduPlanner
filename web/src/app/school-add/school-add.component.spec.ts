@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SchoolAddComponent } from './school-add.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('SchoolAddComponent', () => {
   let component: SchoolAddComponent;
@@ -11,7 +13,9 @@ describe('SchoolAddComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ SchoolAddComponent ],
       imports: [
-        FormsModule
+        FormsModule,
+        HttpClientTestingModule,
+        ReactiveFormsModule
       ]
     })
     .compileComponents();
