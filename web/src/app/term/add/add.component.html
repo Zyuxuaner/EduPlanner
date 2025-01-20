@@ -34,14 +34,14 @@
           </div>
           <div class="mb-3 row">
             <label for="endTime" class="col-sm-2 col-form-label">结束日期</label>
-          <div class="col-sm-10">
-            <nz-date-picker id="endTime"
-                            formControlName="endTime"
-                            class="form-control"
-                            [nzDisabledDate]="disableEndDate">
-            </nz-date-picker>
-            <div *ngIf="formGroup.get('endTime')?.invalid"  class="text-danger mt-1">必须选择结束日期</div>
-          </div>
+            <div class="col-sm-10">
+              <nz-date-picker id="endTime"
+                              formControlName="endTime"
+                              class="form-control"
+                              [nzDisabledDate]="disableEndDate">
+              </nz-date-picker>
+              <div *ngIf="formGroup.get('endTime')?.invalid"  class="text-danger mt-1">必须选择结束日期</div>
+            </div>
           </div>
           <div class="mb-3 row">
             <div class="col-sm-10 offset-2">

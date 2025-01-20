@@ -11,6 +11,19 @@ export class CourseService {
   baseUrl = '/course';
   constructor(private httpClient: HttpClient) { }
 
+  add(course: {
+    name: string;
+    type: number;
+    status: number;
+    start_week: number;
+    end_week: number;
+    week: number;
+    begin: number;
+    end: number
+  }): Observable<ResponseBody> {
+    return this.httpClient.post<ResponseBody>(`${this.baseUrl}/add`, course);
+  }
+
   getAll(): Observable<Course[]> {
     return this.httpClient.get<Course[]>(`${this.baseUrl}/getAll`);
   }
