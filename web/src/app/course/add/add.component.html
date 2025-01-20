@@ -1,0 +1,141 @@
+<div class="container vh-100 d-flex" style="margin-top: 75px;">
+  <div class="row w-100">
+    <div class="col-md-7 offset-md-2">
+      <span class="border border-info rounded p-4 bg-light d-block">
+        <form class="container-sm" (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+          <div class="mb-3 row">
+            <label for="term" class="col-sm-2 col-form-label">学期</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="term" id="term" [value]="termName" readonly />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="name" class="col-sm-2 col-form-label">课名</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="name" id="name" formControlName="name">
+              <div class="text-danger"
+                   *ngIf="formGroup.get('name')?.invalid">
+                课名不能为空
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">课程类型</label>
+            <div class="col-sm-10">
+              <nz-radio-group formControlName="type">
+                <label nz-radio [nzValue]="2">必修</label>
+                <label nz-radio [nzValue]="1">选修</label>
+              </nz-radio-group>
+              <div class="text-danger mt-1"
+                   *ngIf="formGroup.get('type')?.invalid">
+                必须选择课程类型
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label">周类型</label>
+            <div class="col-sm-10">
+              <nz-radio-group formControlName="status">
+                <label nz-radio [nzValue]="3">全周</label>
+                <label nz-radio [nzValue]="2">双周</label>
+                <label nz-radio [nzValue]="1">单周</label>
+              </nz-radio-group>
+              <div class="text-danger mt-1"
+                   *ngIf="formGroup.get('status')?.invalid">
+                必须选择周类型
+              </div>
+            </div>
+          </div>
+          <div *ngIf="formGroup.get('status')?.value" class="mb-3 row">
+            <label class="col-sm-2 col-form-label">开始周</label>
+            <div class="col-sm-10">
+              <nz-select nzAllowClear nzPlaceHolder="选择开始周"
+                         formControlName="start_week">
+                <nz-option *ngFor="let week of weekRange"
+                           [nzValue]="week" [nzLabel]="'第' + week + '周'"
+                           [nzDisabled]="isWeekDisabled(week)">
+                  {{ week }}
+                </nz-option>
+              </nz-select>
+              <div class="text-danger mt-1"
+                   *ngIf="formGroup.get('start_week')?.invalid">
+                必须选择开始周
+              </div>
+            </div>
+          </div>
+          <div *ngIf="formGroup.get('start_week')?.value" class="mb-3 row">
+            <label class="col-sm-2 col-form-label">结束周</label>
+            <div class="col-sm-10">
+              <nz-select nzAllowClear nzPlaceHolder="选择结束周"
+                         formControlName="end_week">
+                <nz-option *ngFor="let week of weekRange"
+                           [nzValue]="week" [nzLabel]="'第' + week + '周'"
+                           [nzDisabled]="isWeekDisabled(week) || disableEndWeek(week)">
+                  {{ week }}
+                </nz-option>
+              </nz-select>
+            </div>
+          </div>
+          <div *ngIf="formGroup.get('end_week')?.value" class="mb-3 row mt-1">
+            <label for="school_id" class="col-sm-2 col-form-label" id="school_id">星期</label>
+            <div class="col-sm-10">
+              <nz-select nzAllowClear  nzPlaceHolder="选择星期"
+                         formControlName="week">
+                <nz-option nzCustomContent [nzLabel]="'星期一'" [nzValue]="1">星期一</nz-option>
+                <nz-option nzCustomContent [nzLabel]="'星期二'" [nzValue]="2">星期二</nz-option>
+                <nz-option nzCustomContent [nzLabel]="'星期三'" [nzValue]="3">星期三</nz-option>
+                <nz-option nzCustomContent [nzLabel]="'星期四'" [nzValue]="4">星期四</nz-option>
+                <nz-option nzCustomContent [nzLabel]="'星期五'" [nzValue]="5">星期五</nz-option>
+                <nz-option nzCustomContent [nzLabel]="'星期六'" [nzValue]="6">星期六</nz-option>
+                <nz-option nzCustomContent [nzLabel]="'星期日'" [nzValue]="7">星期日</nz-option>
+              </nz-select>
+              <div class="text-danger mt-1"
+                   *ngIf="formGroup.get('week')?.invalid">
+                必须选择星期
+              </div>
+            </div>
+          </div>
+          <div *ngIf="formGroup.get('week')?.value" class="mb-3 row">
+            <label class="col-sm-2 col-form-label">开始节次</label>
+            <div class="col-sm-10">
+              <nz-select nzAllowClear nzPlaceHolder="选择开始节次"
+                         formControlName="begin">
+                <nz-option *ngFor="let section of sections"
+                           [nzValue]="section" [nzLabel]="'第' + section + '节'">
+                  {{ section }}
+                </nz-option>
+              </nz-select>
+            </div>
+          </div>
+          <div *ngIf="formGroup.get('begin')?.value" class="mb-3 row">
+            <label class="col-sm-2 col-form-label">结束节次</label>
+            <div class="col-sm-10">
+              <nz-select nzAllowClear nzPlaceHolder="选择结束节次"
+                         formControlName="end">
+                <nz-option *ngFor="let section of sections"
+                           [nzValue]="section" [nzLabel]="'第' + section + '节'"
+                           [nzDisabled]="disableEndSection(section)">
+                  {{ section }}
+                </nz-option>
+              </nz-select>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <div class="col-sm-10 offset-2">
+              <button class="btn btn-primary"
+                      [disabled]="formGroup.invalid">保存</button>
+            </div>
+          </div>
+        </form>
+      </span>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+

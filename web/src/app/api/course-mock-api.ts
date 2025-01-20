@@ -8,11 +8,11 @@ export class CourseMockApi implements MockApiInterface {
             method: 'GET',
             url: '/course/getAll',
             result: [
-              {id: 1, name: '语文', type: 1, range: '1节-2节', week: '周三', weeks: '2-7全', term: {id: 1, name: '2023-2024学年第一学期'}},
-              {id: 2, name: '数学', type: 1, range: '4节-6节', week: '周二', weeks: '2-16全', term: {id: 1, name: '2023-2024学年第一学期'}},
-              {id: 3, name: '英语', type: 2, range: '1节-2节', week: '周四', weeks: '8-16全', term: {id: 3, name: '2023-2024学年第一学期'}},
-              {id: 4, name: '物理', type: 1, range: '1节-2节', week: '周三', weeks: '2-7全', term: {id: 1, name: '2023-2024学年第一学期'}},
-              {id: 5, name: '化学',type: 2, range: '1节-2节', week: '周二', weeks: '1-18全', term: {id: 4, name: '2023-2024学年第一学期'}}
+              {id: 1, name: '语文', type: 1, begin: 1, length: 2, week: 3, start_week: 2, end_week: 7, weekType: 3, term: {id: 1, name: '2023-2024学年第一学期'}},
+              {id: 2, name: '数学', type: 1, begin: 4, length: 3, week: 2, start_week: 2, end_week: 16, weekType: 1, term: {id: 1, name: '2023-2024学年第一学期'}},
+              {id: 3, name: '英语', type: 2, begin: 1, length: 2, week: 4, start_week: 8, end_week: 16, weekType: 2, term: {id: 3, name: '2023-2024学年第一学期'}},
+              {id: 4, name: '物理', type: 1, begin: 1, length: 2, week: 3, start_week: 2, end_week: 7, weekType: 2, term: {id: 1, name: '2023-2024学年第一学期'}},
+              {id: 5, name: '化学', type: 2, begin: 1, length: 2, week: 2, start_week: 1, end_week: 18, weekType: 3, term: {id: 4, name: '2023-2024学年第一学期'}}
             ]
           },
           {

@@ -4,14 +4,14 @@ export interface Course {
   id:number;
   name: string;
   term: Term;
+  // 选/必
   type: number;
-  status: string
-  weeks: number[];
-  start_time: number;
-  end_time: number;
+  // 单双周
+  weekType: number
+  start_week: number;
+  end_week: number;
   week: number;
-  range: string;
   begin: number;
-  end: number;
+  length: number;
   courseInfoId: number;
 }
