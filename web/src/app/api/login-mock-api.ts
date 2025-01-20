@@ -14,6 +14,7 @@ export class LoginMockApi implements MockApiInterface {
             data: {
               username: user.username,
               password: user.password,
+              role: 1
             }
           }
         }
