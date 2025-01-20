@@ -36,14 +36,20 @@ export class TermMockApi implements MockApiInterface {
         url: '/term/getTermAndWeeks/:schoolId',
         result: (urlMatcher: any) => {
           const schoolId = parseInt(urlMatcher.schoolId);
-          const weeksData: Record<number, { status: boolean; messeage: string, data: { weeks: number[], term: {}}}> = {
-            1: {status: true, messeage: '成功', data: {weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], term: {name:'天职师大2024年秋'}}},
-            2: {status: true, messeage: '成功', data: {weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], term: {name: '河工大2024年秋'}}},
-            3: {status: true, messeage: '成功', data: {weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ,18, 19, 20], term: {name: '河师大2024年秋'}}},
-            4: {status: true, messeage: '成功', data: {weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], term: {name: '海河大学2024年秋'}}},
+          const weeksData: Record<number, { status: boolean; message: string, data: { weeks: number[], term: {}}}> = {
+            1: {status: true, message: '成功', data: {weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], term: {name:'天职师大2024年秋'}}},
+            2: {status: true, message: '成功', data: {weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], term: {name: '河工大2024年秋'}}},
+            3: {status: true, message: '成功', data: {weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ,18, 19, 20], term: {name: '河师大2024年秋'}}},
+            4: {status: true, message: '成功', data: {weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], term: {name: '海河大学2024年秋'}}},
           };
           return weeksData[schoolId] || {status: false, messeage: '计算失败，不存在激活学期'};
         }
+      },
+      {
+        method: 'GET',
+        url: '/term/checkTerm',
+        result: { status: true, message: '成功', data: { term: {name: '河师大2024年秋', status: 1}, school: {name: '海河大学'}}}
+         // { status: false, message: '你的学校还未开学', data: { term: {name: '河师大2024年秋', status: 1}, school: {name: '海河大学'}}}
       }
     ];
   }

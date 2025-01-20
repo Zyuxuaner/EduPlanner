@@ -12,7 +12,19 @@ export class SchoolMockApi implements MockApiInterface {
             {id: 3, name: '河北师范大学'},
             {id: 4, name: '河海大学'},
           ]
-        }
+        },
+        {
+          method: 'POST',
+          url: '/school/add',
+          result: (urlMatcher: any, options: {body: {name: string, id: number}}) => {
+            let body = options.body;
+            console.log(body);
+            return {
+              id: Math.floor(Math.random() * 10000),
+              name: body.name
+            }
+          }
+        },
       ]
     }
 }
