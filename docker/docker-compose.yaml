@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    #    image: mariadb:10.2
+    hostname: mysql57
+    ports:
+      - "3310:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: yunzhi
+      MYSQL_DATABASE: schedule
+
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - net
+
+#   java:
+#     image: maven:3.6-openjdk-8
+# #    image: maven:3.8.6-openjdk-8-slim
+
+networks:
+  net:
