@@ -19,9 +19,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SchoolSelectModule} from "./core/school-select/school-select.module";
 import {ClazzSelectModule} from "./core/clazz-select/clazz-select.module";
-import { CourseTableComponent } from './course-table/course-table.component';
 import {CourseTableModule} from "./course-table/course-table.module";
 import { LoginComponent } from './login/login.component';
+import {AuthTokenInterceptorModule} from "./core/interceptor/auth-token-interceptor.module";
 
 registerLocaleData(zh);
 
@@ -38,8 +38,9 @@ registerLocaleData(zh);
     HeaderModule,
     NavModule,
     AdminModule,
-    ApiMockModule,
+    AuthTokenInterceptorModule,
     HttpClientModule,
+    ApiMockModule,
     ClazzModule,
     FormsModule,
     BrowserAnimationsModule,
