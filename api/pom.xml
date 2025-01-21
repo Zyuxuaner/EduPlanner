@@ -46,7 +46,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.32</version> <!-- 或使用更高版本 -->
 		</dependency>
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

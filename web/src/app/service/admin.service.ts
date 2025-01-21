@@ -7,7 +7,7 @@ import {Admin} from "../entity/admin";
   providedIn: 'root'
 })
 export class AdminService {
-  private baseUrl = '/admin';
+  private baseUrl = 'http://localhost:8080/Admin';
 
   constructor(private httpClient: HttpClient) { }
 

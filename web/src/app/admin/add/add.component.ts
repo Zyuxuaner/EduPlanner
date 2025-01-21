@@ -27,7 +27,6 @@ export class AddComponent implements OnInit {
     const admin = this.formGroup.value as { name: string; username: string; ano: string; role: number };
     this.adminService.add(admin).subscribe(value => {
       console.log(value);
-      alert('添加成功');
       this.router.navigate(['/admin']);
     });
   }
