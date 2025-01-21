@@ -6,6 +6,7 @@ import { TermComponent } from './term.component';
 import { AddComponent } from './add/add.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
+import {SchoolSelectModule} from "../core/school-select/school-select.module";
 
 
 @NgModule({
@@ -13,11 +14,12 @@ import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
     TermComponent,
     AddComponent
   ],
-  imports: [
-    CommonModule,
-    TermRoutingModule,
-    NzDatePickerModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        TermRoutingModule,
+        NzDatePickerModule,
+        ReactiveFormsModule,
+        SchoolSelectModule
+    ]
 })
 export class TermModule { }

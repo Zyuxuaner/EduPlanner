@@ -49,7 +49,6 @@ export class AddComponent implements OnInit {
     } as {name: string; startTime: number; endTime: number; school: School};
     this.termService.add(term).subscribe(value => {
       this.router.navigate(['/term']);
-      console.log('新增成功');
     });
   }
 }

@@ -3,7 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddComponent } from './add.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {SchoolModule} from "../../school/school.module";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {SchoolSelectModule} from "../../core/school-select/school-select.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 describe('AddComponent', () => {
   let component: AddComponent;
@@ -14,7 +18,9 @@ describe('AddComponent', () => {
       imports: [
         HttpClientTestingModule,
         ReactiveFormsModule,
-        NzDatePickerModule
+        NzDatePickerModule,
+        SchoolSelectModule,
+        BrowserAnimationsModule
       ],
       declarations: [ AddComponent ]
     })
