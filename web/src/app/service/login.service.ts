@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable, ReplaySubject, tap} from "rxjs";
 import {ResponseBody} from "../entity/response-body";
+import {User} from "../entity/user";
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +16,14 @@ export class LoginService {
 
   private isLoginCacheKey = 'isLogin';
   constructor(private httpClient: HttpClient) {
-    const isLogin: string | null = window.sessionStorage.getItem(this.isLoginCacheKey);
+    const isLogin: string | null = window.localStorage.getItem(this.isLoginCacheKey);
     this.isLogin = new BehaviorSubject(this.convertStringToBoolean(isLogin));
     this.isLogin$ = this.isLogin.asObservable();
   }
 
   login(user: {username: string, password: string}): Observable<ResponseBody> {
-    const url = '/login';
-    return this.httpClient.post<ResponseBody>(url, user)
-      .pipe(tap( response => {
-        if (response.data) {
-          const user = {
-            username: response.data.username,
-            password: response.data.password
-          };
-          this.setIsLogin(true);
-        }
-      }));
+    const url = 'http://localhost:8080/Login';
+    return this.httpClient.post<ResponseBody>(url, user);
   }
 
   /**
@@ -39,8 +31,8 @@ export class LoginService {
    * @param isLogin
    */
   setIsLogin(isLogin: boolean) {
-    // sessionStorage只能存储string类型，所以将isLogin转换为字符串'0','1'进行存储
-    window.sessionStorage.setItem(this.isLoginCacheKey, this.convertBooleanToString(isLogin));
+    // localStorage只能存储string类型，所以将isLogin转换为字符串'0','1'进行存储
+    window.localStorage.setItem(this.isLoginCacheKey, this.convertBooleanToString(isLogin));
     // 接收到新的登录状态时，向所有的订阅者们发送最新的登录状态的值
     this.isLogin.next(isLogin);
   }
@@ -64,12 +56,12 @@ export class LoginService {
   }
 
   logout(): Observable<ResponseBody> {
-    const url = '/logout';
-    return this.httpClient.get<ResponseBody>(url)
-      .pipe(tap( response => {
-        if (response.status) {
-          this.setIsLogin(false);
-        }
-      }));
+    const url = 'http://localhost:8080/Login';
+    return this.httpClient.get<ResponseBody>(url);
+  }
+
+  currentLoginUser(): Observable<User> {
+    const url = 'http://localhost:8080/Login/currentLoginUser';
+    return this.httpClient.get<User>(url);
   }
 }

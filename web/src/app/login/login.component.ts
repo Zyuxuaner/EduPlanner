@@ -39,9 +39,10 @@ export class LoginComponent implements OnInit {
     };
     this.loginService.login(user).subscribe(response => {
       if (response.status) {
+        this.loginService.setIsLogin(true);
         this.router.navigate([this.redirectUrl]);
       } else {
-        console.log('登录失败');
+        console.log(response.message);
       }
     }, error => console.log(error));
   }
