@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c16161e-1474-4718-808e-87aa8f433378" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/controller/SchoolController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/repository/SchoolReposity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/service/SchoolService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/service/SchoolServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/api/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/api/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,10 +32,12 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "jbz",
-    "last_opened_file_path": "/home/sullivan/下载/EduPlanner",
+    "git-widget-placeholder": "42",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/zhangyuxuan/Desktop/EduPlanner/EduPlanner",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -38,13 +47,6 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -62,6 +64,7 @@
       <workItem from="1737023436258" duration="463000" />
       <workItem from="1737023931382" duration="320000" />
       <workItem from="1737355342186" duration="311000" />
+      <workItem from="1737436794567" duration="214000" />
     </task>
     <servers />
   </component>
