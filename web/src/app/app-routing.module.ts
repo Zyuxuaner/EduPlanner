@@ -4,8 +4,6 @@ import {LayoutComponent} from "./layout/layout.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {LoginComponent} from "./login/login.component";
 import {AuthGuard} from "./core/guard/auth.guard";
-import {SchoolComponent} from "./school/school.component";
-import {SchoolAddComponent} from "./school-add/school-add.component";
 
 const routes: Routes = [
   {
@@ -59,12 +57,12 @@ const routes: Routes = [
       },
       {
         path: 'school',
-        component: SchoolComponent,
+        loadChildren: () => import('./school/school.module').then(m => m.SchoolModule),
         canActivate: [AuthGuard]
       },
       {
         path: 'school/add',
-        component: SchoolAddComponent,
+        loadChildren: () => import('./school-add/school-add.module').then(m => m.SchoolAddModule),
         canActivate: [AuthGuard]
       },
     ]

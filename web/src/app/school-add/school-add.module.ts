@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {SchoolAddComponent} from "./school-add.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {SchoolAddRoutingModule} from "./school-add-routing.module";
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import {ReactiveFormsModule} from "@angular/forms";
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SchoolAddRoutingModule
   ]
 })
 export class SchoolAddModule { }

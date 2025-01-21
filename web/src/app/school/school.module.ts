@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {SchoolComponent} from "./school.component";
 import {RouterModule} from "@angular/router";
 import {FormsModule} from "@angular/forms";
+import {SchoolRoutingModule} from "./school-routing.module";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {FormsModule} from "@angular/forms";
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    SchoolRoutingModule
   ]
 })
 export class SchoolModule { }

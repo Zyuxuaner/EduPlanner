@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c16161e-1474-4718-808e-87aa8f433378" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/entity/Klass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/repository/ClazzRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/repository/SchoolRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/app/school/school-routing.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/app/school/school.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/app/school/school.module.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
