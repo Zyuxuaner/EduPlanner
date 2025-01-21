@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: "jdbc:mysql://localhost:3310/schedule?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC"
+    url: "jdbc:mysql://localhost:3306/tp5?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC"
     username: "root"
     password: "yunzhi"
     driver-class-name: com.mysql.cj.jdbc.Driver

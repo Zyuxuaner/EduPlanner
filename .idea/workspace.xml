@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c16161e-1474-4718-808e-87aa8f433378" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/controller/SchoolController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/repository/SchoolReposity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/service/SchoolService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/service/SchoolServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/api/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/api/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/controller/ClazzController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/entity/Clazz.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/repository/ClazzRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/service/ClazzService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/mengyunzhi/eduPlanner/service/ClazzServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/app/school/school.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/app/school/school.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +35,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "42",
+    "git-widget-placeholder": "jbz",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/zhangyuxuan/Desktop/EduPlanner/EduPlanner",
     "node.js.detected.package.eslint": "true",

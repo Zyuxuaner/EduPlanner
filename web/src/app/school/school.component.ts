@@ -14,7 +14,6 @@ export class SchoolComponent implements OnInit {
   searchName = '';
 
   ngOnInit(): void {
-    console.log(2);
     this.getAll();
   }
 
@@ -22,7 +21,7 @@ export class SchoolComponent implements OnInit {
   }
 
   getAll(): void {
-    console.log(this.schools,1);
+    console.log(this.schools);
     this.schoolService.getAll().subscribe(data => {
       this.schools = data;
     });
