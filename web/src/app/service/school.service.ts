@@ -7,7 +7,7 @@ import {School} from "../entity/school";
   providedIn: 'root'
 })
 export class SchoolService {
-  private url = '/school';
+  private url = 'http://localhost:8080/School';
 
   constructor(private httpClient: HttpClient) { }
   getAll(): Observable<School[]> {

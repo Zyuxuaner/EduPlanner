@@ -9,7 +9,7 @@ import {ResponseBody} from "../entity/response-body";
   providedIn: 'root'
 })
 export class TermService {
-  private baseUrl = '/term';
+  private baseUrl = 'http://localhost:8080/Term';
 
   constructor(private httpClient: HttpClient) {}
 
