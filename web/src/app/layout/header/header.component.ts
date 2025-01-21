@@ -15,6 +15,7 @@ export class HeaderComponent {
   onLogout(): void {
     this.loginService.logout().subscribe( response => {
       if (response.status) {
+        this.loginService.setIsLogin(false);
         this.router.navigate(['/login']);
       }
     })

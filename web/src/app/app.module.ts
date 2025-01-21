@@ -44,7 +44,7 @@ registerLocaleData(zh);
     AdminModule,
     HttpClientModule,
     AuthTokenInterceptorModule,
-    ApiMockModule,
+    // ApiMockModule,
     ClazzModule,
     FormsModule,
     BrowserAnimationsModule,

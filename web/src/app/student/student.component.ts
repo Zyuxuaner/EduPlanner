@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Student} from "../entity/student";
 import {StudentService} from "../service/student.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {LoginService} from "../service/login.service";
 
 @Component({
   selector: 'app-student',
@@ -20,7 +21,8 @@ export class StudentComponent implements OnInit {
   searchStudentSno = '';
   students: Student[] = [];
 
-  constructor(private studentService: StudentService) {
+  constructor(private studentService: StudentService,
+              private loginService: LoginService) {
   }
 
   ngOnInit(): void {
