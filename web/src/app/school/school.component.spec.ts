@@ -11,7 +11,11 @@ describe('SchoolComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ SchoolComponent ],
-      imports: [ ReactiveFormsModule,HttpClientTestingModule,FormsModule]
+      imports: [
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        FormsModule
+      ]
     })
     .compileComponents();
 
