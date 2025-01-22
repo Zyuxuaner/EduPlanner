@@ -15,6 +15,7 @@ export class ClazzComponent implements OnInit {
     this.clazzService.getAll().subscribe(
       data => {
         this.clazzes = data;
+        console.log(this.clazzes);
         }
       )
     }

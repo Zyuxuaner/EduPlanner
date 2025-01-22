@@ -1,7 +1,8 @@
 package com.mengyunzhi.eduPlanner.controller;
 
+import com.mengyunzhi.eduPlanner.dto.ClazzRequest;
 import com.mengyunzhi.eduPlanner.entity.Clazz;
-import com.mengyunzhi.eduPlanner.repository.ClazzRepository;
+import com.mengyunzhi.eduPlanner.entity.School;
 import com.mengyunzhi.eduPlanner.service.ClazzService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +21,15 @@ public class ClazzController {
     @Autowired
     ClazzService clazzService;
 
-    @Autowired
-    ClazzRepository clazzRepository;
-
     @GetMapping("/getAll")
     public List<Clazz> getAll() {
+        logger.info("ClazzController.getAll() 方法被调用");
         return this.clazzService.getAll();
     }
 
-
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestBody Clazz clazz) {
-        clazzService.save(clazz);
+    public void save(@RequestBody ClazzRequest clazzRequest) {
+        clazzService.save(clazzRequest);
     }
 }
