@@ -6,6 +6,6 @@ import lombok.Data;
 public class AdminRequest {
     private String name;
     private String username;
-    private Long ano;
+    private String ano;
     private Long role;
 }
