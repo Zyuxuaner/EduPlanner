@@ -8,7 +8,7 @@ import {Course} from "../entity/course";
   providedIn: 'root'
 })
 export class CourseService {
-  baseUrl = '/course';
+  baseUrl = 'http://localhost:8080/Course';
   constructor(private httpClient: HttpClient) { }
 
   add(course: {

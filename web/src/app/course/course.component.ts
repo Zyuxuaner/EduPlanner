@@ -4,6 +4,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {CourseService} from "../service/course.service";
 import {Router} from "@angular/router";
 import {TermService} from "../service/term.service";
+import {CommonService} from "../service/common.service";
 
 @Component({
   selector: 'app-course',
@@ -20,6 +21,7 @@ export class CourseComponent implements OnInit{
 
   constructor(private courseService: CourseService,
               private termService: TermService,
+              private commonService: CommonService,
               private router: Router){}
 
   ngOnInit(): void {
@@ -70,7 +72,7 @@ export class CourseComponent implements OnInit{
       if (data.status) {
         this.router.navigate(['/course/add']);
       } else {
-        alert(data.message);
+        this.commonService.showErrorAlert(data.message);
       }
     });
   }

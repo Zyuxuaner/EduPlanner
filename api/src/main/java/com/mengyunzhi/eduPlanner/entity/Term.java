@@ -14,6 +14,9 @@ public class Term {
 
     private String name;
 
+    /**
+     * 0：冻结，1：激活
+     */
     private Long status;
 
     @Column(name = "start_time")
