@@ -1,8 +1,8 @@
 package com.mengyunzhi.eduPlanner.service;
 
 import com.mengyunzhi.eduPlanner.entity.User;
-import com.mengyunzhi.eduPlanner.model.CurrentUser;
-import com.mengyunzhi.eduPlanner.model.Response;
+import com.mengyunzhi.eduPlanner.dto.CurrentUser;
+import com.mengyunzhi.eduPlanner.dto.Response;
 
 public interface LoginService {
     /**

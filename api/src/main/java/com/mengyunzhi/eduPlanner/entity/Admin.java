@@ -13,7 +13,7 @@ public class Admin {
 
     private String name;
 
-    private Long ano;
+    private String ano;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

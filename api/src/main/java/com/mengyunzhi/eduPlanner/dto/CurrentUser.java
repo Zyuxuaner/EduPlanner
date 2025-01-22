@@ -1,4 +1,4 @@
-package com.mengyunzhi.eduPlanner.model;
+package com.mengyunzhi.eduPlanner.dto;
 
 import lombok.Getter;
 import lombok.Setter;

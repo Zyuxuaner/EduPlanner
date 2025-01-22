@@ -16,7 +16,7 @@ public class User {
 
     private String username;
 
-    private Long password;
+    private String password;
 
     // 1是学生，2是管理员， 3是超管
     private Long role;
