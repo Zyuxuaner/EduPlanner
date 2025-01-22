@@ -9,21 +9,17 @@ import javax.persistence.*;
 @Entity
 @Data
 public class Clazz {
-    @Setter
-    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
-    @Setter
     private String name;
 
-    @Getter
-    @Setter
     @ManyToOne
     private School school;
 
     public Clazz() {}
+
+    public Clazz(Long clazzId) {}
 
 }
