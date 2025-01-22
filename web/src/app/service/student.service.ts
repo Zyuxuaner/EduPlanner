@@ -9,7 +9,7 @@ import {School} from "../entity/school";
   providedIn: 'root'
 })
 export class StudentService {
-  private baseUrl = '/student';
+  private baseUrl = 'http://localhost:8080/Student';
   constructor(private httpClient: HttpClient) { }
 
   add(student: {school: School, clazz: Clazz, name: string, username: string, sno: string}): Observable<Student> {
