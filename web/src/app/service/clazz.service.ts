@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Clazz} from "../entity/clazz";
+import {School} from "../entity/school";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ClazzService {
 
   constructor(private httpClient: HttpClient) { }
 
-  add(clazz: {name: string, schoolId: number}): Observable<any> {
+  add(clazz: {name: string, school: School}): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/add`, clazz);
   }
 
