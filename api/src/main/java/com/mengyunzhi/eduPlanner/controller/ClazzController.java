@@ -21,7 +21,6 @@ public class ClazzController {
 
     @GetMapping("/getAll")
     public List<Clazz> getAll() {
-        logger.info("ClazzController.getAll() 方法被调用");
         return this.clazzService.getAll();
     }
 
