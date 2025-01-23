@@ -16,6 +16,7 @@ public class Clazz {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "school_id", referencedColumnName = "id")
     private School school;
 
     public Clazz() {}
