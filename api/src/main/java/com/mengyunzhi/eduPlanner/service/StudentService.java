@@ -20,4 +20,11 @@ public interface StudentService {
      * @return
      */
     List<Student> getAll();
+
+    /**
+     * 根据 userId 获取学生
+     * @param userId
+     * @return Student
+     */
+    Student findByUserId(Long userId);
 }

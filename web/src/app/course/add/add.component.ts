@@ -3,7 +3,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CourseService} from "../../service/course.service";
 import {Router} from "@angular/router";
 import {TermService} from "../../service/term.service";
-import {Course} from "../../entity/course";
 
 @Component({
   selector: 'app-add',

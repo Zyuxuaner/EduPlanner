@@ -44,7 +44,7 @@
     <td *ngIf="course.type === 2; else choose">必修</td>
     <td>{{ getRange(course.begin, course.length) }}</td>
     <td>{{ getWeekday(course.week) }}</td>
-    <td>{{ getWeeks(course.start_week, course.end_week, course.weekType) }}</td>
+    <td>{{ getWeeks(course.startWeek, course.endWeek, course.weekType) }}</td>
     <td *ngIf="course.term.id == termId; else courseOver">
       <span class="badge badge-pill badge-success">置入</span>
     </td>

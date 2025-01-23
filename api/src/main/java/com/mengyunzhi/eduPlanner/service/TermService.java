@@ -22,9 +22,9 @@ public interface TermService {
 
     /**
      * 检查当前登录用户所在学校下是否有激活学期
-     * @param schoolId
-     * @param status
-     * @return
+     * @param schoolId 当前登录学生的学校id
+     * @param status 激活状态 1L
+     * @return Optional<Term>
      */
     Optional<Term> checkTermActive(Long schoolId, Long status);
 }

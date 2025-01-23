@@ -8,8 +8,8 @@ export interface Course {
   type: number;
   // 单双周
   weekType: number
-  start_week: number;
-  end_week: number;
+  startWeek: number;
+  endWeek: number;
   week: number;
   begin: number;
   length: number;

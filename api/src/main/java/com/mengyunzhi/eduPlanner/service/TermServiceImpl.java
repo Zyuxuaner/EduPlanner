@@ -33,6 +33,6 @@ public class TermServiceImpl implements TermService {
 
     @Override
     public Optional<Term> checkTermActive(Long schoolId, Long status) {
-        return this.termRepository.findBySchool_idAndStatus(schoolId, status);
+        return this.termRepository.findBySchoolIdAndStatus(schoolId, status);
     }
 }

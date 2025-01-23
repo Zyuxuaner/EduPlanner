@@ -26,6 +26,10 @@ export class TermService {
     return this.httpClient.get<Term[]>(`${this.baseUrl}/getAll`);
   }
 
+  getActiveTerm(): Observable<Term> {
+    return this.httpClient.get<Term>(`${this.baseUrl}/getActiveTerm`);
+  }
+
   // 根据学校获取当前激活学期的总周数
   getTermAndWeeks(schoolId: number): Observable<ResponseBody> {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getTermAndWeeks/${schoolId}`);
