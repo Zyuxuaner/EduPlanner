@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Admin} from "../entity/admin";
 
 @Component({
@@ -6,7 +6,7 @@ import {Admin} from "../entity/admin";
   templateUrl: './me.component.html',
   styleUrls: ['./me.component.css']
 })
-export class MeComponent {
+export class MeComponent implements OnInit{
   person = {} as Admin;
   oldPassword = '';
   newPassword = '';

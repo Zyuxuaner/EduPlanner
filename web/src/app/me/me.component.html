@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-center mt-5 ">
-  <ul class="list-group list-group-flush w-25 border border-info p-3" [ngSwitch]="person.role">
+  <ul class="list-group list-group-flush w-25 border border-info p-3" [ngSwitch]="person.user.role">
     <li class="list-group-item">姓名：{{ person.name }}</li>
-    <li class="list-group-item">用户名：{{ person.username }}</li>
-    <li class="list-group-item">学(工)号：{{ person.no }}</li>
+    <li class="list-group-item">用户名：{{ person.user.username }}</li>
+    <li class="list-group-item">学(工)号：{{ person.ano }}</li>
     <li *ngSwitchCase="0" class="list-group-item">角色：超级管理员</li>
     <li *ngSwitchCase="1" class="list-group-item">角色：管理员</li>
     <li *ngSwitchCase="2" class="list-group-item">角色：教师</li>
