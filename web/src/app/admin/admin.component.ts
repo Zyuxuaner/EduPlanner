@@ -9,7 +9,7 @@ import {AdminService} from "../service/admin.service";
 })
 export class AdminComponent implements OnInit {
   private roleMap: Map<number, string> = new Map([
-    [1, '超级管理员'],
+    [3, '超级管理员'],
     [2, '管理员']
   ]);
 
