@@ -25,7 +25,7 @@ public class LoginServiceImpl implements LoginService {
     private HashMap<String, Long> authTokenUserIdHashMap = new HashMap<>();
 
     private final HttpServletRequest request;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private StudentRepository studentRepository;
 
     // 使用@Autowired对构造函数进行注解
@@ -85,7 +85,7 @@ public class LoginServiceImpl implements LoginService {
         Optional<User> user = this.userRepository.findById(userId);
         Long role = user.get().getRole();
         // 如果当前登录用户为学生，查找出该学生对应的学校id
-        if (role == 3) {
+        if (role == 1) {
             Student student = this.studentRepository.findByUserId(userId);
             Clazz clazz = student.getClazz();
             School school = clazz.getSchool();
