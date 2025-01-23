@@ -21,5 +21,9 @@ public class Clazz {
 
     public Clazz() {}
 
-    public Clazz(Long clazzId) {}
+    public Clazz(Long clazzId, School school) {
+        this.id = clazzId;
+        this.school = school;
+    }
+
 }

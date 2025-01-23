@@ -36,11 +36,13 @@ public class CourseServiceImpl implements CourseService{
             studentId = student.getId();
         }
 
+        School school = student.getClazz().getSchool();
+
         Course course = new Course();
         course.setName(courseRequest.getName());
         course.setType(courseRequest.getType());
         course.setTerm(activeTerm);
-        course.setClazz(new Clazz(clazzId));
+        course.setClazz(new Clazz(clazzId, school));
         course.setStudentId(studentId);
         Course savedCourse = courseRepository.save(course);
 
