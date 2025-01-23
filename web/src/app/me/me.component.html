@@ -1,13 +1,11 @@
 <div class="d-flex justify-content-center mt-5 ">
-  <ul class="list-group list-group-flush w-25 border border-info p-3" [ngSwitch]="person.user.role">
+  <ul class="list-group list-group-flush w-25 border border-info p-3" [ngSwitch]="person?.role">
     <li class="list-group-item">姓名：{{ person.name }}</li>
-    <li class="list-group-item">用户名：{{ person.user.username }}</li>
-    <li class="list-group-item">学(工)号：{{ person.ano }}</li>
-    <li *ngSwitchCase="0" class="list-group-item">角色：超级管理员</li>
-    <li *ngSwitchCase="1" class="list-group-item">角色：管理员</li>
-    <li *ngSwitchCase="2" class="list-group-item">角色：教师</li>
-    <li *ngSwitchCase="3" class="list-group-item">角色：学生</li>
-    <li *ngSwitchCase="4" class="list-group-item">角色：班主任</li>
+    <li class="list-group-item">用户名：{{ person.username }}</li>
+    <li class="list-group-item">学(工)号：{{ person.no }}</li>
+    <li *ngSwitchCase="3" class="list-group-item">角色：超级管理员</li>
+    <li *ngSwitchCase="2" class="list-group-item">角色：管理员</li>
+    <li *ngSwitchCase="1" class="list-group-item">角色：学生</li>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-pencil" aria-hidden="true"></i>修改密码</button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -48,10 +46,11 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
             <button type="button" class="btn btn-primary"
                     (click)="changePassword()"
-                    [disabled]="newPassword === '' || oldPassword === ''">提交</button>
+                    [disabled]="newPassword === '' || oldPassword === ''">提交
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
           </div>
         </div>
       </div>

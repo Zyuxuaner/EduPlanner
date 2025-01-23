@@ -1,8 +1,6 @@
 package com.mengyunzhi.eduPlanner.controller;
 
-import com.mengyunzhi.eduPlanner.dto.ClazzRequest;
 import com.mengyunzhi.eduPlanner.entity.Clazz;
-import com.mengyunzhi.eduPlanner.entity.School;
 import com.mengyunzhi.eduPlanner.service.ClazzService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("clazz")
+@RequestMapping("Clazz")
 public class ClazzController {
     private static final Logger logger = LoggerFactory.getLogger(ClazzController.class);
 
@@ -29,7 +27,7 @@ public class ClazzController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestBody ClazzRequest clazzRequest) {
-        clazzService.save(clazzRequest);
+    public void save(@RequestBody Clazz clazz) {
+        clazzService.save(clazz);
     }
 }

@@ -7,7 +7,7 @@ import {Clazz} from "../entity/clazz";
   providedIn: 'root'
 })
 export class ClazzService {
-  private baseUrl = 'http://localhost:8080/clazz';
+  private baseUrl = 'http://localhost:8080/Clazz';
 
   constructor(private httpClient: HttpClient) { }
 

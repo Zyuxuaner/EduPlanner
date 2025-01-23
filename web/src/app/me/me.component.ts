@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Admin} from "../entity/admin";
+import {LoginService} from "../service/login.service";
+import {CommonService} from "../service/common.service";
+import {Person} from "../entity/person";
+import {PersonService} from "../service/person.service";
+import {HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-me',
@@ -7,25 +11,23 @@ import {Admin} from "../entity/admin";
   styleUrls: ['./me.component.css']
 })
 export class MeComponent implements OnInit{
-  person = {} as Admin;
+  person = {} as Person;
   oldPassword = '';
   newPassword = '';
   showOldPassword = false;
   showNewPassword = false;
 
-  // constructor(private loginService: LoginService,
-  //             private personService: PersonService,
-  //             private commonService: CommonService) { }
+  constructor(private loginService: LoginService,
+              private personService: PersonService,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
-    // this.loginService.getCurrentUser().subscribe(user => {
-    //   if (user) {
-    //     this.person.name = user.name;
-    //     this.person.username = user.username;
-    //     this.person.role = user.role;
-    //     this.person.no = user.no;
-    //   }
-    // });
+    this.loginService.currentLoginUser().subscribe(user => {
+      if (user) {
+          this.person.username = user.username;
+          this.person.role = user.role;
+      }
+    });
   }
 
   togglePasswordVisibility(): void {
@@ -33,19 +35,19 @@ export class MeComponent implements OnInit{
   }
 
   changePassword(): void {
-    // const httpParams = new HttpParams()
-    //   .append('oldPassword', this.oldPassword)
-    //   .append('newPassword', this.newPassword);
-    //
-    // this.personService.changePassword(httpParams).subscribe(
-    //   responseBody => {
-    //     if (responseBody.success) {
-    //       this.commonService.showSuccessAlert(responseBody.message);
-    //     } else {
-    //       this.commonService.showErrorAlert(responseBody.message);
-    //     }
-    //   }, error => this.commonService.showErrorAlert('请求失败。请稍后')
-    // );
+    const httpParams = new HttpParams()
+      .append('oldPassword', this.oldPassword)
+      .append('newPassword', this.newPassword);
+
+    this.personService.changePassword(httpParams).subscribe(
+      responseBody => {
+        if (responseBody.status) {
+          this.commonService.showSuccessAlert(responseBody.message);
+        } else {
+          this.commonService.showErrorAlert(responseBody.message);
+        }
+      }, error => this.commonService.showErrorAlert('请求失败。请稍后')
+    );
   }
 
 

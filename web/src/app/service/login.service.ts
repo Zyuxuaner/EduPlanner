@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable, ReplaySubject, tap} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {ResponseBody} from "../entity/response-body";
 import {User} from "../entity/user";
 
