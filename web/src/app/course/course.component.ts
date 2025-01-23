@@ -26,10 +26,20 @@ export class CourseComponent implements OnInit{
 
   ngOnInit(): void {
       this.courseService.getAll().subscribe(courses => {
-        // 测试结课显示
-        this.termId = 1;
         this.courses = courses;
+        this.getActiveTerm();
       });
+  }
+
+  // 获取当前登录用户的所在学校的激活学期
+  getActiveTerm() {
+    this.termService.checkTerm().subscribe(termResponse => {
+      if (termResponse.status) {
+        const termData = termResponse.data;
+        console.log(termData);
+        this.termId = termData.id;
+      }
+    });
   }
 
   getWeekday(week: number): string {
@@ -42,7 +52,7 @@ export class CourseComponent implements OnInit{
   }
 
   // 计算并返回周次范围
-  getWeeks(start_week: number, end_week: number, weekType: number): string {
+  getWeeks(startWeek: number, endWeek: number, weekType: number): string {
     let weekTypeStr = '';
     if (weekType === 3) {
       weekTypeStr = '全';
@@ -51,7 +61,7 @@ export class CourseComponent implements OnInit{
     } else if (weekType === 1) {
       weekTypeStr = '单';
     }
-    return `${start_week} - ${end_week}周 ${weekTypeStr}`;
+    return `${startWeek} - ${endWeek}周 ${weekTypeStr}`;
   }
 
   onSearch() {

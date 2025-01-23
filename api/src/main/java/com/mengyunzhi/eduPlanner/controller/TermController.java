@@ -40,15 +40,16 @@ public class TermController {
     }
 
     @GetMapping("/checkTerm")
-    public Response<String> checkActive() {
+    public Response<Optional<Term>> checkActive() {
         Response<CurrentUser> currentUser = this.loginService.getCurrentLoginUser();
         Long schoolId = currentUser.getData().getSchoolId();
         Optional<Term> term = this.termService.checkTermActive(schoolId, 1L);
+        logger.info("activeTerm:" + term);
         if (term.isPresent()) {
-            Response<String> response = new Response<>(true, "存在激活学期", "null");
+            Response<Optional<Term>> response = new Response<>(true, "存在激活学期", term);
             return response;
         } else {
-            Response<String> response = new Response<>(false, "当前学校无激活学期", "null");
+            Response<Optional<Term>> response = new Response<>(false, "当前学校无激活学期", term);
             return response;
         }
     }

@@ -17,7 +17,7 @@ public class StudentServiceImpl implements StudentService {
     private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     private final UserRepository userRepository;
 
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
     public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository) {
@@ -49,5 +49,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> getAll() {
         return this.studentRepository.findAll();
+    }
+
+    @Override
+    public Student findByUserId(Long userId) {
+        return this.studentRepository.findByUserId(userId);
     }
 }
