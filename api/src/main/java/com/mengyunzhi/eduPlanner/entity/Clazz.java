@@ -6,15 +6,18 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
 @Entity
+@Data
 public class Clazz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @ManyToOne
     private School school;
+
+    public Clazz(Long clazzId) {}
 
 }

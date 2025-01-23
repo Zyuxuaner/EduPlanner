@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TermServiceImpl implements TermService {
@@ -28,5 +29,10 @@ public class TermServiceImpl implements TermService {
     @Override
     public List<Term> getAll() {
         return this.termRepository.findAll();
+    }
+
+    @Override
+    public Optional<Term> checkTermActive(Long schoolId, Long status) {
+        return this.termRepository.findBySchool_idAndStatus(schoolId, status);
     }
 }
