@@ -3,8 +3,6 @@ package com.mengyunzhi.eduPlanner.dto;
 import com.mengyunzhi.eduPlanner.entity.Term;
 import lombok.Data;
 
-import java.sql.Struct;
-
 @Data
 public class CourseResponse {
     private String name;
