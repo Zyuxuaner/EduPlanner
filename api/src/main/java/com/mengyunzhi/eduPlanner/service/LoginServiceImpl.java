@@ -111,4 +111,10 @@ public class LoginServiceImpl implements LoginService {
         );
         return new Response<>(true, "成功获取用户admin", userIsAdmin);
     }
+
+    @Override
+    public boolean isLogin(String authToken) {
+        Long userId = this.authTokenUserIdHashMap.get(authToken);
+        return userId != null;
+    }
 }

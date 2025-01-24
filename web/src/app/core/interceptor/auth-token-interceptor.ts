@@ -30,9 +30,7 @@ export class AuthTokenInterceptor implements HttpInterceptor{
       // 检查httpEvent引用的对象是否是HttpResponse类的一个实例，如果是，表达式的结果为true
       if (httpEvent instanceof HttpResponse) {
         const httpResponse = httpEvent as HttpResponse<any>;
-        console.log(httpResponse);
         const authToken = httpResponse.headers.get('auth-token');
-        console.log(authToken);
         CacheService.setAuthToken(authToken);
       }
 
