@@ -2,6 +2,7 @@ package com.mengyunzhi.eduPlanner.controller;
 
 import com.mengyunzhi.eduPlanner.dto.CurrentUser;
 import com.mengyunzhi.eduPlanner.dto.Response;
+import com.mengyunzhi.eduPlanner.dto.TermDto;
 import com.mengyunzhi.eduPlanner.entity.Term;
 import com.mengyunzhi.eduPlanner.service.LoginService;
 import com.mengyunzhi.eduPlanner.service.TermService;
@@ -52,5 +53,13 @@ public class TermController {
             Response<Optional<Term>> response = new Response<>(false, "当前学校无激活学期", term);
             return response;
         }
+    }
+
+    @GetMapping("/getTermAndWeeks")
+    public Response<TermDto.TermAndWeeksResponse> getTermAndWeeks() {
+        Response<CurrentUser> currentUser = this.loginService.getCurrentLoginUser();
+        Long schoolId = currentUser.getData().getSchoolId();
+
+        return this.termService.getTermAndWeeks(schoolId);
     }
 }

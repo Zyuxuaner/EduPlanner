@@ -31,7 +31,12 @@ export class TermService {
   }
 
   // 根据学校获取当前激活学期的总周数
-  getTermAndWeeks(schoolId: number): Observable<ResponseBody> {
-    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getTermAndWeeks/${schoolId}`);
+  getTermAndWeeks(): Observable<ResponseBody> {
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getTermAndWeeks`);
+  }
+
+  // 根据选中的学校id获取学期和周数
+  getTermAndWeeksBySchoolId(schoolId: number): Observable<ResponseBody> {
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getTermAndWeeksBySchoolId/${schoolId}`);
   }
 }

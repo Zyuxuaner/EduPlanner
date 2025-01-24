@@ -16,35 +16,16 @@ export class MeComponent implements OnInit{
   newPassword = '';
   showOldPassword = false;
   showNewPassword = false;
-  userNo = '';
 
   constructor(private loginService: LoginService,
               private personService: PersonService,
               private commonService: CommonService) { }
 
   ngOnInit(): void {
-    this.loginService.currentLoginUser().subscribe((response) => {
-      // @ts-ignore
-      if (response.status) {
-        // @ts-ignore
-        const user = response.data;
-        (this.person as any).name = user.username;
-        (this.person as any).username = user.username;
-        (this.person as any).role = user.role;
-        // 根据角色判断显示学号还是工号
-        if (user.role === 1) {
-          // 学生
-          const student = (user as any).student;
-          if (student) {
-            this.userNo = student.sno;
-          }
-        } else if (user.role === 2 || user.role === 3) {
-          // 管理员
-          const admin = (user as any).admin;
-          if (admin) {
-            this.userNo = admin.ano;
-          }
-        }
+    this.loginService.currentLoginUser().subscribe(userResponse => {
+      if (userResponse.status) {
+          this.person.username = userResponse.data.username;
+          this.person.role = userResponse.data.role;
       }
     });
   }

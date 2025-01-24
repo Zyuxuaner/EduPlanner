@@ -21,11 +21,15 @@ export class AddComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const addClazz = this.formGroup.value as { name: string, schoolId: number};
-    this.clazzService.add(addClazz).subscribe(data => {
-      console.log(data);
-      alert('添加成功');
-      this.router.navigate(['/clazz']);
-    });
+    const formValue = this.formGroup.value;
+    const schoolId = formValue.school_id!;
+    const clazz = {
+      name: formValue.clazz!,
+      school: {id: schoolId, name: 'undefined'}
+    } as {name: string; school: {id: number, name: string}
+    };
+    this.clazzService.add(clazz).subscribe(data => {
+          this.router.navigate(['/clazz']);
+        });
   }
 }

@@ -3,17 +3,10 @@
     <div class="col-md-7 offset-md-2">
       <span class="border border-info rounded p-4 bg-light d-block">
         <ul class="list-group list-group-flush w-100">
-          <ng-container [ngSwitch]="person?.user?.role">
-            <li class="list-group-item">姓名：{{ person.user?.username }}</li>
-            <li class="list-group-item">用户名：{{ person.user?.username }}</li>
-            <li class="list-group-item">
-              <ng-container *ngIf="person.user?.role === 1">
-                学号：{{ userNo }}
-              </ng-container>
-              <ng-container *ngIf="person.user?.role === 2 || person.user?.role === 3">
-                工号：{{ userNo }}
-              </ng-container>
-            </li>
+          <ng-container [ngSwitch]="person?.role">
+            <li class="list-group-item">姓名：{{ person.username }}</li>
+            <li class="list-group-item">用户名：{{ person.username }}</li>
+             <li class="list-group-item">学(工)号：{{ person.no }}</li>
             <li *ngSwitchCase="1" class="list-group-item">角色：学生</li>
             <li *ngSwitchCase="2" class="list-group-item">角色：管理员</li>
             <li *ngSwitchCase="3" class="list-group-item">角色：超级管理员</li>
