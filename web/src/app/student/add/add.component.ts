@@ -40,8 +40,6 @@ export class AddComponent implements OnInit {
     };
     this.studentService.add(student).subscribe(data => {
       this.router.navigate(['/student']);
-      console.log('新增成功');
-      console.log(data);
     });
   }
 

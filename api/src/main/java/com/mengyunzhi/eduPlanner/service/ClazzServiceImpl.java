@@ -23,6 +23,11 @@ public class ClazzServiceImpl implements ClazzService {
     }
 
     @Override
+    public List<Clazz> getClazzBySchoolId(Long schoolId) {
+        return clazzRepository.findBySchoolId(schoolId);
+    }
+
+    @Override
     public void save(Clazz clazz) {
         this.clazzRepository.save(clazz);
     }

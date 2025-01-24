@@ -9,4 +9,7 @@ public interface ClazzRepository extends CrudRepository<Clazz,Long> {
     List<Clazz> findClazzBySchoolId(Long schoolId);
     @Override
     List<Clazz> findAll();
+
+    List<Clazz> findBySchoolId(Long schoolId);
+
 }
