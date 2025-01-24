@@ -29,6 +29,8 @@ public class TermServiceImpl implements TermService {
 
     @Override
     public Term save(Term term) {
+        // 新增学期，状态默认为冻结（status = 0）
+        term.setStatus(0L);
         return this.termRepository.save(term);
     }
 
@@ -73,7 +75,7 @@ public class TermServiceImpl implements TermService {
             responseData.setTerm(term);
             responseData.setWeeks(weeks);
 
-            return new Response<>(true, "成功获取学期即周数成功", responseData);
+            return new Response<>(true, "成功获取学期即周数", responseData);
         } else {
             return new Response<>(false, "当前无激活学期", null);
         }

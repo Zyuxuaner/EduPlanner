@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface CourseRepository extends CrudRepository<Course, Long> {
+
     List<Course> findByClazzIdAndType(Long clazzId, Long type);
     List<Course> findByStudentIdAndType(Long studentId, Long type);
 }

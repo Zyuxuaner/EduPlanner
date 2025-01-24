@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface ClazzRepository extends CrudRepository<Clazz,Long> {
+    List<Clazz> findClazzBySchoolId(Long schoolId);
     @Override
     List<Clazz> findAll();
 }
