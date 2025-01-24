@@ -1,13 +1,11 @@
 package com.mengyunzhi.eduPlanner.service;
 
 
-import com.mengyunzhi.eduPlanner.entity.Clazz;
-import com.mengyunzhi.eduPlanner.entity.School;
-import com.mengyunzhi.eduPlanner.entity.Student;
-import com.mengyunzhi.eduPlanner.entity.User;
+import com.mengyunzhi.eduPlanner.entity.*;
 import com.mengyunzhi.eduPlanner.filter.TokenFilter;
 import com.mengyunzhi.eduPlanner.dto.CurrentUser;
 import com.mengyunzhi.eduPlanner.dto.Response;
+import com.mengyunzhi.eduPlanner.repository.AdminRepository;
 import com.mengyunzhi.eduPlanner.repository.StudentRepository;
 import com.mengyunzhi.eduPlanner.repository.UserRepository;
 import org.slf4j.Logger;
@@ -22,19 +20,22 @@ import java.util.Optional;
 @Service
 public class LoginServiceImpl implements LoginService {
     private static final Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
-    private HashMap<String, Long> authTokenUserIdHashMap = new HashMap<>();
+    private final HashMap<String, Long> authTokenUserIdHashMap = new HashMap<>();
 
     private final HttpServletRequest request;
     private final UserRepository userRepository;
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
+    private final AdminRepository adminRepository;
 
     // 使用@Autowired对构造函数进行注解
     @Autowired
     public LoginServiceImpl(UserRepository userRepository,
                             StudentRepository studentRepository,
+                            AdminRepository adminRepository,
                             HttpServletRequest request) {
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
+        this.adminRepository = adminRepository;
         this.request = request;
     }
 
@@ -52,8 +53,7 @@ public class LoginServiceImpl implements LoginService {
         // 认证成功，进行auth-token与userId的绑定 向hashMap中存数据使用put方法 键值对
         logger.info("获取到的auth-token为" + this.request.getHeader(TokenFilter.TOKEN_KEY));
         this.authTokenUserIdHashMap.put(this.request.getHeader(TokenFilter.TOKEN_KEY), user.getId());
-        Response<String> response = new Response<>(true, "登录成功", "null");
-        return response;
+        return new Response<>(true, "登录成功", "null");
     }
 
     @Override
@@ -103,11 +103,17 @@ public class LoginServiceImpl implements LoginService {
             return new Response<>(true, "成功获取用户", userDetails);
         }
 
+        Admin admin = this.adminRepository.findByUserId(userId);
+        String name = admin.getName();
+        String no = admin.getAno();
         CurrentUser userIsAdmin = new CurrentUser(
                 user.get().getId(),
+                name,
                 user.get().getUsername(),
                 user.get().getPassword(),
-                user.get().getRole()
+                user.get().getRole(),
+                null,
+                no
         );
         return new Response<>(true, "成功获取用户admin", userIsAdmin);
     }
