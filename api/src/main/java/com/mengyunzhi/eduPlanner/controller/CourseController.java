@@ -4,6 +4,7 @@ import com.mengyunzhi.eduPlanner.dto.CourseRequest;
 import com.mengyunzhi.eduPlanner.dto.CurrentUser;
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.Course;
+import com.mengyunzhi.eduPlanner.scheduler.DingTalkTask;
 import com.mengyunzhi.eduPlanner.service.CourseService;
 import com.mengyunzhi.eduPlanner.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class CourseController {
     private CourseService courseService;
 
     @Autowired
+    private DingTalkTask dingTalkTask;
+
+    @Autowired
     private LoginService loginService;
 
     @PostMapping("/add")
@@ -33,4 +37,9 @@ public class CourseController {
         this.courseService.save(courseRequest, userId, schoolId);
     }
 
+    @GetMapping("/send-dingtalk-message")
+    public String sendDingTalkMessage() {
+        dingTalkTask.sendMessage();
+        return "DingTalk message sent";
+    }
 }

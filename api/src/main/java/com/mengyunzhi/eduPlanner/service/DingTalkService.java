@@ -1,18 +1,24 @@
 package com.mengyunzhi.eduPlanner.service;
 
-import com.mengyunzhi.eduPlanner.dto.DingTalkRequest;
+import com.mengyunzhi.eduPlanner.dto.DingTalkResponse;
 
 import java.util.List;
-import java.util.Map;
 
 public interface DingTalkService {
     /**
      * 获取明天所有人的课程
      */
-    List<DingTalkRequest> allSchedule();
+    List<DingTalkResponse> allSchedule();
 
     /**
-     * 获取一个学生的课程
+     * 生成Markdown表格
+     * @param schedules 所有学生明日课程安排
+     * @return
      */
-    Map<String, Map<Long, String>> oneSchedule(Long studentId);
+    String generateTable(List<DingTalkResponse> schedules);
+
+    /**
+     * 向webhookUrl发送请求
+     */
+    void sendWebhookRequest(String markdownText);
 }

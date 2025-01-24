@@ -26,7 +26,7 @@ public class Student {
     private User user;
 
     /**
-     *  0：冻结 1：激活
+     *  1：激活 2：冻结
      */
     private Long status;
 }

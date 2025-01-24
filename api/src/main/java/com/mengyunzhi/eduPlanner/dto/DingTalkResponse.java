@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class DingTalkRequest {
+public class DingTalkResponse {
     /**
      * 学生姓名
      */
@@ -17,7 +17,7 @@ public class DingTalkRequest {
      */
     private Map<Long, String> sections;
 
-    public DingTalkRequest(String name, Map<Long, String> sections) {
+    public DingTalkResponse(String name, Map<Long, String> sections) {
         this.name = name;
         this.sections = sections;
     }
