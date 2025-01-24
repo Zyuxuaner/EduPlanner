@@ -22,10 +22,10 @@ export class MeComponent implements OnInit{
               private commonService: CommonService) { }
 
   ngOnInit(): void {
-    this.loginService.currentLoginUser().subscribe(user => {
-      if (user) {
-          this.person.username = user.username;
-          this.person.role = user.role;
+    this.loginService.currentLoginUser().subscribe(userResponse => {
+      if (userResponse.status) {
+          this.person.username = userResponse.data.username;
+          this.person.role = userResponse.data.role;
       }
     });
   }

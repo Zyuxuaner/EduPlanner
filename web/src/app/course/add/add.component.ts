@@ -3,6 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CourseService} from "../../service/course.service";
 import {Router} from "@angular/router";
 import {TermService} from "../../service/term.service";
+import {LoginService} from "../../service/login.service";
+import {data} from "autoprefixer";
 
 @Component({
   selector: 'app-add',
@@ -11,6 +13,7 @@ import {TermService} from "../../service/term.service";
 })
 export class AddComponent implements OnInit{
   weekRange: number[] = [];
+
   // 节次
   sections: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   termName: string = '';
@@ -18,8 +21,8 @@ export class AddComponent implements OnInit{
     name: new FormControl('', Validators.required),
     type: new FormControl(0, Validators.required),
     status: new FormControl(0, Validators.required),
-    start_week: new FormControl(0, Validators.required),
-    end_week: new FormControl(0, Validators.required),
+    startWeek: new FormControl(0, Validators.required),
+    endWeek: new FormControl(0, Validators.required),
     week: new FormControl(0, Validators.required),
     begin: new FormControl(0, Validators.required),
     end: new FormControl(0, Validators.required),
@@ -27,13 +30,13 @@ export class AddComponent implements OnInit{
 
   constructor(private courseService: CourseService,
               private termService: TermService,
+              private loginService: LoginService,
               private router: Router) {
   }
 
   ngOnInit(): void {
-    // 从当前登录用户中获取学校id
-    const schoolId = 1; // 测试数据
-    this.termService.getTermAndWeeks(schoolId).subscribe(res => {
+    const schoolId = 1;
+      this.termService.getTermAndWeeks().subscribe(res => {
       this.termName = res.data.term.name;
       this.weekRange = res.data.weeks;
     });
@@ -71,16 +74,10 @@ export class AddComponent implements OnInit{
   }
 
   onSubmit(): void {
-    const course = this.formGroup.value as { name: string; type: number; status: number; start_week: number; end_week: number; week: number; begin: number; end: number };
+    const course = this.formGroup.value as { name: string; type: number; status: number; startWeek: number; endWeek: number; week: number; begin: number; end: number };
     console.log(course);
     this.courseService.add(course).subscribe(data => {
-      console.log(data);
-      if (data.status) {
-        alert(data.message);
         this.router.navigate(['/course']);
-      } else {
-        alert(data.message);
-      }
     });
   }
 }

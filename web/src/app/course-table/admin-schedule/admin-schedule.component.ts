@@ -71,7 +71,7 @@ export class AdminScheduleComponent implements OnInit{
     this.allWeeks = [];
     this.selectedWeek = null; // 清空选中的周数
 
-    this.termService.getTermAndWeeks(schoolId).subscribe(
+    this.termService.getTermAndWeeksBySchoolId(schoolId).subscribe(
       responseBody => {
         if (!responseBody.status) {
           console.log(responseBody.message);

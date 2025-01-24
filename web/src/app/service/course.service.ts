@@ -15,8 +15,8 @@ export class CourseService {
     name: string;
     type: number;
     status: number;
-    start_week: number;
-    end_week: number;
+    startWeek: number;
+    endWeek: number;
     week: number;
     begin: number;
     end: number
