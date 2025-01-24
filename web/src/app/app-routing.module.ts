@@ -58,6 +58,11 @@ const routes: Routes = [
         path:'courseTable',
         loadChildren: () => import('./course-table/course-table.module').then(m => m.CourseTableModule),
         canActivate: [AuthGuard]
+      },
+      {
+        path:'me',
+        loadChildren: () => import('./me/me.module').then(m => m.MeModule),
+        canActivate: [AuthGuard]
       }
     ]
   }

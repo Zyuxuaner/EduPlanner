@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable, ReplaySubject, tap} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {ResponseBody} from "../entity/response-body";
 import {User} from "../entity/user";
 
@@ -60,8 +60,8 @@ export class LoginService {
     return this.httpClient.get<ResponseBody>(url);
   }
 
-  currentLoginUser(): Observable<User> {
+  currentLoginUser(): Observable<ResponseBody> {
     const url = 'http://localhost:8080/Login/currentLoginUser';
-    return this.httpClient.get<User>(url);
+    return this.httpClient.get<ResponseBody>(url);
   }
 }

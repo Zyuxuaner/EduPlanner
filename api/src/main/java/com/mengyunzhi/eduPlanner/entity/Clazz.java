@@ -16,10 +16,14 @@ public class Clazz {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "school_id", referencedColumnName = "id")
     private School school;
 
     public Clazz() {}
 
-    public Clazz(Long clazzId) {}
+    public Clazz(Long clazzId, School school) {
+        this.id = clazzId;
+        this.school = school;
+    }
 
 }

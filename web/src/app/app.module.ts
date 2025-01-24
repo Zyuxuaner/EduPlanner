@@ -23,6 +23,7 @@ import {CourseTableModule} from "./course-table/course-table.module";
 import { LoginComponent } from './login/login.component';
 import {AuthTokenInterceptorModule} from "./core/interceptor/auth-token-interceptor.module";
 import {CourseModule} from "./course/course.module";
+import {MeModule} from "./me/me.module";
 
 registerLocaleData(zh);
 
@@ -50,7 +51,8 @@ registerLocaleData(zh);
     CourseTableModule,
     ReactiveFormsModule,
     CourseModule,
-    ClazzSelectModule
+    ClazzSelectModule,
+    MeModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN }

@@ -1,16 +1,18 @@
 package com.mengyunzhi.eduPlanner.controller;
 
 import com.mengyunzhi.eduPlanner.dto.CourseRequest;
+import com.mengyunzhi.eduPlanner.dto.CourseResponse;
 import com.mengyunzhi.eduPlanner.dto.CurrentUser;
 import com.mengyunzhi.eduPlanner.dto.Response;
-import com.mengyunzhi.eduPlanner.entity.Course;
-import com.mengyunzhi.eduPlanner.scheduler.DingTalkTask;
+import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.service.CourseService;
 import com.mengyunzhi.eduPlanner.service.LoginService;
+import com.mengyunzhi.eduPlanner.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -18,28 +20,42 @@ import java.util.logging.Logger;
 public class CourseController {
     private final static Logger logger = Logger.getLogger(CourseController.class.getName());
 
-    @Autowired
-    private CourseService courseService;
+    private final CourseService courseService;
+    private final LoginService loginService;
+    private final StudentService studentService;
 
     @Autowired
-    private DingTalkTask dingTalkTask;
+    public CourseController(LoginService loginService, CourseService courseService, StudentService studentService) {
+        this.loginService = loginService;
+        this.courseService = courseService;
+        this.studentService = studentService;
+    }
 
-    @Autowired
-    private LoginService loginService;
+
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public void add(@RequestBody CourseRequest courseRequest) {
-        Response<CurrentUser> currentUser = this.loginService.getCurrentLoginUser();
+        Response<CurrentUser> currentUser = loginService.getCurrentLoginUser();
+        logger.info("currentUser:" + currentUser);
         Long userId = currentUser.getData().getId();
         Long schoolId = currentUser.getData().getSchoolId();
 
-        this.courseService.save(courseRequest, userId, schoolId);
+        courseService.save(courseRequest, userId, schoolId);
     }
 
-    @GetMapping("/send-dingtalk-message")
-    public String sendDingTalkMessage() {
-        dingTalkTask.sendMessage();
-        return "DingTalk message sent";
+    /**
+     * 根据当前登录用户的 clazzId 和 studentId 获取有关该用户的全部课程
+     * @return List<CourseResponse>
+     */
+    @GetMapping("/getAll")
+    public List<CourseResponse> getAllCoursesForCurrentUser() {
+        Response<CurrentUser> currentUser = loginService.getCurrentLoginUser();
+        logger.info("currentUser:" + currentUser);
+        Long userId = currentUser.getData().getId();
+        Student student = studentService.findByUserId(userId);
+        Long studentId = student.getId();
+        Long clazzId = student.getClazz().getId();
+        return courseService.getAllCoursesForCurrentUser(clazzId, studentId);
     }
 }
