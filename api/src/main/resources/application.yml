@@ -11,3 +11,8 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+
+#钉钉机器人推送
+dingtalk:
+  robot:
+    url: "https://oapi.dingtalk.com/robot/send?access_token=8a5ca24b22b8078cd8bff2d69df2c5dc67764986961248301a625e9ffe900323"
