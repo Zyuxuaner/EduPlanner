@@ -60,8 +60,8 @@ export class LoginService {
     return this.httpClient.get<ResponseBody>(url);
   }
 
-  currentLoginUser(): Observable<User> {
+  currentLoginUser(): Observable<ResponseBody> {
     const url = 'http://localhost:8080/Login/currentLoginUser';
-    return this.httpClient.get<User>(url);
+    return this.httpClient.get<ResponseBody>(url);
   }
 }

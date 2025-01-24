@@ -50,7 +50,7 @@
             <label class="col-sm-2 col-form-label">开始周</label>
             <div class="col-sm-10">
               <nz-select nzAllowClear nzPlaceHolder="选择开始周"
-                         formControlName="start_week">
+                         formControlName="startWeek">
                 <nz-option *ngFor="let week of weekRange"
                            [nzValue]="week" [nzLabel]="'第' + week + '周'"
                            [nzDisabled]="isWeekDisabled(week)">
@@ -58,16 +58,16 @@
                 </nz-option>
               </nz-select>
               <div class="text-danger mt-1"
-                   *ngIf="formGroup.get('start_week')?.invalid">
+                   *ngIf="formGroup.get('startWeek')?.invalid">
                 必须选择开始周
               </div>
             </div>
           </div>
-          <div *ngIf="formGroup.get('start_week')?.value" class="mb-3 row">
+          <div *ngIf="formGroup.get('startWeek')?.value" class="mb-3 row">
             <label class="col-sm-2 col-form-label">结束周</label>
             <div class="col-sm-10">
               <nz-select nzAllowClear nzPlaceHolder="选择结束周"
-                         formControlName="end_week">
+                         formControlName="endWeek">
                 <nz-option *ngFor="let week of weekRange"
                            [nzValue]="week" [nzLabel]="'第' + week + '周'"
                            [nzDisabled]="isWeekDisabled(week) || disableEndWeek(week)">
@@ -76,7 +76,7 @@
               </nz-select>
             </div>
           </div>
-          <div *ngIf="formGroup.get('end_week')?.value" class="mb-3 row mt-1">
+          <div *ngIf="formGroup.get('endWeek')?.value" class="mb-3 row mt-1">
             <label for="school_id" class="col-sm-2 col-form-label" id="school_id">星期</label>
             <div class="col-sm-10">
               <nz-select nzAllowClear  nzPlaceHolder="选择星期"
