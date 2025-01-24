@@ -30,4 +30,11 @@ public interface LoginService {
      * @return 当前登录用户，用户未登录则返回null
      */
     Response<CurrentUser> getCurrentLoginUser();
+
+    /**
+     * 判断用户是否登录
+     * @param token
+     * @return
+     */
+    boolean isLogin(String token);
 }
