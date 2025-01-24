@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MeComponent } from './me.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {Admin} from "../entity/admin";
 import {FormsModule} from "@angular/forms";
 
 describe('MeComponent', () => {

@@ -1,59 +1,68 @@
-<div class="d-flex justify-content-center mt-5 ">
-  <ul class="list-group list-group-flush w-25 border border-info p-3" [ngSwitch]="person?.role">
-    <li class="list-group-item">姓名：{{ person.name }}</li>
-    <li class="list-group-item">用户名：{{ person.username }}</li>
-    <li class="list-group-item">学(工)号：{{ person.no }}</li>
-    <li *ngSwitchCase="3" class="list-group-item">角色：超级管理员</li>
-    <li *ngSwitchCase="2" class="list-group-item">角色：管理员</li>
-    <li *ngSwitchCase="1" class="list-group-item">角色：学生</li>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-pencil" aria-hidden="true"></i>修改密码</button>
+<div class="container vh-100 d-flex" style="margin-top: 75px;">
+  <div class="row w-100">
+    <div class="col-md-7 offset-md-2">
+      <span class="border border-info rounded p-4 bg-light d-block">
+        <ul class="list-group list-group-flush w-100">
+          <ng-container [ngSwitch]="person?.role">
+            <li class="list-group-item">姓名：{{ person.username }}</li>
+            <li class="list-group-item">用户名：{{ person.username }}</li>
+             <li class="list-group-item">学(工)号：{{ person.no }}</li>
+            <li *ngSwitchCase="1" class="list-group-item">角色：学生</li>
+            <li *ngSwitchCase="2" class="list-group-item">角色：管理员</li>
+            <li *ngSwitchCase="3" class="list-group-item">角色：超级管理员</li>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-pencil" aria-hidden="true"></i>修改密码</button>
+          </ng-container>
+        </ul>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">修改密码</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="oldPassword" class="col-form-label">旧密码:</label>
-                <input class="form-control"
-                       [(ngModel)]="oldPassword"
-                       id="oldPassword"
-                       name="oldPassword"
-                       [type]="showOldPassword ? 'text' : 'password'">
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">修改密码</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
-              <div class="form-group position-relative">
-                <label for="newPassword" class="col-form-label">新密码:</label>
-                <input class="form-control"
-                       [(ngModel)]="newPassword"
-                       id="newPassword"
-                       name="newPassword"
-                       [type]="showNewPassword ? 'text' : 'password'"
-                       style="padding-right: 2.5rem;">
-                <span
-                  class="position-absolute"
-                  style="top: 70%; right: 0.75rem; cursor: pointer; transform: translateY(-50%); font-size: 1.2rem;"
-                  (click)="togglePasswordVisibility()">
-                  <!-- 使用直接的条件绑定来切换图标 -->
-                <i class="fa-solid" [ngClass]="{ 'fa-eye': !showNewPassword, 'fa-eye-slash': showNewPassword }"></i>
-                </span>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="oldPassword" class="col-form-label">旧密码:</label>
+                    <input class="form-control"
+                           [(ngModel)]="oldPassword"
+                           id="oldPassword"
+                           name="oldPassword"
+                           [type]="showOldPassword ? 'text' : 'password'">
+                  </div>
+                  <div class="form-group position-relative">
+                    <label for="newPassword" class="col-form-label">新密码:</label>
+                    <input class="form-control"
+                           [(ngModel)]="newPassword"
+                           id="newPassword"
+                           name="newPassword"
+                           [type]="showNewPassword ? 'text' : 'password'"
+                           style="padding-right: 2.5rem;">
+                    <span
+                      class="position-absolute"
+                      style="top: 70%; right: 0.75rem; cursor: pointer; transform: translateY(-50%); font-size: 1.2rem;"
+                      (click)="togglePasswordVisibility()">
+                      <!-- 使用直接的条件绑定来切换图标 -->
+                    <i class="fa-solid" [ngClass]="{ 'fa-eye': !showNewPassword, 'fa-eye-slash': showNewPassword }"></i>
+                    </span>
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary"
-                    (click)="changePassword()"
-                    [disabled]="newPassword === '' || oldPassword === ''">提交
-            </button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-          </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary"
+                        (click)="changePassword()"
+                        [disabled]="newPassword === '' || oldPassword === ''">提交
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              </div>
         </div>
       </div>
+        </div>
+      </span>
     </div>
-  </ul>
+  </div>
 </div>
