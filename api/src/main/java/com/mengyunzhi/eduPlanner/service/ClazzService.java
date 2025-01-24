@@ -15,6 +15,13 @@ public interface ClazzService {
     List<Clazz> getAll();
 
     /**
+     *
+     * @param schoolId
+     * @return 根据学校返回所属的班级
+     */
+    List<Clazz> getClazzBySchoolId(Long schoolId);
+
+    /**
      * 新增
      *
      * @param clazz 班级

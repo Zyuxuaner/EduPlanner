@@ -23,9 +23,12 @@ export class MeComponent implements OnInit{
 
   ngOnInit(): void {
     this.loginService.currentLoginUser().subscribe(userResponse => {
+      console.log(userResponse,1);
       if (userResponse.status) {
+          this.person.name = userResponse.data.name;
           this.person.username = userResponse.data.username;
           this.person.role = userResponse.data.role;
+          this.person.no = userResponse.data.no;
       }
     });
   }

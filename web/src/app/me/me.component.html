@@ -3,8 +3,8 @@
     <div class="col-md-7 offset-md-2">
       <span class="border border-info rounded p-4 bg-light d-block">
         <ul class="list-group list-group-flush w-100">
-          <ng-container [ngSwitch]="person?.role">
-            <li class="list-group-item">姓名：{{ person.username }}</li>
+          <ng-container [ngSwitch]="person.role">
+            <li class="list-group-item">姓名：{{ person.name }}</li>
             <li class="list-group-item">用户名：{{ person.username }}</li>
              <li class="list-group-item">学(工)号：{{ person.no }}</li>
             <li *ngSwitchCase="1" class="list-group-item">角色：学生</li>

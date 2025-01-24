@@ -33,6 +33,7 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
 
   constructor(private clazzService: ClazzService,) {
   }
+
   getAllClazzBySchoolId(schoolId: number) {
     this.clazzService.getAllClazzBySchoolId(schoolId).subscribe(clazzes => {
       this.clazzIdControl.setValue(null); // 清空选择器中的值

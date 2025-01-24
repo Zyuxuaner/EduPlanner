@@ -88,14 +88,18 @@ public class LoginServiceImpl implements LoginService {
         if (role == 1) {
             Student student = this.studentRepository.findByUserId(userId);
             Clazz clazz = student.getClazz();
+            String name = student.getName();
+            String no = student.getSno();
             School school = clazz.getSchool();
             Long schoolId = school.getId();
             CurrentUser userDetails = new CurrentUser(
                     user.get().getId(),
+                    name,
                     user.get().getUsername(),
                     user.get().getPassword(),
                     user.get().getRole(),
-                    schoolId);
+                    schoolId,
+                    no);
             return new Response<>(true, "成功获取用户", userDetails);
         }
 

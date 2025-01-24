@@ -24,6 +24,11 @@ public class ClazzController {
         return this.clazzService.getAll();
     }
 
+    @GetMapping("/getClazzBySchoolId/{schoolId}")
+    public List<Clazz> getClazzBySchoolId(@PathVariable Long schoolId) {
+        return this.clazzService.getClazzBySchoolId(schoolId);
+    }
+
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody Clazz clazz) {

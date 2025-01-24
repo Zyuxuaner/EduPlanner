@@ -8,4 +8,7 @@ import java.util.List;
 public interface ClazzRepository extends CrudRepository<Clazz,Long> {
     @Override
     List<Clazz> findAll();
+
+    List<Clazz> findBySchoolId(Long schoolId);
+
 }
