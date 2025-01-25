@@ -10,4 +10,6 @@ public interface SchoolRepository extends CrudRepository<School, Long> {
 
     @Override
     List<School> findAll();
+
+    boolean existsByName(String name);
 }

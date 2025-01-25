@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.service;
 
+import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.Clazz;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +27,5 @@ public interface ClazzService {
      *
      * @param clazz 班级
      */
-    void save(Clazz clazz);
-
-
-
-
+    Response<Void> save(Clazz clazz);
 }

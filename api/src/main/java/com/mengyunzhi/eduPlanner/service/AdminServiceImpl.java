@@ -1,6 +1,7 @@
 package com.mengyunzhi.eduPlanner.service;
 
 import com.mengyunzhi.eduPlanner.dto.AdminRequest;
+import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.Admin;
 import com.mengyunzhi.eduPlanner.entity.User;
 import com.mengyunzhi.eduPlanner.repository.AdminRepository;
@@ -31,8 +32,12 @@ public class AdminServiceImpl implements AdminService {
     private AdminValidator adminValidator;
 
     @Override
-    public Admin save(AdminRequest adminRequest) {
+    public Response<Void> save(AdminRequest adminRequest) {
 //        adminValidator.validateAno(adminRequest.getAno().toString());
+
+        if (adminRepository.existsByAno(adminRequest.getAno())) {
+            return new Response<>(false, "该工号已存在", null);
+        }
         // 创建 User 对象
         User user = new User();
         user.setUsername(adminRequest.getUsername());
@@ -46,7 +51,8 @@ public class AdminServiceImpl implements AdminService {
         admin.setAno(adminRequest.getAno());
         admin.setUser(user);
 
-        return adminRepository.save(admin);
+        adminRepository.save(admin);
+        return new Response<>(true, "新增成功", null);
     }
 
     @Override

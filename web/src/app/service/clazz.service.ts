@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Clazz} from "../entity/clazz";
 import {School} from "../entity/school";
+import {ResponseBody} from "../entity/response-body";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class ClazzService {
 
   constructor(private httpClient: HttpClient) { }
 
-  add(clazz: {name: string, school: School}): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/add`, clazz);
+  add(clazz: {name: string, school: School}): Observable<ResponseBody> {
+    return this.httpClient.post<ResponseBody>(`${this.baseUrl}/add`, clazz);
   }
 
   getAll(): Observable<Clazz[]> {

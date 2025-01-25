@@ -1,6 +1,7 @@
 package com.mengyunzhi.eduPlanner.service;
 
 
+import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.dto.StudentRequest;
 import com.mengyunzhi.eduPlanner.entity.Student;
 
@@ -13,7 +14,7 @@ public interface StudentService {
      * @param studentRequest 从前台传过来的数据类型
      * @return
      */
-    Student save(StudentRequest studentRequest);
+    Response<Void> save(StudentRequest studentRequest);
 
     /**
      * 获取所有学生

@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.service;
 
+import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.dto.StudentRequest;
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.User;
@@ -26,7 +27,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student save(StudentRequest studentRequest) {
+    public Response<Void> save(StudentRequest studentRequest) {
+        if (studentRepository.existsBySno(studentRequest.getSno())) {
+            return new Response<>(false, "该学号已存在", null);
+        }
+
         Long role = 1L;
         Long status = 1L;
         User user = new User();
@@ -43,7 +48,8 @@ public class StudentServiceImpl implements StudentService {
         student.setClazz(studentRequest.getClazz());
         student.setUser(user);
 
-        return this.studentRepository.save(student);
+        this.studentRepository.save(student);
+        return new Response<>(true, "新增成功", null);
     }
 
     @Override

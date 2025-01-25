@@ -1,6 +1,7 @@
 package com.mengyunzhi.eduPlanner.controller;
 
 import com.mengyunzhi.eduPlanner.dto.AdminRequest;
+import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.Admin;
 import com.mengyunzhi.eduPlanner.entity.Term;
 import com.mengyunzhi.eduPlanner.service.AdminService;
@@ -25,8 +26,8 @@ public class AdminController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody AdminRequest adminRequest) {
-        this.adminService.save(adminRequest);
+    public Response<Void> add(@RequestBody AdminRequest adminRequest) {
+        return this.adminService.save(adminRequest);
     }
 
     @GetMapping("/getAll")
