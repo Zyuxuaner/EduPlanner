@@ -9,16 +9,16 @@ import {LoginService} from "./login.service";
 })
 export class CacheService {
   // 认证令牌
-  private static authToken: string | null = localStorage.getItem('authToken');
+  private static authToken: string | null = sessionStorage.getItem('authToken');
 
   constructor() { }
 
   static setAuthToken(token: string | null) {
     CacheService.authToken = token;
     if (token !== null) {
-      localStorage.setItem('authToken', token);
+      sessionStorage.setItem('authToken', token);
     } else {
-      localStorage.removeItem('authToken');
+      sessionStorage.removeItem('authToken');
     }
   }
 
