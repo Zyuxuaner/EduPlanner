@@ -105,17 +105,21 @@ public class TermServiceImpl implements TermService {
     @Override
     public void updateStatus(Long id, Long status) {
         Optional<Term> termOptional = termRepository.findById(id);
-
-        // 检查是否找到了对应的学期记录
         if (termOptional.isPresent()) {
-            // 获取找到的学期记录
             Term term = termOptional.get();
-            // 更新学期记录的状态
             term.setStatus(status);
-            // 保存更新后的学期记录
+            if (status == 1) {
+                // 当激活一个学期时，将其他激活的学期冻结
+                List<Term> activeTerms = termRepository.findAllByStatus(1L);
+                for (Term activeTerm : activeTerms) {
+                    if (!activeTerm.getId().equals(id)) {
+                        activeTerm.setStatus(0L);
+                        termRepository.save(activeTerm);
+                    }
+                }
+            }
             termRepository.save(term);
         } else {
-            // 若未找到对应的学期记录，抛出运行时异常
             throw new RuntimeException("学期不存在");
         }
     }

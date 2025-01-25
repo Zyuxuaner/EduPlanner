@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Term} from '../entity/term';
 import {TermService} from "../service/term.service";
+import {CommonService} from "../service/common.service";
 
 @Component({
   selector: 'app-term',
@@ -10,7 +11,7 @@ import {TermService} from "../service/term.service";
 export class TermComponent implements OnInit {
   terms: Term[] = [];
 
-  constructor(private termService: TermService) {
+  constructor(private termService: TermService,private commonService: CommonService) {
   }
 
   ngOnInit() {
@@ -40,6 +41,13 @@ export class TermComponent implements OnInit {
   updateStatus(id: number, status: number): void {
     this.termService.updateStatus(id, status).subscribe(() => {
       this.getAll();
+      if (status === 1) {
+        this.commonService.showSuccessAlert('该学期已激活，其他学期已自动冻结。');
+      } else {
+        this.commonService.showSuccessAlert('该学期已冻结。');
+      }
+    }, error => {
+      this.commonService.showErrorAlert('更新状态失败，请稍后重试。');
     });
   }
 }
