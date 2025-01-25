@@ -16,7 +16,7 @@ export class LoginService {
 
   private isLoginCacheKey = 'isLogin';
   constructor(private httpClient: HttpClient) {
-    const isLogin: string | null = window.localStorage.getItem(this.isLoginCacheKey);
+    const isLogin: string | null = window.sessionStorage.getItem(this.isLoginCacheKey);
     this.isLogin = new BehaviorSubject(this.convertStringToBoolean(isLogin));
     this.isLogin$ = this.isLogin.asObservable();
   }
@@ -31,8 +31,8 @@ export class LoginService {
    * @param isLogin
    */
   setIsLogin(isLogin: boolean) {
-    // localStorage只能存储string类型，所以将isLogin转换为字符串'0','1'进行存储
-    window.localStorage.setItem(this.isLoginCacheKey, this.convertBooleanToString(isLogin));
+    // sessionStorage只能存储string类型，所以将isLogin转换为字符串'0','1'进行存储
+    window.sessionStorage.setItem(this.isLoginCacheKey, this.convertBooleanToString(isLogin));
     // 接收到新的登录状态时，向所有的订阅者们发送最新的登录状态的值
     this.isLogin.next(isLogin);
   }

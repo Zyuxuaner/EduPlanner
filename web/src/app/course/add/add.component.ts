@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {TermService} from "../../service/term.service";
 import {LoginService} from "../../service/login.service";
 import {data} from "autoprefixer";
+import {CommonService} from "../../service/common.service";
 
 @Component({
   selector: 'app-add',
@@ -31,7 +32,8 @@ export class AddComponent implements OnInit{
   constructor(private courseService: CourseService,
               private termService: TermService,
               private loginService: LoginService,
-              private router: Router) {
+              private router: Router,
+              private commonService: CommonService) {
   }
 
   ngOnInit(): void {
@@ -77,7 +79,12 @@ export class AddComponent implements OnInit{
     const course = this.formGroup.value as { name: string; type: number; status: number; startWeek: number; endWeek: number; week: number; begin: number; end: number };
     console.log(course);
     this.courseService.add(course).subscribe(data => {
+      if (data.status) {
+        this.commonService.showSuccessAlert(data.message);
         this.router.navigate(['/course']);
+      } else {
+        this.commonService.showErrorAlert(data.message);
+      }
     });
   }
 }

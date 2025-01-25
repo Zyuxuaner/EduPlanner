@@ -8,8 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.Date;
 import java.util.List;
 
-import java.util.List;
-
 public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
     CourseInfo findByCourseId(Long courseId);
 

@@ -1,16 +1,16 @@
 package com.mengyunzhi.eduPlanner.service;
 
 import com.mengyunzhi.eduPlanner.dto.CourseDto;
+import com.mengyunzhi.eduPlanner.dto.CurrentUser;
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.*;
 import com.mengyunzhi.eduPlanner.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CourseServiceImpl implements CourseService{
@@ -28,6 +28,20 @@ public class CourseServiceImpl implements CourseService{
 
     @Autowired
     private CourseInfoRepository courseInfoRepository;
+
+    @Autowired
+    private LoginService loginService;
+
+    private CourseInfo saveCourseInfo(CourseDto.SaveRequest saveRequest) {
+        CourseInfo courseInfo = new CourseInfo();
+        courseInfo.setStartWeek(saveRequest.getStartWeek());
+        courseInfo.setEndWeek(saveRequest.getEndWeek());
+        courseInfo.setType(saveRequest.getStatus());
+        courseInfo.setDay(saveRequest.getWeek());
+        courseInfo.setBegin(saveRequest.getBegin());
+        courseInfo.setLength(saveRequest.getEnd() - saveRequest.getBegin() + 1);
+        return courseInfo;
+    }
 
     @Override
     public Course save(CourseDto.SaveRequest saveRequest, Long userId, Long schoolId) {
@@ -50,19 +64,25 @@ public class CourseServiceImpl implements CourseService{
         course.setTerm(activeTerm);
         course.setClazz(new Clazz(clazzId, school));
         course.setStudentId(studentId);
-        Course savedCourse = courseRepository.save(course);
-
-        CourseInfo courseInfo = new CourseInfo();
-        courseInfo.setStartWeek(saveRequest.getStartWeek());
-        courseInfo.setEndWeek(saveRequest.getEndWeek());
-        courseInfo.setType(saveRequest.getStatus());
-        courseInfo.setDay(saveRequest.getWeek());
-        courseInfo.setBegin(saveRequest.getBegin());
-        courseInfo.setLength(saveRequest.getEnd() - saveRequest.getBegin() + 1);
-        courseInfo.setCourse(savedCourse);
-        courseInfoRepository.save(courseInfo);
-
-        return savedCourse;
+        Course isExistCourse = courseRepository.findByNameAndTypeAndTermIdAndClazzIdAndStudentId(
+                saveRequest.getName(),
+                saveRequest.getType(),
+                activeTerm.getId(),
+                clazzId,
+                studentId
+        );
+        if (isExistCourse != null) {
+            CourseInfo courseInfo = saveCourseInfo(saveRequest);
+            courseInfo.setCourse(isExistCourse);
+            courseInfoRepository.save(courseInfo);
+            return isExistCourse;
+        } else {
+            Course savedCourse = courseRepository.save(course);
+            CourseInfo courseInfo = saveCourseInfo(saveRequest);
+            courseInfo.setCourse(savedCourse);
+            courseInfoRepository.save(courseInfo);
+            return savedCourse;
+        }
     }
 
     /**
@@ -216,5 +236,85 @@ public class CourseServiceImpl implements CourseService{
             }
         }
         return result;
+    }
+
+    @Override
+    public Long getTermIdByLoginUser(Response<CurrentUser> currentUser) {
+        Long schoolId = currentUser.getData().getSchoolId();
+        Optional<Term> term = this.termRepository.findBySchoolIdAndStatus(schoolId, 1L);
+        Long termId = term.get().getId();
+        return termId;
+    }
+
+    @Override
+    public Long getClassIdByLoginUser(Response<CurrentUser> currentUser) {
+        Long userId = currentUser.getData().getId();
+        Student student = this.studentRepository.findByUserId(userId);
+        return student.getClazz().getId();
+    }
+
+    @Override
+    public boolean isTimeLegal(CourseDto.SaveRequest saveRequest) {
+        Response<CurrentUser> currentUser = this.loginService.getCurrentLoginUser();
+
+        Long termId = this.getTermIdByLoginUser(currentUser);
+        Long clazzId = this.getClassIdByLoginUser(currentUser);
+
+        // courseRequest对应的courseInfo
+        CourseInfo courseInfoRequest = saveCourseInfo(saveRequest);
+
+        // 查询所有相关课程
+        List<Course> courses = this.courseRepository.findByTermIdAndClazzId(termId, clazzId);
+
+        for (Course existingCourse : courses) {
+            // 获取已经存在的course对应的courseInfos
+            Long courseId = existingCourse.getId();
+            List<CourseInfo> courseInfos = this.courseInfoRepository.findAllByCourseId(courseId);
+            for (CourseInfo existingCourseInfo : courseInfos) {
+                if (isTimeConflict(courseInfoRequest, existingCourseInfo)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isTimeConflict(CourseInfo newCourseInfo, CourseInfo existingCourseInfo) {
+        Set<Long> newWeeks = getWeeksInRange(newCourseInfo.getStartWeek(), newCourseInfo.getEndWeek(), newCourseInfo.getType());
+        Set<Long> existingWeeks = getWeeksInRange(existingCourseInfo.getStartWeek(), existingCourseInfo.getEndWeek(), newCourseInfo.getType());
+
+        if (newCourseInfo.getDay().equals(existingCourseInfo.getDay())) {
+            // 合法情况：新课程的开始时间大于旧课程的结束时间 && 新课程的结束时间小于旧课程的开时间
+            if (newCourseInfo.getBegin() < existingCourseInfo.getBegin() + existingCourseInfo.getLength() &&
+                    newCourseInfo.getBegin() + newCourseInfo.getLength() > existingCourseInfo.getBegin()) {
+                // 时间不合法，再检查周数是否重叠
+                for (Long newWeek : newWeeks) {
+                    if (existingWeeks.contains(newWeek)) {
+                        // 如果周数有重叠，有时间冲突，返回true
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public Set<Long> getWeeksInRange(Long startWeek, Long endWeek, Long type) {
+        Set<Long> weeks = new HashSet<>();
+
+        for (long week = startWeek; week <= endWeek; week++) {
+            if (type == 1 && week % 2 != 0) {
+                weeks.add(week);
+            } else if (type == 2 && week % 2 == 0) {
+                weeks.add(week);
+            } else if (type == 3) {
+                weeks.add(week);
+            }
+        }
+
+        return weeks;
     }
 }
