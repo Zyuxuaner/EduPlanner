@@ -20,7 +20,7 @@ import java.util.Optional;
 public class TermServiceImpl implements TermService {
     private final static Logger logger = LoggerFactory.getLogger(TermServiceImpl.class);
 
-    private TermRepository termRepository;
+    private final TermRepository termRepository;
 
     @Autowired
     private TermServiceImpl(TermRepository termRepository) {
@@ -100,5 +100,23 @@ public class TermServiceImpl implements TermService {
         }
 
         return responseList;
+    }
+
+    @Override
+    public void updateStatus(Long id, Long status) {
+        Optional<Term> termOptional = termRepository.findById(id);
+
+        // 检查是否找到了对应的学期记录
+        if (termOptional.isPresent()) {
+            // 获取找到的学期记录
+            Term term = termOptional.get();
+            // 更新学期记录的状态
+            term.setStatus(status);
+            // 保存更新后的学期记录
+            termRepository.save(term);
+        } else {
+            // 若未找到对应的学期记录，抛出运行时异常
+            throw new RuntimeException("学期不存在");
+        }
     }
 }

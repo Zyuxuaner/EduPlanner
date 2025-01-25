@@ -77,7 +77,10 @@ public class TermController {
         } else {
             return new Response<>(false, "当前无学校存在激活学期", responsesData);
         }
+    }
 
-
+    @PutMapping("/{id}/status")
+    public void updateStatus(@PathVariable Long id, @RequestBody Term term) {
+        termService.updateStatus(id, term.getStatus());
     }
 }

@@ -39,4 +39,8 @@ export class TermService {
   getTermAndWeeksBySchoolId(schoolId: number): Observable<ResponseBody> {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getTermAndWeeksBySchoolId/${schoolId}`);
   }
+
+  updateStatus(id: number, status: number): Observable<void> {
+    return this.httpClient.put<void>(`${this.baseUrl}/${id}/status`, { status });
+  }
 }

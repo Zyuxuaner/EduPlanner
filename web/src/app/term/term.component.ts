@@ -30,5 +30,16 @@ export class TermComponent implements OnInit {
   }
 
   onActive(id: number): void {
+    this.updateStatus(id, 1);
+  }
+
+  onFreeze(id: number): void {
+    this.updateStatus(id, 0);
+  }
+
+  updateStatus(id: number, status: number): void {
+    this.termService.updateStatus(id, status).subscribe(() => {
+      this.getAll();
+    });
   }
 }

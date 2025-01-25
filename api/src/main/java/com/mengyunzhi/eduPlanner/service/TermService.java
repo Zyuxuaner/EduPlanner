@@ -42,4 +42,11 @@ public interface TermService {
      * @return SchoolIdAndStartTimeResponse数组
      */
     List<TermDto.SchoolIdAndStartTimeResponse> getSchoolIdAndStartTime ();
+
+    /**
+     *
+     * @param id
+     * @param status
+     */
+    void updateStatus(Long id, Long status);
 }

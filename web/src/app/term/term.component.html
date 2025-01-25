@@ -35,6 +35,9 @@
         <span *ngIf="term.status === 0" class="btn btn-sm btn-outline-success" (click)="onActive(term.id)">
           <i class="fa fa-refresh" aria-hidden="true"></i>激活
         </span>
+        <span *ngIf="term.status === 1" class="btn btn-sm btn-outline-warning" (click)="onFreeze(term.id)">
+            <i class="fa fa-lock" aria-hidden="true"></i>冻结
+          </span>
       </td>
     </tr>
     </tbody>
