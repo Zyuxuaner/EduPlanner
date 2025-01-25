@@ -34,4 +34,9 @@ public class AdminController {
     public List<Admin> getAll() {
         return this.adminService.getAll();
     }
+
+    @DeleteMapping("delete/{id}")
+    public Response<Void> delete(@PathVariable Long id) {
+        return this.adminService.delete(id);
+    }
 }

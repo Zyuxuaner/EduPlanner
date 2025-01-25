@@ -32,13 +32,13 @@
       <td>{{ admin.ano}}</td>
       <td>{{ getRoleName(admin.user.role) }}</td>
       <td>
-        <a class="btn btn-outline-primary btn-sm" *ngIf="admin.user.role !== 1">
+        <a class="btn btn-outline-primary btn-sm" *ngIf="admin.user.role !== 3">
           <i class="fa fa-pen"></i>编辑
         </a>
-        <span class="btn btn-outline-success btn-sm" *ngIf="admin.user.role !== 1">
+        <span class="btn btn-outline-success btn-sm" *ngIf="admin.user.role !== 3">
           <i class="fa fa-refresh"></i>重置密码
         </span>
-        <span class="btn btn-outline-danger btn-sm" *ngIf="admin.user.role !== 1">
+        <span class="btn btn-outline-danger btn-sm" *ngIf="admin.user.role !== 3" (click)="onDelete(admin.id)">
           <i class="far fa-trash-alt"></i>删除
         </span>
       </td>

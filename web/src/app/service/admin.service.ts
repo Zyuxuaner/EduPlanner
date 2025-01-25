@@ -18,5 +18,9 @@ export class AdminService {
 
   getAll(): Observable<Admin[]> {
     return this.httpClient.get<Admin[]>(`${this.baseUrl}/getAll`);
-    }
+  }
+
+  delete(id: number): Observable<ResponseBody> {
+    return this.httpClient.delete<ResponseBody>(`${this.baseUrl}/delete/${id}`);
+  }
 }
