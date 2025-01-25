@@ -45,4 +45,8 @@ export class CourseService {
 
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getAllCourseInfo`, {params});
   }
+
+  getCourseInfoByStudent(week: number): Observable<ResponseBody> {
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getCourseInfoByStudent`, {params: {week: week.toString()}});
+  }
 }

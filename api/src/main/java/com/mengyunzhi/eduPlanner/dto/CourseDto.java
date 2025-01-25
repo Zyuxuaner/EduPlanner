@@ -57,6 +57,21 @@ public class CourseDto {
         private List<String> students;
     }
 
+    /**
+     * 当前登录学生的，确定周数的课程安排
+     * week 周几
+     * begin 开始的小节
+     * length 持续几节
+     * name 课程名称
+     */
+    @Data
+    public static class StudentCourseInfoResponse {
+        private Long week;
+        private Long begin;
+        private Long length;
+        private String name;
+    }
+
     @Data
     public static class SchoolWeekRequest {
         private Long schoolId;
