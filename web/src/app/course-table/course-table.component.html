@@ -1,3 +1,6 @@
 <ng-container *ngIf="person.role !== 1">
   <app-admin-schedule></app-admin-schedule>
 </ng-container>
+<ng-container *ngIf="person.role === 1">
+  <app-student-schedule></app-student-schedule>
+</ng-container>

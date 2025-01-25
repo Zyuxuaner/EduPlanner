@@ -7,10 +7,11 @@ import { AdminScheduleComponent } from './admin-schedule/admin-schedule.componen
 import {SchoolSelectModule} from "../core/school-select/school-select.module";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {FormsModule} from "@angular/forms";
+import { StudentScheduleComponent } from './student-schedule/student-schedule.component';
 
 
 @NgModule({
-  declarations: [CourseTableComponent, AdminScheduleComponent],
+  declarations: [CourseTableComponent, AdminScheduleComponent, StudentScheduleComponent],
   imports: [
     CommonModule,
     CourseTableRoutingModule,
