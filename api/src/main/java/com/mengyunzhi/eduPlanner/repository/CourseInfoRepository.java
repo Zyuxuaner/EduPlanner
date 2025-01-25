@@ -11,6 +11,8 @@ import java.util.List;
 public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
     CourseInfo findByCourseId(Long courseId);
 
+    List<CourseInfo> findCourseInfoByCourseId(Long courseId);
+
     @Query("SELECT ci FROM CourseInfo ci " +
             "JOIN ci.course c " +
             "JOIN c.term t " +

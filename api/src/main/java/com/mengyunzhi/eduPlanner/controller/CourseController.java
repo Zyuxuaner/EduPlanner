@@ -35,13 +35,19 @@ public class CourseController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody CourseRequest courseRequest) {
+    public Response<Void> add(@RequestBody CourseRequest courseRequest) {
+
+        if (!courseService.isTimeLegal(courseRequest)) {
+            return new Response<>(false, "课程时间冲突，请重新添加", null);
+        }
+
         Response<CurrentUser> currentUser = loginService.getCurrentLoginUser();
         logger.info("currentUser:" + currentUser);
         Long userId = currentUser.getData().getId();
         Long schoolId = currentUser.getData().getSchoolId();
 
         courseService.save(courseRequest, userId, schoolId);
+        return new Response<>(true, "课程新增成功", null);
     }
 
     /**
