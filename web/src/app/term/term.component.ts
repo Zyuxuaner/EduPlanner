@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Term} from '../entity/term';
 import {TermService} from "../service/term.service";
+import {Person} from "../entity/person";
+import {LoginService} from "../service/login.service";
 
 @Component({
   selector: 'app-term',
@@ -9,11 +11,17 @@ import {TermService} from "../service/term.service";
 })
 export class TermComponent implements OnInit {
   terms: Term[] = [];
+  person = {} as Person;
 
-  constructor(private termService: TermService) {
+  constructor(private termService: TermService,
+              private loginService: LoginService) {
   }
 
   ngOnInit() {
+    this.loginService.currentLoginUser().subscribe(userData => {
+      if (userData.status) {
+        this.person.role = userData.data.role;
+      }})
     this.getAll();
   }
 

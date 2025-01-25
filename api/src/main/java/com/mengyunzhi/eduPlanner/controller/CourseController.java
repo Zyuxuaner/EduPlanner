@@ -2,9 +2,11 @@ package com.mengyunzhi.eduPlanner.controller;
 
 import com.mengyunzhi.eduPlanner.dto.*;
 import com.mengyunzhi.eduPlanner.entity.Student;
+import com.mengyunzhi.eduPlanner.entity.Term;
 import com.mengyunzhi.eduPlanner.service.CourseService;
 import com.mengyunzhi.eduPlanner.service.LoginService;
 import com.mengyunzhi.eduPlanner.service.StudentService;
+import com.mengyunzhi.eduPlanner.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
@@ -24,11 +27,14 @@ public class CourseController {
     private final LoginService loginService;
     private final StudentService studentService;
 
+    private final TermService termService;
+
     @Autowired
-    public CourseController(LoginService loginService, CourseService courseService, StudentService studentService) {
+    public CourseController(LoginService loginService, CourseService courseService, StudentService studentService, TermService termService) {
         this.loginService = loginService;
         this.courseService = courseService;
         this.studentService = studentService;
+        this.termService = termService;
     }
 
 
@@ -108,13 +114,20 @@ public class CourseController {
     @GetMapping("/getCourseInfoByStudent")
     public Response<Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>>> getCourseInfoByStudent(@RequestParam Long week) {
         Response<CurrentUser> currentUser = loginService.getCurrentLoginUser();
+        Long schoolId = currentUser.getData().getSchoolId();
         Long userId = currentUser.getData().getId();
         Student student = studentService.findByUserId(userId);
         Long clazzId = student.getClazz().getId();
         Long studentId = student.getId();
+        // 定义激活学期的状态值
+        Long ACTIVE_STATUS = 1L;
+        // 获取当前学校激活学期id
+        Optional<Term> optTerm = this.termService.checkTermActive(schoolId, ACTIVE_STATUS);
+
+        Long termId = optTerm.get().getId();
 
         Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> courseInfoResponse =
-                this.courseService.getCourseInfoByCurrentUserOfWeek(clazzId, studentId, week);
+                this.courseService.getCourseInfoByCurrentUserOfWeek(clazzId, studentId, week, termId);
 
         return new Response<>(true, "成功获取所选周的课程安排", courseInfoResponse);
     }

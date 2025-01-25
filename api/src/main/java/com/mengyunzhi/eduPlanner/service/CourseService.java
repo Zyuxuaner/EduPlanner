@@ -30,12 +30,13 @@ public interface CourseService {
     List<CourseDto.GetAllCoursesForCurrentUserResponse> getAllCoursesForCurrentUser(Long clazzId, Long studentId);
 
     /**
-     * 根据学校id 和 确定的第几周week 来查询该学校下所有学生的有课情况
+     * 根据学校id 和 确定的第几周week 来查询该学校下所有学生的有课情况(激活学期)
      * @param schoolId 学校id
      * @param week 第几周
      * @return StudentsCoursesOfSchoolResponse嵌套数据结构
      */
     Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> getAllStudentsCoursesOfSchool(Long schoolId, Long week);
+
     /**
      * 获取当前登录用户对应的学期id
      * @param currentUser
@@ -48,9 +49,10 @@ public interface CourseService {
      * @param clazzId 当前登录学生用户的班级id
      * @param studentId 当前登录学生用户的学生id
      * @param week 被选中的周数
+     * @param termId 当前激活的学期id
      * @return StudentsCoursesOfSchoolResponse嵌套数据结构
      */
-    Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> getCourseInfoByCurrentUserOfWeek(Long clazzId, Long studentId, Long week);
+    Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> getCourseInfoByCurrentUserOfWeek(Long clazzId, Long studentId, Long week, Long termId);
     /**
      * 获取当前登录用户的班级id
      * @param currentUser
