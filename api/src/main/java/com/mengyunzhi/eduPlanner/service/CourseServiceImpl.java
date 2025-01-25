@@ -178,4 +178,43 @@ public class CourseServiceImpl implements CourseService{
             }
         }
     }
+
+    @Override
+    public Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> getCourseInfoByCurrentUserOfWeek(Long clazzId, Long studentId, Long week) {
+        Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> result = new HashMap<>();
+
+        boolean isOddWeek = week % 2 != 0;
+        // 如果是奇数周，排除双周课程（type 2）；如果是偶数周，排除单周课程（type 1）
+        Long courseTypeToExclude = isOddWeek ? 2L : 1L;
+
+        List<Course> requiredCourses = courseRepository.findByClazzIdAndType(clazzId, 2L);
+        List<Course> electiveCourses = courseRepository.findByStudentIdAndType(studentId, 1L);
+
+        List<Course> allCourses = new ArrayList<>();
+        allCourses.addAll(requiredCourses);
+        allCourses.addAll(electiveCourses);
+
+        for (Course course : allCourses) {
+            List<CourseInfo> courseInfos = courseInfoRepository.findAllByCourseId(course.getId());
+
+            for (CourseInfo courseInfo : courseInfos) {
+                if (courseInfo.getType().equals(courseTypeToExclude)) {
+                    continue;
+                }
+
+                if (week >= courseInfo.getStartWeek() && week <= courseInfo.getEndWeek()) {
+                    CourseDto.StudentCourseInfoResponse response = new CourseDto.StudentCourseInfoResponse();
+                    response.setWeek(courseInfo.getDay());
+                    response.setBegin(courseInfo.getBegin());
+                    response.setLength(courseInfo.getLength());
+                    response.setName(course.getName());
+
+                    Map<Long, List<CourseDto.StudentCourseInfoResponse>> weekMap = result.getOrDefault(week, new HashMap<>());
+                    weekMap.computeIfAbsent(course.getId(), k -> new ArrayList<>()).add(response);
+                    result.put(week, weekMap);
+                }
+            }
+        }
+        return result;
+    }
 }

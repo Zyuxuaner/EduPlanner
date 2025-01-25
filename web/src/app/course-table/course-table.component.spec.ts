@@ -8,6 +8,7 @@ import {SchoolSelectComponent} from "../core/school-select/school-select.compone
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {StudentScheduleComponent} from "./student-schedule/student-schedule.component";
 
 describe('CourseTableComponent', () => {
   let component: CourseTableComponent;
@@ -15,7 +16,7 @@ describe('CourseTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CourseTableComponent, AdminScheduleComponent ],
+      declarations: [ CourseTableComponent, AdminScheduleComponent, StudentScheduleComponent ],
       imports: [
         HttpClientTestingModule,
         SchoolSelectModule,

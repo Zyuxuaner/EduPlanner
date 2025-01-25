@@ -29,8 +29,17 @@ public interface CourseService {
      * 根据学校id 和 确定的第几周week 来查询该学校下所有学生的有课情况
      * @param schoolId 学校id
      * @param week 第几周
-     * @return 嵌套数据结构
+     * @return StudentsCoursesOfSchoolResponse嵌套数据结构
      */
     Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> getAllStudentsCoursesOfSchool(Long schoolId, Long week);
 
+
+    /**
+     * 根据选择的周数，来获取当前登录用户在所选周的课程安排
+     * @param clazzId 当前登录学生用户的班级id
+     * @param studentId 当前登录学生用户的学生id
+     * @param week 被选中的周数
+     * @return StudentsCoursesOfSchoolResponse嵌套数据结构
+     */
+    Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> getCourseInfoByCurrentUserOfWeek(Long clazzId, Long studentId, Long week);
 }
