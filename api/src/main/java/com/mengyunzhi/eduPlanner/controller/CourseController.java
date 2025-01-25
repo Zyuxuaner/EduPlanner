@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -59,6 +60,26 @@ public class CourseController {
 
     @GetMapping("/getAllStudentsCourse")
     public Response<Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>>> getAllStudentsCourse(@RequestParam Long schoolId, @RequestParam Long week) {
-        return this.courseService.getAllStudentsCoursesOfSchool(schoolId, week);
+        Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> responseData = this.courseService.getAllStudentsCoursesOfSchool(schoolId, week);
+        return new Response<>(true, "成功获取所有学生课程信息", responseData);
+    }
+
+    @GetMapping("/getAllCourseInfo")
+    public Response<Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>>> getAllCourseInfo(
+            @RequestParam List<Long> schoolId,
+            @RequestParam List<Long> weeks) {
+        Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> allStudentCourseData = new HashMap<>();
+
+        // 遍历 schoolId 和 weeks 进行处理
+        for (int i = 0; i < schoolId.size(); i++) {
+            Long schoolIdValue = schoolId.get(i);
+            Long weekValue = weeks.get(i);
+
+            Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> studentCourseData =
+                    this.courseService.getAllStudentsCoursesOfSchool(schoolIdValue, weekValue);
+
+            allStudentCourseData.putAll(studentCourseData);
+        }
+        return new Response<>(true, "成功获取所有学生课程信息", allStudentCourseData);
     }
 }

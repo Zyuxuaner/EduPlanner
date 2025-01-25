@@ -31,6 +31,6 @@ public interface CourseService {
      * @param week 第几周
      * @return 嵌套数据结构
      */
-    Response<Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>>> getAllStudentsCoursesOfSchool(Long schoolId, Long week);
+    Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> getAllStudentsCoursesOfSchool(Long schoolId, Long week);
 
 }

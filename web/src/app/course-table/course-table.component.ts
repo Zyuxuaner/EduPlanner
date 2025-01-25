@@ -16,7 +16,7 @@ export class CourseTableComponent implements OnInit{
         if (userData.status) {
           this.person.role = userData.data.role;
         }
-      })
+      });
     }
 
 }

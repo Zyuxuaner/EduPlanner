@@ -80,4 +80,25 @@ public class TermServiceImpl implements TermService {
             return new Response<>(false, "当前无激活学期", null);
         }
     }
+
+    @Override
+    public List<TermDto.SchoolIdAndStartTimeResponse> getSchoolIdAndStartTime () {
+        List<TermDto.SchoolIdAndStartTimeResponse> responseList = new ArrayList<>();
+
+        // 定义激活学期的状态值
+        Long ACTIVE_STATUS = 1L;
+
+        List<Term> activeTerms = termRepository.findAllByStatus(ACTIVE_STATUS);
+
+        // 遍历查询结果，构建返回数据
+        for (Term term : activeTerms) {
+            TermDto.SchoolIdAndStartTimeResponse response = new TermDto.SchoolIdAndStartTimeResponse();
+            response.setSchoolId(term.getSchool().getId());
+            response.setName(term.getSchool().getName());
+            response.setStartTime(term.getStartTime());
+            responseList.add(response);
+        }
+
+        return responseList;
+    }
 }

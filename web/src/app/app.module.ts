@@ -24,6 +24,7 @@ import { LoginComponent } from './login/login.component';
 import {AuthTokenInterceptorModule} from "./core/interceptor/auth-token-interceptor.module";
 import {CourseModule} from "./course/course.module";
 import {MeModule} from "./me/me.module";
+import { AdminDashboardComponent } from './dashboard/admin-dashboard/admin-dashboard.component';
 
 registerLocaleData(zh);
 
@@ -32,7 +33,8 @@ registerLocaleData(zh);
     AppComponent,
     DashboardComponent,
     LayoutComponent,
-    LoginComponent
+    LoginComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,

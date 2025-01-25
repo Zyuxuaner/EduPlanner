@@ -67,4 +67,17 @@ public class TermController {
     public Response<TermDto.TermAndWeeksResponse> getTermAndWeeksBySchoolId(@PathVariable Long schoolId) {
         return this.termService.getTermAndWeeks(schoolId);
     }
+
+    @GetMapping("/getAllSchoolIdsAndStartTime")
+    public Response<List<TermDto.SchoolIdAndStartTimeResponse>> getAllSchoolIdsAndStartTime() {
+        List<TermDto.SchoolIdAndStartTimeResponse> responsesData = this.termService.getSchoolIdAndStartTime();
+
+        if (!responsesData.isEmpty()) {
+            return new Response<>(true, "成功获取到所有学校的激活学期的开学日期", responsesData);
+        } else {
+            return new Response<>(false, "当前无学校存在激活学期", responsesData);
+        }
+
+
+    }
 }

@@ -36,4 +36,10 @@ public interface TermService {
      * @return responseTermAndWeek
      */
     Response<TermDto.TermAndWeeksResponse> getTermAndWeeks (Long schoolId);
+
+    /**
+     * 获取所有学期id，以及激活学期的开学日期
+     * @return SchoolIdAndStartTimeResponse数组
+     */
+    List<TermDto.SchoolIdAndStartTimeResponse> getSchoolIdAndStartTime ();
 }
