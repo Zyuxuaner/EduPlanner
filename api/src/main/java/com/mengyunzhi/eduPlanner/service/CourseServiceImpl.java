@@ -132,12 +132,16 @@ public class CourseServiceImpl implements CourseService{
 
         // 用来存储返回的数据结构
         Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> studentCourseData = new HashMap<>();
+        Long ACTIVE_STATUS = 1L;
+        // 根据 schoolId 来获取 激活学期的id
+        Optional<Term> term = this.termRepository.findBySchoolIdAndStatus(schoolId, ACTIVE_STATUS);
+        Long termId = term.get().getId();
 
         for (Clazz clazz : clazzList) {
             // 获取该班级的所有必修课
-            List<Course> requiredCourses = courseRepository.findByClazzIdAndType(clazz.getId(), 2L);
+            List<Course> requiredCourses = courseRepository.findByClazzIdAndTermIdAndType(clazz.getId(), termId, 2L);
             // 获取该班级的所有选修课
-            List<Course> electiveCourses = courseRepository.findByStudentIdAndType(clazz.getId(), 1L);
+            List<Course> electiveCourses = courseRepository.findByStudentIdAndTermIdAndType(clazz.getId(), termId, 1L);
 
             // 处理必修课
             for (Course course : requiredCourses) {
@@ -164,7 +168,14 @@ public class CourseServiceImpl implements CourseService{
     private void processCourse(Clazz clazz, Course course, Long week, Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> studentCourseData) {
         List<CourseInfo> courseInfos = courseInfoRepository.findAllByCourseId(course.getId());
 
+        boolean isOddWeek = week % 2 != 0;
+        Long courseTypeToExclude = isOddWeek ? 2L : 1L;
+
         for (CourseInfo courseInfo : courseInfos) {
+
+            if (courseInfo.getType().equals(courseTypeToExclude)) {
+                continue;
+            }
             // 如果当前课程的开始和结束周包含了目标周
             if (courseInfo.getStartWeek() <= week && courseInfo.getEndWeek() >= week) {
                 List<String> students = new ArrayList<>();
@@ -200,15 +211,15 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> getCourseInfoByCurrentUserOfWeek(Long clazzId, Long studentId, Long week) {
+    public Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> getCourseInfoByCurrentUserOfWeek(Long clazzId, Long studentId, Long week, Long termId) {
         Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> result = new HashMap<>();
 
         boolean isOddWeek = week % 2 != 0;
         // 如果是奇数周，排除双周课程（type 2）；如果是偶数周，排除单周课程（type 1）
         Long courseTypeToExclude = isOddWeek ? 2L : 1L;
 
-        List<Course> requiredCourses = courseRepository.findByClazzIdAndType(clazzId, 2L);
-        List<Course> electiveCourses = courseRepository.findByStudentIdAndType(studentId, 1L);
+        List<Course> requiredCourses = courseRepository.findByClazzIdAndTermIdAndType(clazzId, termId, 2L);
+        List<Course> electiveCourses = courseRepository.findByStudentIdAndTermIdAndType(studentId, termId, 1L);
 
         List<Course> allCourses = new ArrayList<>();
         allCourses.addAll(requiredCourses);

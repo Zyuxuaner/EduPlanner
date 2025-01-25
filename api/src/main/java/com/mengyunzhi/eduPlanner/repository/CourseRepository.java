@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface CourseRepository extends CrudRepository<Course, Long> {
 
+    List<Course> findByClazzIdAndTermIdAndType(Long clazzId, Long termId, Long type);
+    List<Course> findByStudentIdAndTermIdAndType(Long studentId, Long termId, Long type);
+
     List<Course> findByClazzIdAndType(Long clazzId, Long type);
+
     List<Course> findByStudentIdAndType(Long studentId, Long type);
     List<Course> findByTermIdAndClazzId(Long termId, Long clazzId);
     Course findByNameAndTypeAndTermIdAndClazzIdAndStudentId(String name, Long type, Long termId, Long clazzId, Long studentId);
