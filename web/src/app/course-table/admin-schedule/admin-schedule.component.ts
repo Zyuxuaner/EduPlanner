@@ -4,6 +4,7 @@ import {CourseInfo, WeeklySchedule} from "../../entity/course-info";
 import {HttpParams} from "@angular/common/http";
 import {CourseService} from "../../service/course.service";
 import {TermService} from "../../service/term.service";
+import {CommonService} from "../../service/common.service";
 
 @Component({
   selector: 'app-admin-schedule',
@@ -33,7 +34,8 @@ export class AdminScheduleComponent implements OnInit{
   ];
 
   constructor(private courseService: CourseService,
-              private termService: TermService) {}
+              private termService: TermService,
+              private commonService: CommonService) {}
 
   ngOnInit(): void {
   }
@@ -58,6 +60,7 @@ export class AdminScheduleComponent implements OnInit{
 
       this.courseService.getAllStudentsCourse(params).subscribe(
         data => {
+          console.log(data.data);
           this.schedule = this.convertToWeeklySchedule(data.data);
         }
       );
@@ -74,7 +77,7 @@ export class AdminScheduleComponent implements OnInit{
     this.termService.getTermAndWeeksBySchoolId(schoolId).subscribe(
       responseBody => {
         if (!responseBody.status) {
-          console.log(responseBody.message);
+          this.commonService.showErrorAlert(responseBody.message);
         } else {
           const AllData = responseBody.data;
           this.allWeeks = AllData.weeks;
@@ -84,32 +87,56 @@ export class AdminScheduleComponent implements OnInit{
     );
   }
 
-  // 将从后端获得的课程安排数据转换为 WeeklySchedule 类型
-  convertToWeeklySchedule(data: any[]): WeeklySchedule {
+  // 将从后端获得的数据转换为 WeeklySchedule 类型
+  convertToWeeklySchedule(data: any): WeeklySchedule {
     const weeklySchedule: WeeklySchedule = {};
 
-    data.forEach(item => {
-      const day = item.week; // week 表示周几
-      const begin = item.begin; // begin 表示开始节数
-      const length = item.length; // length 表示持续节数
+    // 遍历课程数据 (遍历 courseId)
+    Object.keys(data).forEach((courseId) => {
+      const courseData = data[courseId];
 
-      // 初始化 daySchedule 如果不存在
-      if (!weeklySchedule[day]) {
-        weeklySchedule[day] = {};
-      }
+      // 遍历课程的每一天 (day)
+      Object.keys(courseData).forEach((day) => {
+        const dayData = courseData[day];
 
-      const daySchedule = weeklySchedule[day];
+        // 如果该课程的 day 没有初始化，则初始化
+        if (!weeklySchedule[Number(day)]) {
+          weeklySchedule[Number(day)] = {};
+        }
 
-      // 填充指定的小节数
-      for (let i = 0; i < length; i++) {
-        const time = begin + i;
-        daySchedule[time] = {
-          students: item.students,
-          begin: item.begin,
-          length: item.length,
-        };
-      }
+        // 获取对应的 daySchedule
+        const daySchedule = weeklySchedule[Number(day)];
+
+        // 遍历每个时间段 (课程安排)
+        dayData.forEach((item: any) => {
+          const courseInfo: CourseInfo = {
+            courseName: `课程名-${courseId}`,  // 可以根据需要设置课程名
+            startWeek: item.week,              // 当前课程的周次
+            endWeek: item.week,                // 可以根据需要调整 endWeek
+            status: this.getStatus(item.week), // 获取课程的状态 (单双周或全周)
+            students: item.students,           // 学生名单
+            begin: item.begin,                 // 课程开始时间
+            length: item.length                // 课程长度（总小节数）
+          };
+
+          // 将课程信息填入对应的 daySchedule 中
+          for (let time = item.begin; time < item.begin + item.length; time++) {
+            daySchedule[time] = courseInfo;
+          }
+        });
+      });
     });
     return weeklySchedule;
+  }
+
+// 获取课程状态 (单双周或全周)
+  getStatus(week: number): string {
+    if (week % 2 === 0) {
+      return '双周';  // 双周
+    } else if (week % 2 === 1) {
+      return '单周';  // 单周
+    } else {
+      return '全周';  // 全周
+    }
   }
 }

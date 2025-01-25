@@ -1,9 +1,6 @@
 package com.mengyunzhi.eduPlanner.controller;
 
-import com.mengyunzhi.eduPlanner.dto.CourseRequest;
-import com.mengyunzhi.eduPlanner.dto.CourseResponse;
-import com.mengyunzhi.eduPlanner.dto.CurrentUser;
-import com.mengyunzhi.eduPlanner.dto.Response;
+import com.mengyunzhi.eduPlanner.dto.*;
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.service.CourseService;
 import com.mengyunzhi.eduPlanner.service.LoginService;
@@ -12,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -35,9 +35,8 @@ public class CourseController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response<Void> add(@RequestBody CourseRequest courseRequest) {
-
-        if (!courseService.isTimeLegal(courseRequest)) {
+    public Response<Void> add(@RequestBody CourseDto.SaveRequest saveRequest) {
+        if (!courseService.isTimeLegal(saveRequest)) {
             return new Response<>(false, "课程时间冲突，请重新添加", null);
         }
 
@@ -46,7 +45,7 @@ public class CourseController {
         Long userId = currentUser.getData().getId();
         Long schoolId = currentUser.getData().getSchoolId();
 
-        courseService.save(courseRequest, userId, schoolId);
+        courseService.save(saveRequest, userId, schoolId);
         return new Response<>(true, "课程新增成功", null);
     }
 
@@ -55,7 +54,7 @@ public class CourseController {
      * @return List<CourseResponse>
      */
     @GetMapping("/getAll")
-    public List<CourseResponse> getAllCoursesForCurrentUser() {
+    public List<CourseDto.GetAllCoursesForCurrentUserResponse> getAllCoursesForCurrentUser() {
         Response<CurrentUser> currentUser = loginService.getCurrentLoginUser();
         logger.info("currentUser:" + currentUser);
         Long userId = currentUser.getData().getId();
@@ -63,5 +62,30 @@ public class CourseController {
         Long studentId = student.getId();
         Long clazzId = student.getClazz().getId();
         return courseService.getAllCoursesForCurrentUser(clazzId, studentId);
+    }
+
+    @GetMapping("/getAllStudentsCourse")
+    public Response<Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>>> getAllStudentsCourse(@RequestParam Long schoolId, @RequestParam Long week) {
+        Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> responseData = this.courseService.getAllStudentsCoursesOfSchool(schoolId, week);
+        return new Response<>(true, "成功获取所有学生课程信息", responseData);
+    }
+
+    @GetMapping("/getAllCourseInfo")
+    public Response<Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>>> getAllCourseInfo(
+            @RequestParam List<Long> schoolId,
+            @RequestParam List<Long> weeks) {
+        Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> allStudentCourseData = new HashMap<>();
+
+        // 遍历 schoolId 和 weeks 进行处理
+        for (int i = 0; i < schoolId.size(); i++) {
+            Long schoolIdValue = schoolId.get(i);
+            Long weekValue = weeks.get(i);
+
+            Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> studentCourseData =
+                    this.courseService.getAllStudentsCoursesOfSchool(schoolIdValue, weekValue);
+
+            allStudentCourseData.putAll(studentCourseData);
+        }
+        return new Response<>(true, "成功获取所有学生课程信息", allStudentCourseData);
     }
 }

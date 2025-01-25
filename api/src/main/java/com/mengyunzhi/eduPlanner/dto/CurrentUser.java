@@ -44,11 +44,4 @@ public class CurrentUser {
         this.schoolId = schoolId;
         this.no = no;
     }
-
-    public CurrentUser(Long id, String username, String password, Long role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
 }

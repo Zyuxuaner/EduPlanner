@@ -1,0 +1,36 @@
+<div *ngFor="let data of schoolDisplayData">
+  <p>{{ data.name }} 当前周： {{ data.week }}</p>
+</div>
+<div class="schedule-container">
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>时间</th>
+      <th>周一</th>
+      <th>周二</th>
+      <th>周三</th>
+      <th>周四</th>
+      <th>周五</th>
+      <th>周六</th>
+      <th>周日</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 遍历时间段 -->
+    <tr *ngFor="let period of periods">
+      <td>{{ period.time }}</td>
+
+      <!-- 遍历每天的课程信息 -->
+      <ng-container *ngFor="let day of days">
+        <td *ngIf="shouldShowCell(day, period.time)"
+            [attr.rowspan]="getClassInfo(day, period.time)?.length || 1">
+          <ng-container *ngIf="getClassInfo(day, period.time) as classInfo; else noCourse">
+            <p>{{ classInfo.students }}</p>
+          </ng-container>
+          <ng-template #noCourse></ng-template>
+        </td>
+      </ng-container>
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -29,6 +29,8 @@ public class TermServiceImpl implements TermService {
 
     @Override
     public Term save(Term term) {
+        // 新增学期，状态默认为冻结（status = 0）
+        term.setStatus(0L);
         return this.termRepository.save(term);
     }
 
@@ -73,9 +75,30 @@ public class TermServiceImpl implements TermService {
             responseData.setTerm(term);
             responseData.setWeeks(weeks);
 
-            return new Response<>(true, "成功获取学期即周数成功", responseData);
+            return new Response<>(true, "成功获取学期即周数", responseData);
         } else {
             return new Response<>(false, "当前无激活学期", null);
         }
+    }
+
+    @Override
+    public List<TermDto.SchoolIdAndStartTimeResponse> getSchoolIdAndStartTime () {
+        List<TermDto.SchoolIdAndStartTimeResponse> responseList = new ArrayList<>();
+
+        // 定义激活学期的状态值
+        Long ACTIVE_STATUS = 1L;
+
+        List<Term> activeTerms = termRepository.findAllByStatus(ACTIVE_STATUS);
+
+        // 遍历查询结果，构建返回数据
+        for (Term term : activeTerms) {
+            TermDto.SchoolIdAndStartTimeResponse response = new TermDto.SchoolIdAndStartTimeResponse();
+            response.setSchoolId(term.getSchool().getId());
+            response.setName(term.getSchool().getName());
+            response.setStartTime(term.getStartTime());
+            responseList.add(response);
+        }
+
+        return responseList;
     }
 }

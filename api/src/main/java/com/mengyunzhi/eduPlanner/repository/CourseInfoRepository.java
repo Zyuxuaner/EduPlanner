@@ -11,7 +11,12 @@ import java.util.List;
 public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
     CourseInfo findByCourseId(Long courseId);
 
-    List<CourseInfo> findCourseInfoByCourseId(Long courseId);
+    /**
+     * 根据课程id查询课程安排
+     * @param courseId 课程id
+     * @return 课程安排列表
+     */
+    List<CourseInfo> findAllByCourseId(Long courseId);
 
     @Query("SELECT ci FROM CourseInfo ci " +
             "JOIN ci.course c " +
