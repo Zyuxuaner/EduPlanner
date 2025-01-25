@@ -25,9 +25,8 @@
           <i class="fa-solid" [ngClass]="{ 'fa-eye': !showPassword, 'fa-eye-slash': showPassword }"></i>
         </span>
       </div>
-      <small *ngIf="formGroup.get('password')?.invalid && (formGroup.get('password')?.dirty || formGroup.get('password')?.touched)" class="form-text text-danger">
+      <small *ngIf="formGroup.get('password')?.invalid && formGroup.get('password')?.touched" class="form-text text-danger">
         <span *ngIf="formGroup.get('password')?.errors?.['required']">请输入密码</span>
-        <div *ngIf="formGroup.get('password')?.errors?.['pattern']" class="text-danger mt-1">请输入6位有效密码</div>
       </small>
     </div>
     <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid" (click)="onLogin()">登录</button>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SchoolService} from "../../service/school.service";
 import {Router} from "@angular/router";
+import {CommonService} from "../../service/common.service";
 
 @Component({
   selector: 'app-add',
@@ -14,12 +15,19 @@ export class AddComponent {
     name: new FormControl('', Validators.required),
   });
 
-  constructor(private schoolService: SchoolService,private router: Router) { }
+  constructor(private schoolService: SchoolService,
+              private router: Router,
+              private commonService: CommonService) { }
 
   onSubmit(): void {
     const addSchool = this.formGroup.value as { name: string | null };
-    this.schoolService.add(addSchool).subscribe(data => {
-      this.router.navigate(['/school']);
+    this.schoolService.add(addSchool).subscribe(response => {
+      if (response.status) {
+        this.commonService.showSuccessAlert(response.message);
+        this.router.navigate(['/school']);
+      } else {
+        this.commonService.showErrorAlert(response.message);
+      }
     })
   }
 

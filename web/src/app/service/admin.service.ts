@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable, Subject, tap} from "rxjs";
 import {Admin} from "../entity/admin";
+import {ResponseBody} from "../entity/response-body";
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class AdminService {
 
   constructor(private httpClient: HttpClient) { }
 
-  add(admin: {name: string, username: string, ano: string, role: number}): Observable<Admin> {
-    return this.httpClient.post<Admin>(`${this.baseUrl}/add`, admin);
+  add(admin: {name: string, username: string, ano: string, role: number}): Observable<ResponseBody> {
+    return this.httpClient.post<ResponseBody>(`${this.baseUrl}/add`, admin);
   }
 
   getAll(): Observable<Admin[]> {

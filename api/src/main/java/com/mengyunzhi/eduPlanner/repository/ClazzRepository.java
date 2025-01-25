@@ -12,4 +12,6 @@ public interface ClazzRepository extends CrudRepository<Clazz,Long> {
 
     List<Clazz> findBySchoolId(Long schoolId);
 
+    boolean existsByName(String name);
+
 }

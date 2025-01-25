@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.controller;
 
+import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.Clazz;
 import com.mengyunzhi.eduPlanner.service.ClazzService;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class ClazzController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestBody Clazz clazz) {
-        clazzService.save(clazz);
+    public Response<Void> save(@RequestBody Clazz clazz) {
+       return clazzService.save(clazz);
     }
 }

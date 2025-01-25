@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.controller;
 
+import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.School;
 import com.mengyunzhi.eduPlanner.repository.SchoolRepository;
 import com.mengyunzhi.eduPlanner.service.SchoolService;
@@ -30,7 +31,7 @@ public class SchoolController {
     @PostMapping
     @RequestMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestBody School school) {
-        this.schoolService.save(school);
+    public Response<Void> save(@RequestBody School school) {
+        return this.schoolService.save(school);
     }
 }

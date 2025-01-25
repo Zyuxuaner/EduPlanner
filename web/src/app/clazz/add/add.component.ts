@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ClazzService} from "../../service/clazz.service";
 import {Router} from "@angular/router";
+import {CommonService} from "../../service/common.service";
 
 @Component({
   selector: 'app-add',
@@ -15,7 +16,8 @@ export class AddComponent implements OnInit {
   });
 
   constructor(private clazzService: ClazzService,
-              private router: Router) { }
+              private router: Router,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
   }
@@ -28,8 +30,12 @@ export class AddComponent implements OnInit {
       school: {id: schoolId, name: 'undefined'}
     } as {name: string; school: {id: number, name: string}
     };
-    this.clazzService.add(clazz).subscribe(data => {
-          this.router.navigate(['/clazz']);
-        });
+    this.clazzService.add(clazz).subscribe(response => {
+      if (response.status) {
+        this.commonService.showSuccessAlert(response.message);
+        this.router.navigate(['/clazz']);
+      } else {
+        this.commonService.showErrorAlert(response.message);
+      }});
   }
 }

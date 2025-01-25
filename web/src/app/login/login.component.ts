@@ -11,7 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class LoginComponent implements OnInit {
   formGroup= new FormGroup({
     username: new FormControl('', Validators.required),
-    password: new FormControl('', [Validators.required,Validators.pattern(/^\d{6}$/)])
+    password: new FormControl('', Validators.required)
   });
   showPassword = false;
   redirectUrl = '/dashboard';

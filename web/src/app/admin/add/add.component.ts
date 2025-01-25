@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AdminService} from "../../service/admin.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
+import {CommonService} from "../../service/common.service";
 
 @Component({
   selector: 'app-add',
@@ -17,7 +18,8 @@ export class AddComponent implements OnInit {
   });
 
   constructor(private adminService: AdminService,
-              private router: Router) {
+              private router: Router,
+              private commonService: CommonService) {
   }
 
   ngOnInit(): void {
@@ -25,9 +27,13 @@ export class AddComponent implements OnInit {
 
   onSubmit() {
     const admin = this.formGroup.value as { name: string; username: string; ano: string; role: number };
-    this.adminService.add(admin).subscribe(value => {
-      console.log(value);
-      this.router.navigate(['/admin']);
+    this.adminService.add(admin).subscribe(response => {
+      if (response.status) {
+        this.commonService.showSuccessAlert(response.message);
+        this.router.navigate(['/admin']);
+      } else {
+        this.commonService.showErrorAlert(response.message);
+      }
     });
   }
 }

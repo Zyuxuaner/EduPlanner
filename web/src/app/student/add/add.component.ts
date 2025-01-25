@@ -4,6 +4,7 @@ import {SchoolImpl} from "../../entity/school";
 import {ClazzImpl} from "../../entity/clazz";
 import {StudentService} from "../../service/student.service";
 import {Router} from "@angular/router";
+import {CommonService} from "../../service/common.service";
 
 @Component({
   selector: 'app-add',
@@ -23,7 +24,8 @@ export class AddComponent implements OnInit {
   ngOnInit(): void {}
 
   constructor(private studentService: StudentService,
-              private router: Router) {
+              private router: Router,
+              private commonService: CommonService) {
   }
 
   onSubmit(): void {
@@ -38,8 +40,13 @@ export class AddComponent implements OnInit {
       username: formValue.username!,
       sno: formValue.sno!,
     };
-    this.studentService.add(student).subscribe(data => {
-      this.router.navigate(['/student']);
+    this.studentService.add(student).subscribe(response => {
+      if (response.status) {
+        this.commonService.showSuccessAlert(response.message);
+        this.router.navigate(['/student']);
+      } else {
+        this.commonService.showErrorAlert(response.message);
+      }
     });
   }
 
