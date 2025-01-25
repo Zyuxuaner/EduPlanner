@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ResponseBody} from "../entity/response-body";
 import {Course} from "../entity/course";
+import {SchoolIdAndWeeks} from "../entity/SchoolIdAndWeeks";
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,17 @@ export class CourseService {
   // 根据学校和周数，获取该学校所有学生的时间表
   getAllStudentsCourse(params: HttpParams): Observable<ResponseBody> {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getAllStudentsCourse`, {params});
+  }
+
+  getAllCourseInfo(schoolIdAndWeeksData: SchoolIdAndWeeks[]): Observable<ResponseBody> {
+    let params = new HttpParams();
+
+    // 将每个 schoolId 和 weeks 添加到查询参数中
+    schoolIdAndWeeksData.forEach(item => {
+      params = params.append('schoolId', item.schoolId.toString());
+      params = params.append('weeks', item.weeks.toString());
+    });
+
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getAllCourseInfo`, {params});
   }
 }

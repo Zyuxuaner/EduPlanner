@@ -107,7 +107,7 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Response<Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>>> getAllStudentsCoursesOfSchool(Long schoolId, Long week) {
+    public Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> getAllStudentsCoursesOfSchool(Long schoolId, Long week) {
         List<Clazz> clazzList = clazzRepository.findClazzBySchoolId(schoolId);
 
         // 用来存储返回的数据结构
@@ -129,7 +129,7 @@ public class CourseServiceImpl implements CourseService{
             }
         }
 
-        return new Response<>(true, "成功获取学生课程信息", studentCourseData);
+        return studentCourseData;
     }
 
     /**

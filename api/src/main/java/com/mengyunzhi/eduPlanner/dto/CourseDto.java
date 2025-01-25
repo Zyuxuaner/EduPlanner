@@ -58,7 +58,7 @@ public class CourseDto {
     }
 
     @Data
-    public static class GetAllCoursesRequest {
+    public static class SchoolWeekRequest {
         private Long schoolId;
         private Long week;
     }
