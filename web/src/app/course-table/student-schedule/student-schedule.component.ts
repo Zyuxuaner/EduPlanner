@@ -26,7 +26,7 @@ export class StudentScheduleComponent implements OnInit{
     { time: 11 },
   ];
   termStatus: number | null = null;
-  selectedWeek = 0;
+  selectedWeek : number | null = null;
   term = {} as Term;
   // 用于保存课程表数据，初始化为一个空对象
   weeklySchedule: WeeklySchedule = {};
