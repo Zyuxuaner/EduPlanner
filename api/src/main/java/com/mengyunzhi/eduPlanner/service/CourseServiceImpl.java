@@ -105,24 +105,32 @@ public class CourseServiceImpl implements CourseService{
 
         List<CourseDto.GetAllCoursesForCurrentUserResponse> courseResponses = new ArrayList<>();
         for (Course course : allCourses) {
-            CourseDto.GetAllCoursesForCurrentUserResponse courseResponse = new CourseDto.GetAllCoursesForCurrentUserResponse();
-            courseResponse.setName(course.getName());
-            courseResponse.setType(course.getType());
+            // 获取该课程的所有课程安排
+            List<CourseInfo> courseInfos = courseInfoRepository.findAllByCourseId(course.getId());
 
-            CourseInfo courseInfo = courseInfoRepository.findByCourseId(course.getId());
-            if (courseInfo != null) {
-                courseResponse.setWeekType(courseInfo.getType());
-                courseResponse.setStartWeek(courseInfo.getStartWeek());
-                courseResponse.setEndWeek(courseInfo.getEndWeek());
-                courseResponse.setWeek(courseInfo.getDay());
-                courseResponse.setBegin(courseInfo.getBegin());
-                courseResponse.setLength(courseInfo.getLength());
+            // 如果该课程有课程安排
+            if (courseInfos != null && !courseInfos.isEmpty()) {
+                // 遍历所有课程安排
+                for (CourseInfo courseInfo : courseInfos) {
+                    CourseDto.GetAllCoursesForCurrentUserResponse courseResponse = new CourseDto.GetAllCoursesForCurrentUserResponse();
+                    courseResponse.setName(course.getName());
+                    courseResponse.setType(course.getType());
+
+                    // 填充课程安排信息
+                    courseResponse.setWeekType(courseInfo.getType());
+                    courseResponse.setStartWeek(courseInfo.getStartWeek());
+                    courseResponse.setEndWeek(courseInfo.getEndWeek());
+                    courseResponse.setWeek(courseInfo.getDay());
+                    courseResponse.setBegin(courseInfo.getBegin());
+                    courseResponse.setLength(courseInfo.getLength());
+                    courseResponse.setTerm(course.getTerm());
+
+                    // 将该课程信息添加到响应列表
+                    courseResponses.add(courseResponse);
+                }
             }
-
-            courseResponse.setTerm(course.getTerm());
-
-            courseResponses.add(courseResponse);
         }
+
         return courseResponses;
     }
 
