@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface TermRepository extends CrudRepository<Term, Long> {
     Optional<Term> findBySchoolIdAndStatus(Long schoolId, Long status);
 
+    List<Term> findBySchoolId(Long schoolId);
+
     List<Term> findAllByStatus(Long status);
 
     @Override

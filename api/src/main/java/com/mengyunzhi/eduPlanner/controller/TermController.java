@@ -35,6 +35,11 @@ public class TermController {
          this.termService.save(term);
     }
 
+    @GetMapping("/active/{id}")
+    public Response<String> active(@PathVariable Long id) {
+        return this.termService.active(id);
+    }
+
     @GetMapping("/getAll")
     public List<Term> getAll() {
         return this.termService.getAll();
@@ -45,7 +50,6 @@ public class TermController {
         Response<CurrentUser> currentUser = this.loginService.getCurrentLoginUser();
         Long schoolId = currentUser.getData().getSchoolId();
         Optional<Term> term = this.termService.checkTermActive(schoolId, 1L);
-        logger.info("activeTerm:" + term);
         if (term.isPresent()) {
             Response<Optional<Term>> response = new Response<>(true, "存在激活学期", term);
             return response;

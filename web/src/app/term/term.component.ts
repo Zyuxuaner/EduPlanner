@@ -3,6 +3,7 @@ import {Term} from '../entity/term';
 import {TermService} from "../service/term.service";
 import {Person} from "../entity/person";
 import {LoginService} from "../service/login.service";
+import {CommonService} from "../service/common.service";
 
 @Component({
   selector: 'app-term',
@@ -14,7 +15,8 @@ export class TermComponent implements OnInit {
   person = {} as Person;
 
   constructor(private termService: TermService,
-              private loginService: LoginService) {
+              private loginService: LoginService,
+              private commonService: CommonService) {
   }
 
   ngOnInit() {
@@ -38,5 +40,15 @@ export class TermComponent implements OnInit {
   }
 
   onActive(id: number): void {
+    this.commonService.showConfirmAlert(() => {
+      this.termService.active(id).subscribe((responseBody) => {
+        if (responseBody.status) {
+          this.commonService.showSuccessAlert(responseBody.message);
+          this.getAll();
+        } else {
+          this.commonService.showErrorAlert(responseBody.message);
+        }
+      });
+    }, '是否激活，此操作不可逆');
   }
 }
