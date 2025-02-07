@@ -30,10 +30,6 @@ public class ClazzServiceImpl implements ClazzService {
 
     @Override
     public Response<Void> save(Clazz clazz) {
-        if (!clazz.getName().endsWith("班")) {
-            return new Response<>(false, "班级名称必须以“班”为结尾", null);
-        }
-
         if (clazzRepository.existsByName(clazz.getName())) {
             return new Response<>(false, "该班级已存在", null);
         }

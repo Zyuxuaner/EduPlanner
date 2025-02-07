@@ -17,6 +17,10 @@ export class TermService {
     return this.httpClient.post<Term>(`${this.baseUrl}/add`, term);
   }
 
+  active(termId: number): Observable<ResponseBody> {
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/active/${termId}`);
+  }
+
   // 检查该用户所在学校是否有激活的学期
   checkTerm(): Observable<ResponseBody> {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/checkTerm`);

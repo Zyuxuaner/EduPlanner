@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,22 @@ public class Response<T> {
         this.status = status;
         this.message = message;
         this.data = data;
+    }
+
+    public Response() {}
+
+    public static <T> Response<T> success(T data) {
+        Response<T> response = new Response<>();
+        response.setStatus(true);
+        response.setData(data);
+        return response;
+    }
+
+    public static <T> Response<T> fail(String message) {
+        Response<T> response = new Response<>();
+        response.setStatus(false);
+        response.setMessage(message);
+        return response;
     }
 
 }
