@@ -37,10 +37,40 @@
             npm install
             npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
             npm run build
+
+    spring-boot-test:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+
+        - name: Build MySQL 5.7
+          run: |
+            docker pull mysql:5.7
+            docker run -p 3307:3306 -e MYSQL_ROOT_PASSWORD=yunzhi -e MYSQL_DATABASE=schedule -d mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+        - name: Set up JDK 8
+          uses: actions/setup-java@v3
+          with:
+            java-version: '8'
+            distribution: 'temurin'
+            cache: maven
+
+        - name: Spring Boot Test
+          run: |
+            pwd
+            cd api
+            env
+            pwd
+            mvn install
+            mvn -v
+            mvn test
+            mvn --batch-mode package
+
+            
             
     dingding-error:
       runs-on: ubuntu-latest
-      needs: [unit-test]
+      needs: [unit-test, spring-boot-test]
       if: ${{ failure() }}
       steps:
         - uses: actions/checkout@v4
@@ -60,7 +90,7 @@
     dingding-success:
       runs-on: ubuntu-latest
       if: ${{ success() }}
-      needs: [unit-test]
+      needs: [unit-test, spring-boot-test]
       steps:
         - uses: actions/checkout@v4
         - name: Send dingding notify success
