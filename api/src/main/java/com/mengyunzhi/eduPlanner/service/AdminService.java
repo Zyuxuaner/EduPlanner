@@ -19,4 +19,6 @@ public interface AdminService {
      * @return
      */
     List<Admin> getAll();
+
+    Response<Void> delete(Long id);
 }

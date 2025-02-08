@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -58,5 +59,26 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<Admin> getAll() {
         return this.adminRepository.findAll();
+    }
+
+    @Override
+    public Response<Void> delete(Long id) {
+        Optional<Admin> admin = adminRepository.findById(id);
+        if (!admin.isPresent()) {
+            return new Response<>(false, "管理员不存在", null);
+        }
+
+        Long userId = admin.get().getUser().getId();
+        if (!userRepository.existsById(userId)) {
+            return new Response<>(false, "用户不存在", null);
+        }
+
+        try {
+            this.adminRepository.deleteById(id);
+            this.userRepository.deleteById(userId);
+            return new Response<>(true, "删除成功", null);
+        } catch (Exception e) {
+            return new Response<>(false, "删除失败: " + e.getMessage(), null);
+        }
     }
 }
