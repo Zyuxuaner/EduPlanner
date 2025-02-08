@@ -9,6 +9,12 @@ import java.util.Optional;
 
 public interface TermService {
     /**
+     * 激活学期
+     * @param termId 待激活的学期id
+     * @return Response类型的返回值
+     */
+    Response<String> active(Long termId);
+    /**
      * 新增学期
      * @param term
      * @return

@@ -28,8 +28,8 @@
     <tr *ngFor="let admin of admins; index as i">
       <td>{{ i + 1 }}</td>
       <td>{{ admin.name }}</td>
-      <td>{{ admin.user.username}}</td>
-      <td>{{ admin.ano}}</td>
+      <td>{{ admin.user.username }}</td>
+      <td>{{ admin.ano }}</td>
       <td>{{ getRoleName(admin.user.role) }}</td>
       <td>
         <a class="btn btn-outline-primary btn-sm" *ngIf="admin.user.role !== 3">
@@ -38,7 +38,7 @@
         <span class="btn btn-outline-success btn-sm" *ngIf="admin.user.role !== 3">
           <i class="fa fa-refresh"></i>重置密码
         </span>
-        <span class="btn btn-outline-danger btn-sm" *ngIf="admin.user.role !== 3" (click)="onDelete(admin.id)">
+        <span class="btn btn-outline-danger btn-sm" *ngIf="admin.user.role !== 3">
           <i class="far fa-trash-alt"></i>删除
         </span>
       </td>

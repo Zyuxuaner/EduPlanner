@@ -2,6 +2,7 @@ package com.mengyunzhi.eduPlanner.service;
 
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.dto.TermDto;
+import com.mengyunzhi.eduPlanner.entity.School;
 import com.mengyunzhi.eduPlanner.entity.Term;
 import com.mengyunzhi.eduPlanner.repository.TermRepository;
 import org.slf4j.Logger;
@@ -25,6 +26,41 @@ public class TermServiceImpl implements TermService {
     @Autowired
     private TermServiceImpl(TermRepository termRepository) {
        this.termRepository = termRepository;
+    }
+
+    /**
+     * 查询传入的 termId 对应的学期
+     * 获取该学校所属的学校
+     * 查询该学校下的所有学期，确保只有一个学期是激活状态
+     * 激活当前传入的学期
+     */
+    @Override
+    public Response<String> active(Long termId) {
+        Long ACTIVE_STATUS = 1L;
+        Optional<Term> termOptional = termRepository.findById(termId);
+        if (!termOptional.isPresent()) {
+            return Response.fail("学期不存在");
+        }
+        Term term = termOptional.get();
+
+        School school = term.getSchool();
+        if (school == null) {
+            return Response.fail("学期所属学校不存在");
+        }
+
+        List<Term> allTerms = termRepository.findBySchoolId(school.getId());
+        for (Term t : allTerms) {
+            if (t.getStatus().equals(ACTIVE_STATUS) && !t.getId().equals(termId)) {
+                Long FREEZE_STATUS = 0L;
+                t.setStatus(FREEZE_STATUS);
+                termRepository.save(t);
+            }
+        }
+
+        term.setStatus(ACTIVE_STATUS);
+        termRepository.save(term);
+
+        return Response.success("学期激活成功");
     }
 
     @Override
