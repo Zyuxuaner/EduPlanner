@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {School} from "../entity/school";
-import {Page} from "../entity/page";
-import {HttpParams} from "@angular/common/http";
 import {SchoolService} from "../service/school.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-school',
@@ -17,17 +16,19 @@ export class SchoolComponent implements OnInit {
     this.getAll();
   }
 
-  constructor(private schoolService:SchoolService,) {
+  constructor(private schoolService:SchoolService,private router:Router,private route:ActivatedRoute) {
   }
 
   getAll(): void {
-    console.log(this.schools);
     this.schoolService.getAll().subscribe(data => {
       this.schools = data;
     });
   }
 
-  onEdit(schoolsId: number): void {}
+  onEdit(schoolId: number): void {
+    console.log('Navigating to edit with id:', schoolId);
+    this.router.navigate(['edit', schoolId], { relativeTo: this.route });
+  }
 
   onDelete(schoolsId: number): void {}
 
