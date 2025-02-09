@@ -53,6 +53,11 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
+    public List<School> searchSchoolsByName(String name) {
+        return schoolRepository.findByNameContaining(name);
+    }
+
+    @Override
     public Response<School> updateSchool(Long id, String name) {
         try {
             // 尝试根据 id 查找学校

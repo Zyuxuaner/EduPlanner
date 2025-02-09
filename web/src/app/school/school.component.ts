@@ -42,5 +42,13 @@ export class SchoolComponent implements OnInit {
     })
   }
 
-  onSearch(): void {}
+  onSearch(): void {
+    if (this.searchName) {
+      this.schoolService.searchSchools(this.searchName).subscribe(data => {
+        this.schools = data;
+      });
+    } else {
+      this.getAll();
+    }
+  }
 }

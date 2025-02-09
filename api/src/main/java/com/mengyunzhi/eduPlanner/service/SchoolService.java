@@ -7,11 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface SchoolService {
-    /**
-     * 新增学校
-     * @param school
-     */
-    Response<Void> save(School school);
+    Response<Void> deleteSchool(Long id);
 
     /**
      * 获取所有学校
@@ -21,7 +17,13 @@ public interface SchoolService {
 
     ResponseEntity<List<School>> getSchoolById(Long id);
 
-    Response<School> updateSchool(Long id, String name);
+    /**
+     * 新增学校
+     * @param school
+     */
+    Response<Void> save(School school);
 
-    Response<Void> deleteSchool(Long id);
+    List<School> searchSchoolsByName(String name);
+
+    Response<School> updateSchool(Long id, String name);
 }

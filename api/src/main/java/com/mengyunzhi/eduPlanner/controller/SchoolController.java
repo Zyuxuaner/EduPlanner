@@ -23,9 +23,19 @@ public class SchoolController {
     @Autowired
     SchoolService schoolService;
 
+    @DeleteMapping("/delete/{id}")
+    public Response<Void> deleteSchool(@PathVariable Long id) {
+        return this.schoolService.deleteSchool(id);
+    }
+
     @GetMapping("/getAll")
     public List<School> getAll() {
         return this.schoolService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<School>> getSchoolById(@PathVariable Long id) {
+        return schoolService.getSchoolById(id);
     }
 
     @PostMapping
@@ -35,18 +45,13 @@ public class SchoolController {
         return this.schoolService.save(school);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<School>> getSchoolById(@PathVariable Long id) {
-        return schoolService.getSchoolById(id);
+    @GetMapping("/search")
+    public List<School> searchSchools(@RequestParam("name") String name) {
+        return schoolService.searchSchoolsByName(name);
     }
 
     @PutMapping("/{id}")
     public Response<School> updateSchool(@PathVariable Long id, @RequestBody String name) {
         return schoolService.updateSchool(id, name);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public Response<Void> deleteSchool(@PathVariable Long id) {
-        return this.schoolService.deleteSchool(id);
     }
 }

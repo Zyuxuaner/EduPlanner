@@ -28,6 +28,10 @@ export class SchoolService {
     return this.httpClient.get<School[]>(`${this.url}/${id}`);
   }
 
+  searchSchools(searchName: string): Observable<School[]> {
+    return this.httpClient.get<School[]>(`${this.url}/search?name=${searchName}`);
+  }
+
   updateSchool(id: number, name: string): Observable<ResponseBody> {
     return this.httpClient.put<ResponseBody>(`${this.url}/${id}`, name);
   }
