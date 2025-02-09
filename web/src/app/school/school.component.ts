@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {School} from "../entity/school";
 import {SchoolService} from "../service/school.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {CommonService} from "../service/common.service";
 
 @Component({
   selector: 'app-school',
@@ -16,7 +17,7 @@ export class SchoolComponent implements OnInit {
     this.getAll();
   }
 
-  constructor(private schoolService:SchoolService,private router:Router,private route:ActivatedRoute) {
+  constructor(private schoolService:SchoolService,private router:Router,private route:ActivatedRoute,private commonService:CommonService) {
   }
 
   getAll(): void {
@@ -26,11 +27,20 @@ export class SchoolComponent implements OnInit {
   }
 
   onEdit(schoolId: number): void {
-    console.log('Navigating to edit with id:', schoolId);
     this.router.navigate(['edit', schoolId], { relativeTo: this.route });
   }
 
-  onDelete(schoolsId: number): void {}
+  onDelete(schoolsId: number): void {
+    this.schoolService.deleteSchool(schoolsId).subscribe(response => {
+      console.log(response,1);
+      if (response.status) {
+        this.commonService.showSuccessAlert(response.message);
+        this.getAll();
+      } else {
+        this.commonService.showErrorAlert(response.message);
+      }
+    })
+  }
 
   onSearch(): void {}
 }

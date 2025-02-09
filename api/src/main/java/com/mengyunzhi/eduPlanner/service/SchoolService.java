@@ -2,9 +2,9 @@ package com.mengyunzhi.eduPlanner.service;
 
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.School;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SchoolService {
     /**
@@ -19,7 +19,9 @@ public interface SchoolService {
      */
     List<School> getAll();
 
-    Optional<School> getSchoolById(Long id);
+    ResponseEntity<List<School>> getSchoolById(Long id);
 
-    School updateSchool(Long id, String name);
+    Response<School> updateSchool(Long id, String name);
+
+    Response<Void> deleteSchool(Long id);
 }

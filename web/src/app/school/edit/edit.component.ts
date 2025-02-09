@@ -3,6 +3,7 @@ import {School} from "../../entity/school";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SchoolService} from "../../service/school.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {CommonService} from "../../service/common.service";
 
 @Component({
   selector: 'app-edit',
@@ -18,9 +19,9 @@ export class EditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private schoolService: SchoolService,
-    private router: Router
-  ) {
-  }
+    private router: Router,
+    private commonService: CommonService
+  ) {}
 
   ngOnInit(): void {
     const schoolId = Number(this.route.snapshot.paramMap.get('id'));
@@ -40,8 +41,13 @@ export class EditComponent implements OnInit {
       const name = this.editFormGroup.get('name')?.value;
       if (typeof name === 'string') {
         this.school.name = name;
-        this.schoolService.updateSchool(this.school.id, this.school.name).subscribe(() => {
-            this.router.navigate(['school']);
+        this.schoolService.updateSchool(this.school.id, this.school.name).subscribe(response => {
+          if (response.status) {
+            this.commonService.showSuccessAlert(response.message);
+            this.router.navigate(['/school']);
+          } else {
+            this.commonService.showErrorAlert(response.message);
+          }
         });
       }
     }

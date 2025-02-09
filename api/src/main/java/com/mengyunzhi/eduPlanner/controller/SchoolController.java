@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
@@ -39,16 +37,16 @@ public class SchoolController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<School>> getSchoolById(@PathVariable Long id) {
-        Optional<School> optionalSchool = schoolService.getSchoolById(id);
-        return optionalSchool.map(school -> new ResponseEntity<>(Collections.singletonList(school), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return schoolService.getSchoolById(id);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<School> updateSchool(@PathVariable Long id, @RequestBody String name) {
-        try {
-            School updatedSchool = schoolService.updateSchool(id, name);
-            return new ResponseEntity<>(updatedSchool, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public Response<School> updateSchool(@PathVariable Long id, @RequestBody String name) {
+        return schoolService.updateSchool(id, name);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Response<Void> deleteSchool(@PathVariable Long id) {
+        return this.schoolService.deleteSchool(id);
     }
 }
