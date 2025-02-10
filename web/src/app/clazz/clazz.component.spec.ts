@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClazzComponent } from './clazz.component';
-import {RouterModule} from "@angular/router";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {SchoolSelectModule} from "../core/school-select/school-select.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ReactiveFormsModule} from "@angular/forms";
 
 describe('ClazzComponent', () => {
   let component: ClazzComponent;
@@ -16,7 +16,8 @@ describe('ClazzComponent', () => {
       imports: [
         HttpClientTestingModule,
         SchoolSelectModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        ReactiveFormsModule
       ]
     })
     .compileComponents();

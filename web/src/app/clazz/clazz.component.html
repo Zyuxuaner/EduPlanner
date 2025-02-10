@@ -1,5 +1,5 @@
 <nav class="navbar navbar-light bg-light">
-  <form class="form-inline">
+  <form class="form-inline" [formGroup]="searchForm">
     <div class="mr-2">
       <app-school-select formControlName="school_id"></app-school-select>
     </div>
