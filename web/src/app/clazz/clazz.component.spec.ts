@@ -5,6 +5,7 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {SchoolSelectModule} from "../core/school-select/school-select.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ReactiveFormsModule} from "@angular/forms";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('ClazzComponent', () => {
   let component: ClazzComponent;
@@ -17,7 +18,8 @@ describe('ClazzComponent', () => {
         HttpClientTestingModule,
         SchoolSelectModule,
         BrowserAnimationsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterTestingModule
       ]
     })
     .compileComponents();
