@@ -4,6 +4,7 @@ import {CommonService} from "../service/common.service";
 import {Person} from "../entity/person";
 import {PersonService} from "../service/person.service";
 import {HttpParams} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-me',
@@ -21,7 +22,8 @@ export class MeComponent implements OnInit{
 
   constructor(private loginService: LoginService,
               private personService: PersonService,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.loginService.currentLoginUser().subscribe(userResponse => {
@@ -59,7 +61,13 @@ export class MeComponent implements OnInit{
       next: (responseBody) => {
         if (responseBody.status) {
           this.commonService.showSuccessAlert(responseBody.message);
-          this.closeModal();
+          this.commonService.showLoadingAlert('更换密码后，请您重新登录');
+          // 模拟异步任务，2 秒后关闭加载提示并进行页面跳转
+          setTimeout(() => {
+            this.commonService.closeLoadingAlert();
+            this.closeModal();
+            this.router.navigate(['/login']);
+          }, 2000);
         } else {
           if (responseBody.message === '旧密码错误') {
             this.commonService.showErrorAlert('旧密码不正确，请重新输入');
@@ -67,9 +75,6 @@ export class MeComponent implements OnInit{
             this.commonService.showErrorAlert(responseBody.message);
           }
         }
-      },
-      error: (error) => {
-        this.commonService.showErrorAlert('请求失败。请稍后');
       }
     });
   }
