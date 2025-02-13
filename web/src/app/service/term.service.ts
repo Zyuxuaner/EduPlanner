@@ -26,8 +26,16 @@ export class TermService {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/checkTerm`);
   }
 
+  deleteTerm(id: number): Observable<ResponseBody> {
+    return this.httpClient.delete<ResponseBody>(`${this.baseUrl}/delete/${id}`);
+  }
+
   getAll(): Observable<Term[]> {
     return this.httpClient.get<Term[]>(`${this.baseUrl}/getAll`);
+  }
+
+  getTermById(id: number): Observable<Term> {
+    return this.httpClient.get<Term>(`${this.baseUrl}/getTermById/${id}`);
   }
 
   getAllSchoolIdsAndStartTime(): Observable<ResponseBody> {
@@ -42,5 +50,9 @@ export class TermService {
   // 根据选中的学校id获取学期和周数
   getTermAndWeeksBySchoolId(schoolId: number): Observable<ResponseBody> {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getTermAndWeeksBySchoolId/${schoolId}`);
+  }
+
+  updateTerm(term: any): Observable<ResponseBody> {
+    return this.httpClient.put<ResponseBody>(`${this.baseUrl}/updateTerm/${term.id}`, term);
   }
 }

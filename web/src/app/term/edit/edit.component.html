@@ -7,14 +7,14 @@
             <label for="school_id" class="col-sm-2 col-form-label" id="school_id">学校</label>
             <div class="col-sm-10">
               <app-school-select formControlName="school_id"></app-school-select>
-              <div *ngIf="formGroup.get('school_id')?.invalid" class="text-danger mt-1">必须指定一个学校</div>
+              <div *ngIf="formGroup?.get('school_id')?.invalid" class="text-danger mt-1">必须指定一个学校</div>
             </div>
           </div>
           <div class="mb-3 row">
             <label for="name" class="col-sm-2 col-form-label">学期名称</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" name="name" formControlName="name" id="name">
-              <div *ngIf="formGroup.get('name')?.invalid" class="text-danger mt-1">学期名称不能为空</div>
+              <div *ngIf="formGroup?.get('name')?.invalid" class="text-danger mt-1">学期名称不能为空</div>
             </div>
           </div>
           <div class="mb-3 row">
@@ -25,7 +25,7 @@
                               class="form-control"
                               [nzDisabledDate]="disableStartTime">
               </nz-date-picker>
-              <div *ngIf="formGroup.get('startTime')?.invalid" class="text-danger mt-1">必须选择开学日期</div>
+              <div *ngIf="formGroup?.get('startTime')?.invalid" class="text-danger mt-1">必须选择开学日期</div>
             </div>
           </div>
           <div class="mb-3 row">
@@ -36,7 +36,7 @@
                               class="form-control"
                               [nzDisabledDate]="disableEndDate">
               </nz-date-picker>
-              <div *ngIf="formGroup.get('endTime')?.invalid"  class="text-danger mt-1">必须选择结束日期</div>
+              <div *ngIf="formGroup?.get('endTime')?.invalid"  class="text-danger mt-1">必须选择结束日期</div>
             </div>
           </div>
           <div class="mb-3 row">

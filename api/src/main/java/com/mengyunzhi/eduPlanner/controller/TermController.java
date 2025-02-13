@@ -8,7 +8,6 @@ import com.mengyunzhi.eduPlanner.service.LoginService;
 import com.mengyunzhi.eduPlanner.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +18,6 @@ import java.util.logging.Logger;
 @RequestMapping("Term")
 public class TermController {
     private final static Logger logger = Logger.getLogger(TermController.class.getName());
-
-    @Autowired
-    JdbcTemplate jdbcTemplate;
 
     @Autowired
     TermService termService;
@@ -40,6 +36,11 @@ public class TermController {
         return this.termService.active(id);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public Response<Void> deleteTerm(@PathVariable Long id) {
+        return this.termService.deleteTerm(id);
+    }
+
     @GetMapping("/getAll")
     public List<Term> getAll() {
         return this.termService.getAll();
@@ -51,12 +52,15 @@ public class TermController {
         Long schoolId = currentUser.getData().getSchoolId();
         Optional<Term> term = this.termService.checkTermActive(schoolId, 1L);
         if (term.isPresent()) {
-            Response<Optional<Term>> response = new Response<>(true, "存在激活学期", term);
-            return response;
+            return new Response<>(true, "存在激活学期", term);
         } else {
-            Response<Optional<Term>> response = new Response<>(false, "当前学校无激活学期", term);
-            return response;
+            return new Response<>(false, "当前学校无激活学期", term);
         }
+    }
+
+    @GetMapping("/getTermById/{id}")
+    public Term getTermById(@PathVariable Long id) {
+        return this.termService.getTermById(id);
     }
 
     @GetMapping("/getTermAndWeeks")
@@ -81,7 +85,10 @@ public class TermController {
         } else {
             return new Response<>(false, "当前无学校存在激活学期", responsesData);
         }
+    }
 
-
+    @PutMapping("/updateTerm/{id}")
+    public Response<Term> updateTerm(@PathVariable Long id, @RequestBody Term term) {
+        return this.termService.updateTerm(id, term);
     }
 }

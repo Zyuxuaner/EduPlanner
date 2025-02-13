@@ -14,6 +14,13 @@ public interface TermService {
      * @return Response类型的返回值
      */
     Response<String> active(Long termId);
+
+    Response<Void> deleteTerm(Long id);
+
+    Term getTermById(Long id);
+
+    Response<Term> updateTerm (Long id, Term term);
+
     /**
      * 新增学期
      * @param term

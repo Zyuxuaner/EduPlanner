@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TermComponent } from './term.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {SchoolModule} from "../school/school.module";
-import {SchoolComponent} from "../school/school.component";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('TermComponent', () => {
   let component: TermComponent;
@@ -13,6 +12,7 @@ describe('TermComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
+        RouterTestingModule
       ],
       declarations: [ TermComponent ]
     })

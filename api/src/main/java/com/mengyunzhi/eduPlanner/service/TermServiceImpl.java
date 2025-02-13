@@ -71,8 +71,19 @@ public class TermServiceImpl implements TermService {
     }
 
     @Override
+    public Response<Void> deleteTerm(Long id) {
+        termRepository.deleteById(id);
+        return new Response<>(true,"删除成功",null);
+    }
+
+    @Override
     public List<Term> getAll() {
         return this.termRepository.findAll();
+    }
+
+    @Override
+    public Term getTermById(Long id) {
+        return this.termRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -136,5 +147,41 @@ public class TermServiceImpl implements TermService {
         }
 
         return responseList;
+    }
+
+    @Override
+    public Response<Term> updateTerm (Long id, Term term) {
+        // 根据 ID 查找学期
+        Optional<Term> optionalTerm = termRepository.findById(id);
+
+        if (optionalTerm.isPresent()) {
+            Term existingTerm = optionalTerm.get();
+
+            // 更新学期信息
+            if (term.getName() != null) {
+                existingTerm.setName(term.getName());
+            }
+            if (term.getStatus() != null) {
+                existingTerm.setStatus(term.getStatus());
+            }
+            if (term.getStartTime() != null) {
+                existingTerm.setStartTime(term.getStartTime());
+            }
+            if (term.getEndTime() != null) {
+                existingTerm.setEndTime(term.getEndTime());
+            }
+            if (term.getSchool() != null) {
+                existingTerm.setSchool(term.getSchool());
+            }
+
+            // 保存更新后的学期信息
+            Term updatedTerm = termRepository.save(existingTerm);
+
+            // 假设 Response 类有一个构造方法用于封装成功响应
+            return new Response<>(true, "学期信息更新成功", updatedTerm);
+        } else {
+            // 假设 Response 类有一个构造方法用于封装失败响应
+            return new Response<>(false, "未找到指定 ID 的学期信息", null);
+        }
     }
 }
