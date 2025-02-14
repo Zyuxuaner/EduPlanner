@@ -47,7 +47,11 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.32</version> <!-- 或使用更高版本 -->
 		</dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>

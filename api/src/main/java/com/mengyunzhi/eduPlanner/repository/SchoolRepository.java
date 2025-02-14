@@ -6,10 +6,10 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface SchoolRepository extends CrudRepository<School, Long> {
-    List<School> findAllByNameContains(String name);
+    boolean existsByName(String name);
 
     @Override
     List<School> findAll();
 
-    boolean existsByName(String name);
+    List<School> findByNameContaining(String name);
 }
