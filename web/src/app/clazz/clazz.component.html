@@ -4,9 +4,9 @@
       <app-school-select formControlName="school_id"></app-school-select>
     </div>
     <div>
-      <input name="searchTeacherNo" class="form-control mr-sm-2" type="search" placeholder="请输入班级名称" aria-label="Search" >
+      <input type="search" class="form-control mr-sm-2" name="clazzName" id="clazzName" formControlName="clazzName" placeholder="请输入班级名称" aria-label="Search">
     </div>
-    <button class="btn btn-outline-success my-2 my-sm-0">搜索</button>
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="onSearch()">搜索</button>
   </form>
 </nav>
 
@@ -30,12 +30,12 @@
     <td>{{ clazz.school.name }}</td>
     <td>{{ clazz.name }}</td>
     <td>
-      <a class="btn btn-outline-primary btn-sm">
+      <a class="btn btn-outline-primary btn-sm" (click)="onEdit(clazz.id)">
         <i class="fa fa-pen"></i>编辑
       </a>
-      <span class="btn btn-outline-danger btn-sm">
+      <span class="btn btn-outline-danger btn-sm" (click)="onDelete(clazz.id)">
           <i class="far fa-trash-alt"></i>删除
-        </span>
+      </span>
     </td>
   </tr>
   </tbody>

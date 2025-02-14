@@ -7,12 +7,14 @@ import { AddComponent } from './add/add.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 import {SchoolSelectModule} from "../core/school-select/school-select.module";
+import { EditComponent } from './edit/edit.component';
 
 
 @NgModule({
   declarations: [
     TermComponent,
-    AddComponent
+    AddComponent,
+    EditComponent
   ],
     imports: [
         CommonModule,

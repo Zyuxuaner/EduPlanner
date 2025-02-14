@@ -6,13 +6,15 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ClazzSelectModule} from "../core/clazz-select/clazz-select.module";
 import {SchoolSelectModule} from "../core/school-select/school-select.module";
 import { AddComponent } from './add/add.component';
+import { EditComponent } from './edit/edit.component';
 
 
 
 @NgModule({
   declarations: [
     StudentComponent,
-    AddComponent
+    AddComponent,
+    EditComponent
   ],
     imports: [
         CommonModule,

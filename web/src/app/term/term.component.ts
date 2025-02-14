@@ -4,6 +4,7 @@ import {TermService} from "../service/term.service";
 import {Person} from "../entity/person";
 import {LoginService} from "../service/login.service";
 import {CommonService} from "../service/common.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-term',
@@ -16,7 +17,9 @@ export class TermComponent implements OnInit {
 
   constructor(private termService: TermService,
               private loginService: LoginService,
-              private commonService: CommonService) {
+              private commonService: CommonService,
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -34,9 +37,18 @@ export class TermComponent implements OnInit {
   }
 
   onDelete(id: number): void {
+    this.termService.deleteTerm(id).subscribe((response) => {
+      if (response.status) {
+        this.commonService.showSuccessAlert(response.message);
+        this.getAll();
+      } else {
+        this.commonService.showErrorAlert(response.message);
+      }
+    })
   }
 
-  onEdit(id: number): void {
+  onEdit(id: number) {
+    this.router.navigate(['edit', id], { relativeTo: this.route });
   }
 
   onActive(id: number): void {

@@ -32,7 +32,6 @@ export class SchoolComponent implements OnInit {
 
   onDelete(schoolsId: number): void {
     this.schoolService.deleteSchool(schoolsId).subscribe(response => {
-      console.log(response,1);
       if (response.status) {
         this.commonService.showSuccessAlert(response.message);
         this.getAll();

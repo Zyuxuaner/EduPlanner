@@ -16,26 +16,38 @@ export class AddComponent implements OnInit {
     endTime: new FormControl(null, Validators.required),
     school_id: new FormControl(null, Validators.required)
   });
-  schools: School[] = [
-    {id: 1, name: '天津职业技术师范大学'},
-    {id: 2, name: '河北工业大学'}
-  ];
 
   constructor(private termService: TermService,
               private router: Router) {
   }
 
   ngOnInit(): void {
+    this.setupDateChangeSubscriptions();
+  }
+
+  setupDateChangeSubscriptions(): void {
+    this.formGroup.get('startTime')?.valueChanges.subscribe(() => this.onStartTimeChange());
+    this.formGroup.get('endTime')?.valueChanges.subscribe(() => this.onEndTimeChange());
   }
 
   disableEndDate = (endDate: Date): boolean => {
-    const time = endDate.getTime();
-    // @ts-ignore
-    return this.formGroup.get('startTime')?.value.getTime() > time || this.disableNotMonday(endDate);
+    const startTime = this.formGroup.get('startTime')?.value;
+    return startTime ? endDate <= startTime || this.disableNotMonday(endDate) : this.disableNotMonday(endDate);
   }
 
-  disableNotMonday = (current: Date): boolean => {
-    return current.getDay() !== 1; // 1 表示星期一
+  disableStartTime = (startDate: Date): boolean => {
+    const endTime = this.formGroup.get('endTime')?.value;
+    return endTime ? startDate >= endTime || this.disableNotMonday(startDate) : this.disableNotMonday(startDate);
+  }
+
+  disableNotMonday = (current: Date): boolean => current.getDay()!== 1;
+
+  onStartTimeChange(): void {
+    this.formGroup.get('endTime')?.updateValueAndValidity();
+  }
+
+  onEndTimeChange(): void {
+    this.formGroup.get('startTime')?.updateValueAndValidity();
   }
 
   onSubmit(): void {

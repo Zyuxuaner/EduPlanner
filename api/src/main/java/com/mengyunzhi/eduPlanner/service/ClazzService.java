@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public interface ClazzService {
+    Response<Void> deleteClazz(Long id);
 
     /**
      * 获取所有班级列表
@@ -22,10 +23,16 @@ public interface ClazzService {
      */
     List<Clazz> getClazzBySchoolId(Long schoolId);
 
+    Clazz getClazzByClazzId(Long clazzId);
+
+    Response<Clazz> updateClazz(Long clazzId, Long schoolId, String name);
+
     /**
      * 新增
      *
      * @param clazz 班级
      */
     Response<Void> save(Clazz clazz);
+
+    List<Clazz> searchClazzes(Long schoolId, String clazzName);
 }

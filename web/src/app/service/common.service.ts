@@ -45,4 +45,19 @@ export class CommonService {
       }
     });
   }
+
+  showLoadingAlert(message: string = '正在加载...'): void {
+    Swal.fire({
+      title: message,
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  }
+
+  closeLoadingAlert(): void {
+    Swal.close();
+  }
 }

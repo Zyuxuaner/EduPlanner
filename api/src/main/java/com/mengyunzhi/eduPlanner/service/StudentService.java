@@ -28,4 +28,14 @@ public interface StudentService {
      * @return Student
      */
     Student findByUserId(Long userId);
+
+    Response<Student> delete (Long id);
+
+    Student changeStatus(Long id, Long status);
+
+    Response<Student> resetPassword(Long id, String newPassword);
+
+    List<Student> search(Long schoolId, Long clazzId, String searchName, String searchStudentSno);
+
+    Student getStudentById(Long id);
 }
