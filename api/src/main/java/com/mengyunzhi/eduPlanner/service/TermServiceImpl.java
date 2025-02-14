@@ -177,10 +177,8 @@ public class TermServiceImpl implements TermService {
             // 保存更新后的学期信息
             Term updatedTerm = termRepository.save(existingTerm);
 
-            // 假设 Response 类有一个构造方法用于封装成功响应
             return new Response<>(true, "学期信息更新成功", updatedTerm);
         } else {
-            // 假设 Response 类有一个构造方法用于封装失败响应
             return new Response<>(false, "未找到指定 ID 的学期信息", null);
         }
     }

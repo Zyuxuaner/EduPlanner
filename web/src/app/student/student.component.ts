@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Student} from "../entity/student";
 import {StudentService} from "../service/student.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {LoginService} from "../service/login.service";
+import {FormControl, FormGroup} from "@angular/forms";
+import {CommonService} from "../service/common.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-student',
@@ -17,12 +18,12 @@ export class StudentComponent implements OnInit {
     searchName: new FormControl(),
     searchStudentSno: new FormControl()
   });
-  searchName = '';
-  searchStudentSno = '';
   students: Student[] = [];
 
   constructor(private studentService: StudentService,
-              private loginService: LoginService) {
+              private router: Router,
+              private commonService: CommonService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -38,14 +39,40 @@ export class StudentComponent implements OnInit {
   // 当学校选择变化时，更新 schoolId
   onSchoolChange(schoolId: number): void {
     this.schoolId = schoolId;
-    console.log(this.schoolId);
   }
 
-  onEdit(id: number): void {}
+  onEdit(id: number): void {
+    this.router.navigate(['edit', id], { relativeTo: this.route });
+  }
 
-  onActive(id: number): void {}
+  onActive(id: number, status: number): void {
+    this.studentService.changeStatus(id, status).subscribe(() => {
+      this.getAll();
+    })
+  }
 
-  onSearch() {}
+  onResetPassword(id: number): void {
+    const constPassword = "123456"
+    this.studentService.resetPassword(id, constPassword).subscribe(response => {
+      this.commonService.showSuccessAlert(response.message);
+    })
+  }
 
-  onDelete(id: number): void {}
+  onSearch(): void {
+    const { schoolId, clazzId, searchName, searchStudentSno } = this.formGroup.value;
+    this.studentService.search(schoolId, clazzId, searchName, searchStudentSno).subscribe(data => {
+      this.students = data;
+    });
+  }
+
+  onDelete(id: number): void {
+    this.studentService.delete(id).subscribe(response => {
+      if (response.status) {
+        this.commonService.showSuccessAlert(response.message);
+        this.getAll();
+      } else {
+        this.commonService.showErrorAlert(response.message);
+      }
+    })
+  }
 }

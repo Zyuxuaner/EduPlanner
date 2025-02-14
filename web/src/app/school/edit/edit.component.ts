@@ -25,7 +25,6 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     const schoolId = Number(this.route.snapshot.paramMap.get('id'));
-    console.log(this.route.snapshot.paramMap.get('id'));
     this.schoolService.getSchoolById(schoolId).subscribe(data => {
       this.school = data[0];
       // 在获取到学校信息后更新表单的值
