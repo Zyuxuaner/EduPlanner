@@ -50,6 +50,11 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'mySchedule',
+        loadChildren: () => import('./my-schedule/my-schedule.module').then(m => m.MyScheduleModule),
+        canActivate: [AuthGuard]
+      },
+      {
         path:'course',
         loadChildren: () => import('./course/course.module').then(m => m.CourseModule),
         canActivate: [AuthGuard]

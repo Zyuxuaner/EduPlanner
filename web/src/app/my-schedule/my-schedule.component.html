@@ -1,0 +1,72 @@
+<!-- timetable.component.html -->
+<div class="week-selector">
+  <button (click)="changeWeek(-1)" [disabled]="currentWeek === 1">←</button>
+  <span>第 {{ currentWeek }} 周</span>
+  <button (click)="changeWeek(1)" [disabled]="currentWeek === totalWeeks">→</button>
+</div>
+
+<div class="schedule-container">
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>时间</th>
+      <th>周一</th>
+      <th>周二</th>
+      <th>周三</th>
+      <th>周四</th>
+      <th>周五</th>
+      <th>周六</th>
+      <th>周日</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 遍历时间段 -->
+    <tr *ngFor="let period of periods">
+      <td>{{ period.time }}</td>
+
+      <!-- 遍历每天的课程信息 -->
+      <ng-container *ngFor="let day of days">
+        <td *ngIf="shouldShowCell(day, period.time)"
+            [attr.rowspan]="getClassInfo(day, period.time)?.length || 1"
+            [style.background-color]="getCourseColor(day, period.time)">
+          <ng-container *ngIf="getClassInfo(day, period.time) as classInfo; else noCourse">
+            <p>{{ classInfo.courseName }}</p>
+          </ng-container>
+          <ng-template #noCourse>
+            <button *ngIf="canAddCourse(day, period.time)"
+                    (click)="openAddCourseModal(day, period.time, addCourseModal)"
+                    class="btn btn-sm d-flex align-items-center justify-content-center add-course-button">
+              <span>➕</span>
+            </button>
+          </ng-template>
+        </td>
+      </ng-container>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 模态框：用于新增课程 -->
+<ng-template #addCourseModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">新增课程</h4>
+    <button type="button" class="close" (click)="modal.dismiss()">×</button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="submitCourseForm()">
+      <div class="form-group">
+        <label for="courseName">课程名</label>
+        <input type="text" id="courseName" [(ngModel)]="courseName" name="courseName" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="weeks">周数</label>
+        <input type="text" id="weeks" [(ngModel)]="weeks" name="weeks" class="form-control" placeholder="如：1,2,3" required />
+      </div>
+      <div class="form-group">
+        <label for="length">持续节数</label>
+        <input type="number" id="length" [(ngModel)]="length" name="length" class="form-control" required />
+      </div>
+      <button type="submit" class="btn btn-primary">确认</button>
+    </form>
+  </div>
+</ng-template>

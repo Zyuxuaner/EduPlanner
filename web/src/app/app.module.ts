@@ -25,6 +25,7 @@ import {AuthTokenInterceptorModule} from "./core/interceptor/auth-token-intercep
 import {CourseModule} from "./course/course.module";
 import {MeModule} from "./me/me.module";
 import { AdminDashboardComponent } from './dashboard/admin-dashboard/admin-dashboard.component';
+import {MyScheduleModule} from "./my-schedule/my-schedule.module";
 
 registerLocaleData(zh);
 
@@ -54,7 +55,8 @@ registerLocaleData(zh);
     ReactiveFormsModule,
     CourseModule,
     ClazzSelectModule,
-    MeModule
+    MeModule,
+    MyScheduleModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN }

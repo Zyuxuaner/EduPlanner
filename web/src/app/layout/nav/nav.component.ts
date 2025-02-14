@@ -16,6 +16,7 @@ export class NavComponent implements OnInit {
     {link: 'admin', icon: 'fa fa-users', name: '管理员列表', exact: false, roles: [2, 3]},
     {link: 'student', icon: 'fa-solid fa-address-book', name: '学生列表', exact: false, roles: [2, 3]},
     {link: 'course', icon: 'fa fa-book', name: '课程管理', exact: false, roles: [1]},
+    {link: 'mySchedule', icon: 'fa fa-object-group', name: '我的课表', exact: false, roles: [1]},
     {link: 'courseTable', icon: 'fa-solid fa-layer-group', name: '课表查询', exact: false, roles: [1, 2, 3]},
     {link: 'me', icon: 'fa-solid fa-circle-user', name: '个人中心', exact: false, roles: [1, 2, 3]}
   ];

@@ -5,7 +5,9 @@
 
 .btn > svg.svg-inline--fa {
   margin-right: 0.3em;
-}.schedule-container {
+}
+
+.schedule-container {
    margin: 20px;
    font-family: Arial, sans-serif;
  }
