@@ -3,9 +3,6 @@
     <div class="mr-2" >
       <app-school-select formControlName="schoolId" (schoolIdChange)="onSchoolChange($event)"></app-school-select>
     </div>
-    <div class="mr-2">
-      <app-clazz-select formControlName="clazzId" [setSchoolId]="schoolId"></app-clazz-select>
-    </div>
     <div>
       <input formControlName="searchName" name="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入学生姓名" aria-label="Search" >
       <input formControlName="searchStudentSno" name="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入学生学号" aria-label="Search" >
@@ -27,7 +24,6 @@
       <th>用户名</th>
       <th>学号</th>
       <th>学校</th>
-      <th>班级</th>
       <th>状态</th>
       <th>操作</th>
     </tr>
@@ -38,8 +34,7 @@
       <td>{{ student.name }}</td>
       <td>{{ student.user.username }}</td>
       <td>{{ student.sno }}</td>
-      <td>{{ student.clazz.school.name }}</td>
-      <td>{{ student.clazz.name }}</td>
+      <td>{{ student.school.name }}</td>
       <td>
         <span *ngIf="student.status === 1" class="badge badge-pill badge-success">激活</span>
         <span *ngIf="student.status === 2" class="badge badge-pill badge-danger">冻结</span>

@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ResponseBody} from "../entity/response-body";
 import {Course} from "../entity/course";
-import {SchoolIdAndWeeks} from "../entity/SchoolIdAndWeeks";
+import {schoolIdAndWeeks} from "../entity/schoolIdAndWeeks";
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ export class CourseService {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getAllStudentsCourse`, {params});
   }
 
-  getAllCourseInfo(schoolIdAndWeeksData: SchoolIdAndWeeks[]): Observable<ResponseBody> {
+  getAllCourseInfo(schoolIdAndWeeksData: schoolIdAndWeeks[]): Observable<ResponseBody> {
     let params = new HttpParams();
 
     // 将每个 schoolId 和 weeks 添加到查询参数中

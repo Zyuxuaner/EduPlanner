@@ -14,7 +14,7 @@ public interface StudentService {
      * @param studentRequest 从前台传过来的数据类型
      * @return
      */
-    Response<Void> save(StudentRequest studentRequest);
+//    Response<Void> save(StudentRequest studentRequest);
 
     /**
      * 获取所有学生

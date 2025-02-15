@@ -4,8 +4,8 @@ import { StudentComponent } from './student.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SchoolSelectModule} from "../core/school-select/school-select.module";
-import {ClazzSelectModule} from "../core/clazz-select/clazz-select.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('StudentComponent', () => {
   let component: StudentComponent;
@@ -17,8 +17,8 @@ describe('StudentComponent', () => {
         HttpClientTestingModule,
         ReactiveFormsModule,
         SchoolSelectModule,
-        ClazzSelectModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        RouterTestingModule
       ],
       declarations: [ StudentComponent ]
     })

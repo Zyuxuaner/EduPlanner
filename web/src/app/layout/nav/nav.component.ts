@@ -12,7 +12,6 @@ export class NavComponent implements OnInit {
     {link: 'dashboard', icon: 'fa-solid fa-house', name: '首页', exact: true, roles: [1, 2, 3]},
     {link: 'school', icon: 'fas fa-university', name: '学校管理', exact: false,roles: [2, 3]},
     {link: 'term', icon: 'fa-solid fa-calendar-days', name: '学期管理', exact: false, roles: [1, 2, 3]},
-    {link: 'clazz', icon: 'fa fa-graduation-cap', name: '班级管理', exact: false, roles: [2, 3]},
     {link: 'admin', icon: 'fa fa-users', name: '管理员列表', exact: false, roles: [2, 3]},
     {link: 'student', icon: 'fa-solid fa-address-book', name: '学生列表', exact: false, roles: [2, 3]},
     {link: 'course', icon: 'fa fa-book', name: '课程管理', exact: false, roles: [1]},

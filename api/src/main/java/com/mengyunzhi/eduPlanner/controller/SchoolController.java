@@ -23,10 +23,10 @@ public class SchoolController {
     @Autowired
     SchoolService schoolService;
 
-    @DeleteMapping("/delete/{id}")
-    public Response<Void> deleteSchool(@PathVariable Long id) {
-        return this.schoolService.deleteSchool(id);
-    }
+//    @DeleteMapping("/delete/{id}")
+//    public Response<Void> deleteSchool(@PathVariable Long id) {
+//        return this.schoolService.deleteSchool(id);
+//    }
 
     @GetMapping("/getAll")
     public List<School> getAll() {

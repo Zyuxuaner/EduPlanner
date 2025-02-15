@@ -3,6 +3,7 @@ package com.mengyunzhi.eduPlanner.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -13,15 +14,11 @@ public class Course {
 
     private String name;
 
-    private Long type;
-
     @ManyToOne
     @JoinColumn(name = "term_id", referencedColumnName = "id")
     private Term term;
 
-    @ManyToOne
-    @JoinColumn(name = "clazz_id", referencedColumnName = "id")
-    private Clazz clazz;
+    @ManyToMany(mappedBy = "courses")
+    private Set<Student> students;
 
-    private Long studentId;
 }

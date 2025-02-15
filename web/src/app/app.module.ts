@@ -10,7 +10,6 @@ import {NavModule} from "./layout/nav/nav.module";
 import {AdminModule} from "./admin/admin.module";
 import {ApiMockModule} from "./api/api-mock.module";
 import {HttpClientModule} from "@angular/common/http";
-import {ClazzModule} from "./clazz/clazz.module";
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { zh_CN } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
@@ -18,7 +17,6 @@ import zh from '@angular/common/locales/zh';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SchoolSelectModule} from "./core/school-select/school-select.module";
-import {ClazzSelectModule} from "./core/clazz-select/clazz-select.module";
 import {CourseTableModule} from "./course-table/course-table.module";
 import { LoginComponent } from './login/login.component';
 import {AuthTokenInterceptorModule} from "./core/interceptor/auth-token-interceptor.module";
@@ -46,15 +44,12 @@ registerLocaleData(zh);
     HttpClientModule,
     AuthTokenInterceptorModule,
     // ApiMockModule,
-    ClazzModule,
     FormsModule,
     BrowserAnimationsModule,
     SchoolSelectModule,
-    ClazzSelectModule,
     CourseTableModule,
     ReactiveFormsModule,
     CourseModule,
-    ClazzSelectModule,
     MeModule,
     MyScheduleModule
   ],

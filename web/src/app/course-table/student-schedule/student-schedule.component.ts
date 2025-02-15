@@ -76,18 +76,18 @@ export class StudentScheduleComponent implements OnInit{
   }
 
   getCourseInfoByStudent() {
-    if (this.selectedWeek !== null) {
-      this.courseService.getCourseInfoByStudent(this.selectedWeek).subscribe(
-        data => {
-          if (data.status) {
-            console.log(data);
-            this.weeklySchedule = this.convertToWeeklySchedule(data.data);
-          } else {
-            alert(data.message);
-          }
-        }
-      );
-    }
+    // if (this.selectedWeek !== null) {
+    //   this.courseService.getCourseInfoByStudent(this.selectedWeek).subscribe(
+    //     data => {
+    //       if (data.status) {
+    //         console.log(data);
+    //         this.weeklySchedule = this.convertToWeeklySchedule(data.data);
+    //       } else {
+    //         alert(data.message);
+    //       }
+    //     }
+    //   );
+    // }
   }
 
   getClassInfo(day: any, time: number): CourseInfo | null {

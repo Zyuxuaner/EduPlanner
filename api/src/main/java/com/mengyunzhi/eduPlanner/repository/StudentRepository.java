@@ -11,7 +11,7 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
 
     void deleteByUserId(Long userId);
 
-    List<Student> findAllByClazzIdAndStatus(Long clazzId, Long status);
+//    List<Student> findAllByClazzIdAndStatus(Long clazzId, Long status);
 
     Student findByIdAndStatus(Long studentId, Long status);
 

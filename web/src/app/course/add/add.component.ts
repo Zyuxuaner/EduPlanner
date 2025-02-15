@@ -76,15 +76,15 @@ export class AddComponent implements OnInit{
   }
 
   onSubmit(): void {
-    const course = this.formGroup.value as { name: string; type: number; status: number; startWeek: number; endWeek: number; week: number; begin: number; end: number };
-    console.log(course);
-    this.courseService.add(course).subscribe(data => {
-      if (data.status) {
-        this.commonService.showSuccessAlert(data.message);
-        this.router.navigate(['/course']);
-      } else {
-        this.commonService.showErrorAlert(data.message);
-      }
-    });
+    // const course = this.formGroup.value as { name: string; type: number; status: number; startWeek: number; endWeek: number; week: number; begin: number; end: number };
+    // console.log(course);
+    // this.courseService.add(course).subscribe(data => {
+    //   if (data.status) {
+    //     this.commonService.showSuccessAlert(data.message);
+    //     this.router.navigate(['/course']);
+    //   } else {
+    //     this.commonService.showErrorAlert(data.message);
+    //   }
+    // });
   }
 }

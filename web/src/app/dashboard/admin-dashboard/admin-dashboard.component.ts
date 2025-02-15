@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SchoolIdAndWeeks} from "../../entity/SchoolIdAndWeeks";
+import {schoolIdAndWeeks} from "../../entity/schoolIdAndWeeks";
 import {CourseInfo, WeeklySchedule} from "../../entity/course-info";
 import {TermService} from "../../service/term.service";
 import {CourseService} from "../../service/course.service";
@@ -11,7 +11,7 @@ import {CourseService} from "../../service/course.service";
 })
 export class AdminDashboardComponent implements OnInit{
   schoolIdAndStartTimeData: any[] = [];
-  schoolIdAndWeeksData: SchoolIdAndWeeks[] = [];
+  schoolIdAndWeeksData: schoolIdAndWeeks[] = [];
   schedule: WeeklySchedule = {};
   schoolDisplayData: any[] = [];
   days = ['1', '2', '3', '4', '5', '6', '7'];

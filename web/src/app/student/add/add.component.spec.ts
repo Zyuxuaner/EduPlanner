@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddComponent } from './add.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {SchoolSelectModule} from "../../core/school-select/school-select.module";
-import {ClazzSelectModule} from "../../core/clazz-select/clazz-select.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
@@ -16,7 +15,6 @@ describe('AddComponent', () => {
       imports: [
         HttpClientTestingModule,
         SchoolSelectModule,
-        ClazzSelectModule,
         ReactiveFormsModule,
         BrowserAnimationsModule
       ],
