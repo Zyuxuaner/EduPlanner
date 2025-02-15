@@ -25,11 +25,11 @@ export class CourseComponent implements OnInit{
               private router: Router){}
 
   ngOnInit(): void {
-      this.courseService.getAll().subscribe(courses => {
-        this.courses = courses;
-        console.log(this.courses);
-        this.getActiveTerm();
-      });
+      // this.courseService.getAll().subscribe(courses => {
+      //   this.courses = courses;
+      //   console.log(this.courses);
+      //   this.getActiveTerm();
+      // });
   }
 
   // 获取当前登录用户的所在学校的激活学期

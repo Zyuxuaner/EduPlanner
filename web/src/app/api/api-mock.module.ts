@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {MockApiInterceptor} from "@yunzhi/ng-mock-api";
 import {AdminMockApi} from "./admin-mock-api";
-import {ClazzMockApi} from "./clazz-mock-api";
 import {TermMockApi} from "./term-mock-api";
 import {SchoolMockApi} from "./school-mock-api";
 import {StudentMockApi} from "./student-mock-api";
@@ -12,7 +11,6 @@ import {LoginMockApi} from "./login-mock-api";
 
 const api = [
   AdminMockApi,
-  ClazzMockApi,
   TermMockApi,
   SchoolMockApi,
   StudentMockApi,

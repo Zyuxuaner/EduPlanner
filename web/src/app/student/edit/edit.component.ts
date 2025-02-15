@@ -33,14 +33,13 @@ export class EditComponent implements OnInit {
     this.studentService.getStudentById(this.id).subscribe(student => {
       if(this.formGroup) {
         this.formGroup.patchValue({
-          school_id: student.clazz.school.id,
-          clazz_id: student.clazz.id,
+          school_id: student.school.id,
           name: student.name,
           sno: student.sno,
           username: student.user.username
         });
         console.log(student);
-        this.onSchoolChange(student.clazz.school.id);
+        this.onSchoolChange(student.school.id);
       }
     })
   }

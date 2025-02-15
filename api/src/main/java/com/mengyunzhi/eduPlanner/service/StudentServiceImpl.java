@@ -34,31 +34,31 @@ public class StudentServiceImpl implements StudentService {
         this.userRepository = userRepository;
     }
 
-    @Override
-    public Response<Void> save(StudentRequest studentRequest) {
-        if (studentRepository.existsBySno(studentRequest.getSno())) {
-            return new Response<>(false, "该学号已存在", null);
-        }
-
-        Long role = 1L;
-        Long status = 1L;
-        User user = new User();
-        user.setUsername(studentRequest.getUsername());
-        user.setPassword(studentRequest.getSno());
-        user.setRole(role);
-
-        user = userRepository.save(user);
-
-        Student student = new Student();
-        student.setName(studentRequest.getName());
-        student.setSno(studentRequest.getSno());
-        student.setStatus(status);
-        student.setClazz(studentRequest.getClazz());
-        student.setUser(user);
-
-        this.studentRepository.save(student);
-        return new Response<>(true, "新增成功", null);
-    }
+//    @Override
+//    public Response<Void> save(StudentRequest studentRequest) {
+//        if (studentRepository.existsBySno(studentRequest.getSno())) {
+//            return new Response<>(false, "该学号已存在", null);
+//        }
+//
+//        Long role = 1L;
+//        Long status = 1L;
+//        User user = new User();
+//        user.setUsername(studentRequest.getUsername());
+//        user.setPassword(studentRequest.getSno());
+//        user.setRole(role);
+//
+//        user = userRepository.save(user);
+//
+//        Student student = new Student();
+//        student.setName(studentRequest.getName());
+//        student.setSno(studentRequest.getSno());
+//        student.setStatus(status);
+//        student.setClazz(studentRequest.getClazz());
+//        student.setUser(user);
+//
+//        this.studentRepository.save(student);
+//        return new Response<>(true, "新增成功", null);
+//    }
 
     @Override
     public List<Student> getAll() {
@@ -112,6 +112,7 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Override
     public List<Student> search(Long schoolId, Long clazzId, String searchName, String searchStudentSno) {
         Specification<Student> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();

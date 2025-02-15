@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CommonService } from './common.service';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {ClazzService} from "./clazz.service";
 
 describe('CommonService', () => {
   let service: CommonService;

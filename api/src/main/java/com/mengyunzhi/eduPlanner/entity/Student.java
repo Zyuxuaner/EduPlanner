@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -17,10 +18,20 @@ public class Student {
 
     private String sno;
 
-    @Getter
-    @Setter
     @ManyToOne
-    private Clazz clazz;
+    @JoinColumn(name = "school_id", nullable = false)
+    private School school;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_course",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Course> courses;
+
+    @OneToMany(mappedBy = "student")
+    private Set<CourseInfo> courseInfos;
 
     @OneToOne
     private User user;

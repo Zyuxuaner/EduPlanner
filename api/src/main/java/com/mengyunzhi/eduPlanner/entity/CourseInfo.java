@@ -3,6 +3,7 @@ package com.mengyunzhi.eduPlanner.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -11,13 +12,12 @@ public class CourseInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_week")
-    private Long startWeek;
+    private Long weekType;
 
-    @Column(name = "end_week")
-    private Long endWeek;
-
-    private Long type;
+    @ElementCollection
+    @CollectionTable(name = "course_weeks", joinColumns = @JoinColumn(name = "course_info_id"))
+    @Column(name = "week")
+    private List<Integer> weeks;
 
     private Long day;
 
@@ -28,4 +28,8 @@ public class CourseInfo {
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
 }

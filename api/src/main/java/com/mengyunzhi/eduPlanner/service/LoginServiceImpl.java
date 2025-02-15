@@ -87,10 +87,9 @@ public class LoginServiceImpl implements LoginService {
         // 如果当前登录用户为学生，查找出该学生对应的学校id
         if (role == 1) {
             Student student = this.studentRepository.findByUserId(userId);
-            Clazz clazz = student.getClazz();
+            School school = student.getSchool();
             String name = student.getName();
             String no = student.getSno();
-            School school = clazz.getSchool();
             Long schoolId = school.getId();
             CurrentUser userDetails = new CurrentUser(
                     user.get().getId(),

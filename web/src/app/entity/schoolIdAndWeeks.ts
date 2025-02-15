@@ -1,4 +1,4 @@
-export interface SchoolIdAndWeeks {
+export interface schoolIdAndWeeks {
   schoolId: number;
   weeks: number;
 }

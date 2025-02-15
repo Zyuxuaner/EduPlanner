@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface SchoolService {
-    Response<Void> deleteSchool(Long id);
+//    Response<Void> deleteSchool(Long id);
 
     /**
      * 获取所有学校

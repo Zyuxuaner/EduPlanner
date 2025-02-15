@@ -1,9 +1,7 @@
 package com.mengyunzhi.eduPlanner.service;
 
 import com.mengyunzhi.eduPlanner.dto.Response;
-import com.mengyunzhi.eduPlanner.entity.Clazz;
 import com.mengyunzhi.eduPlanner.entity.School;
-import com.mengyunzhi.eduPlanner.repository.ClazzRepository;
 import com.mengyunzhi.eduPlanner.repository.SchoolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +20,9 @@ public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolRepository schoolRepository;
 
-    private final ClazzRepository clazzRepository;
-
     @Autowired
-    private SchoolServiceImpl(SchoolRepository schoolRepository, ClazzRepository clazzRepository) {
+    private SchoolServiceImpl(SchoolRepository schoolRepository) {
         this.schoolRepository = schoolRepository;
-        this.clazzRepository = clazzRepository;
     }
 
     @Override
@@ -76,14 +71,14 @@ public class SchoolServiceImpl implements SchoolService {
         }
     }
 
-    @Override
-    public Response<Void> deleteSchool(Long id) {
-        // 先删除关联的 clazz 记录
-        List<Clazz> clazzes = clazzRepository.findBySchoolId(id);
-        clazzRepository.deleteAll(clazzes);
-
-        schoolRepository.deleteById(id);
-
-        return new Response<>(true,"删除成功",null);
-    }
+//    @Override
+//    public Response<Void> deleteSchool(Long id) {
+//        // 先删除关联的 clazz 记录
+//        List<Clazz> clazzes = clazzRepository.findBySchoolId(id);
+//        clazzRepository.deleteAll(clazzes);
+//
+//        schoolRepository.deleteById(id);
+//
+//        return new Response<>(true,"删除成功",null);
+//    }
 }
