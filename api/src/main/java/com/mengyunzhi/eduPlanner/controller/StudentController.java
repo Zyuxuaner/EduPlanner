@@ -23,11 +23,11 @@ public class StudentController {
         return this.studentService.changeStatus(id,status);
     }
 
-//    @PostMapping("/add")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Response<Void> save(@RequestBody StudentRequest studentRequest) {
-//         return this.studentService.save(studentRequest);
-//    }
+    @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response<Void> save(@RequestBody StudentRequest studentRequest) {
+         return this.studentService.save(studentRequest);
+    }
 
     @GetMapping("/getAll")
     public List<Student> getAll() {

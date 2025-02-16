@@ -71,14 +71,9 @@ public class SchoolServiceImpl implements SchoolService {
         }
     }
 
-//    @Override
-//    public Response<Void> deleteSchool(Long id) {
-//        // 先删除关联的 clazz 记录
-//        List<Clazz> clazzes = clazzRepository.findBySchoolId(id);
-//        clazzRepository.deleteAll(clazzes);
-//
-//        schoolRepository.deleteById(id);
-//
-//        return new Response<>(true,"删除成功",null);
-//    }
+    @Override
+    public Response<Void> deleteSchool(Long id) {
+        schoolRepository.deleteById(id);
+        return new Response<>(true,"删除成功",null);
+    }
 }

@@ -64,10 +64,11 @@ public class TermServiceImpl implements TermService {
     }
 
     @Override
-    public Term save(Term term) {
+    public Response<Term> save(Term term) {
         // 新增学期，状态默认为冻结（status = 0）
         term.setStatus(0L);
-        return this.termRepository.save(term);
+        termRepository.save(term);
+        return new Response<>(true,"新增成功",null);
     }
 
     @Override

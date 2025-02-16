@@ -27,8 +27,8 @@ public class TermController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody Term term) {
-         this.termService.save(term);
+    public Response<Term> add(@RequestBody Term term) {
+         return this.termService.save(term);
     }
 
     @GetMapping("/active/{id}")

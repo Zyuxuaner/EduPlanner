@@ -17,17 +17,20 @@ export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
   schoolIdControl = new FormControl();
   schools: School[] = [];
 
-  @Output() schoolIdChange = new EventEmitter<number>();
+  @Output() schoolChange = new EventEmitter<School>();
 
-  constructor(private schoolService: SchoolService,) {
+  constructor(private schoolService: SchoolService) {
   }
 
   ngOnInit(): void {
     this.schoolService.getAll().subscribe(schools => {
       this.schools = schools;
 
-      this.schoolIdControl.valueChanges.subscribe(value => {
-        this.schoolIdChange.emit(value);
+      this.schoolIdControl.valueChanges.subscribe((id: number) => {
+        const selectedSchool = this.schools.find(school => school.id === id);
+        if (selectedSchool) {
+          this.schoolChange.emit(selectedSchool);
+        }
       });
     })
   }
@@ -38,9 +41,12 @@ export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
       }
   }
 
-  registerOnChange(fn: (schoolId: number) => void): void {
+  registerOnChange(fn: (schoolId: School) => void): void {
     this.schoolIdControl.valueChanges.subscribe((value: number) => {
-      fn(value);
+      const selectedSchool = this.schools.find(school => school.id === value);
+      if (selectedSchool) {
+        fn(selectedSchool);
+      }
     });
   }
   registerOnTouched(fn: any): void {

@@ -31,14 +31,14 @@ export class SchoolComponent implements OnInit {
   }
 
   onDelete(schoolsId: number): void {
-    // this.schoolService.deleteSchool(schoolsId).subscribe(response => {
-    //   if (response.status) {
-    //     this.commonService.showSuccessAlert(response.message);
-    //     this.getAll();
-    //   } else {
-    //     this.commonService.showErrorAlert(response.message);
-    //   }
-    // })
+    this.schoolService.deleteSchool(schoolsId).subscribe(response => {
+      if (response.status) {
+        this.commonService.showSuccessAlert(response.message);
+        this.getAll();
+      } else {
+        this.commonService.showErrorAlert(response.message);
+      }
+    })
   }
 
   onSearch(): void {
