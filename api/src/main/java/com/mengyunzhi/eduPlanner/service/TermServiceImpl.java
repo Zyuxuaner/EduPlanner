@@ -162,9 +162,6 @@ public class TermServiceImpl implements TermService {
             if (term.getName() != null) {
                 existingTerm.setName(term.getName());
             }
-            if (term.getStatus() != null) {
-                existingTerm.setStatus(term.getStatus());
-            }
             if (term.getStartTime() != null) {
                 existingTerm.setStartTime(term.getStartTime());
             }

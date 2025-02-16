@@ -14,10 +14,10 @@ import {SchoolService} from "../../service/school.service";
   }]
 })
 export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
-  schoolIdControl = new FormControl();
+  schoolIdControl = new FormControl<number | null>(null);
   schools: School[] = [];
 
-  @Output() schoolChange = new EventEmitter<School>();
+  @Output() schoolChange = new EventEmitter<School | null>();
 
   constructor(private schoolService: SchoolService) {
   }
@@ -26,31 +26,27 @@ export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
     this.schoolService.getAll().subscribe(schools => {
       this.schools = schools;
 
-      this.schoolIdControl.valueChanges.subscribe((id: number) => {
-        const selectedSchool = this.schools.find(school => school.id === id);
-        if (selectedSchool) {
-          this.schoolChange.emit(selectedSchool);
-        }
+      this.schoolIdControl.valueChanges.subscribe((id: number | null) => {
+        const selectedSchool = id != null
+          ? this.schools.find(school => school.id === id)
+          : null;
+        this.schoolChange.emit(selectedSchool ?? null);
       });
-    })
-  }
-
-  writeValue(schoolId: number): void {
-      if (schoolId) {
-          this.schoolIdControl.setValue(schoolId);
-      }
-  }
-
-  registerOnChange(fn: (schoolId: School) => void): void {
-    this.schoolIdControl.valueChanges.subscribe((value: number) => {
-      const selectedSchool = this.schools.find(school => school.id === value);
-      if (selectedSchool) {
-        fn(selectedSchool);
-      }
     });
   }
+
+  writeValue(schoolId: number | null): void {
+    this.schoolIdControl.setValue(schoolId);
+  }
+
+  registerOnChange(fn: (id: number | null) => void): void {
+    this.schoolIdControl.valueChanges.subscribe(fn);
+  }
+
   registerOnTouched(fn: any): void {
   }
+
   setDisabledState?(isDisabled: boolean): void {
+    isDisabled ? this.schoolIdControl.disable() : this.schoolIdControl.enable();
   }
 }
