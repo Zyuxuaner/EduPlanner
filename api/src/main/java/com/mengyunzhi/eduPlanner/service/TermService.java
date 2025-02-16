@@ -26,7 +26,7 @@ public interface TermService {
      * @param term
      * @return
      */
-    Term save(Term term);
+    Response<Term> save(Term term);
 
     /**
      * 获取所有学期

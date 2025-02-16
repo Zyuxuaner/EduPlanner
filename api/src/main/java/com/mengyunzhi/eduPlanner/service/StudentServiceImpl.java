@@ -2,8 +2,10 @@ package com.mengyunzhi.eduPlanner.service;
 
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.dto.StudentRequest;
+import com.mengyunzhi.eduPlanner.entity.School;
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.User;
+import com.mengyunzhi.eduPlanner.repository.SchoolRepository;
 import com.mengyunzhi.eduPlanner.repository.StudentRepository;
 import com.mengyunzhi.eduPlanner.repository.UserRepository;
 import org.slf4j.Logger;
@@ -28,37 +30,49 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 
+    private final SchoolRepository schoolRepository;
+
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, SchoolRepository schoolRepository) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
+        this.schoolRepository = schoolRepository;
     }
 
-//    @Override
-//    public Response<Void> save(StudentRequest studentRequest) {
-//        if (studentRepository.existsBySno(studentRequest.getSno())) {
-//            return new Response<>(false, "该学号已存在", null);
-//        }
-//
-//        Long role = 1L;
-//        Long status = 1L;
-//        User user = new User();
-//        user.setUsername(studentRequest.getUsername());
-//        user.setPassword(studentRequest.getSno());
-//        user.setRole(role);
-//
-//        user = userRepository.save(user);
-//
-//        Student student = new Student();
-//        student.setName(studentRequest.getName());
-//        student.setSno(studentRequest.getSno());
-//        student.setStatus(status);
-//        student.setClazz(studentRequest.getClazz());
-//        student.setUser(user);
-//
-//        this.studentRepository.save(student);
-//        return new Response<>(true, "新增成功", null);
-//    }
+    @Override
+    public Response<Void> save(StudentRequest studentRequest) {
+        // 检查学号是否已存在
+        if (studentRepository.existsBySno(studentRequest.getSno())) {
+            return new Response<>(false, "该学号已存在", null);
+        }
+
+        // 获取学校信息
+        Long schoolId = studentRequest.getSchool().getId();
+        School school = schoolRepository.findById(schoolId)
+                .orElseThrow(() -> new IllegalArgumentException("未找到对应的学校信息"));
+
+        // 创建用户
+        Long role = 1L;
+        Long status = 1L;
+        User user = new User();
+        user.setUsername(studentRequest.getUsername());
+        user.setPassword(studentRequest.getSno());
+        user.setRole(role);
+
+        user = userRepository.save(user);
+
+        // 创建学生
+        Student student = new Student();
+        student.setName(studentRequest.getName());
+        student.setSno(studentRequest.getSno());
+        student.setStatus(status);
+        student.setUser(user);
+        student.setSchool(school);
+
+        // 保存学生信息
+        this.studentRepository.save(student);
+        return new Response<>(true, "新增成功", null);
+    }
 
     @Override
     public List<Student> getAll() {
@@ -154,9 +168,10 @@ public class StudentServiceImpl implements StudentService {
                 studentRepository.deleteByUserId(user.getId());
                 // 再删除用户记录
                 userRepository.delete(user);
+            } else {
+                // 删除学生记录
+                studentRepository.deleteById(id);
             }
-            // 删除学生记录
-            studentRepository.deleteById(id);
             return new Response<>(true, "删除成功", null);
         }
         return new Response<>(false, "未找到对应的学生记录", null);

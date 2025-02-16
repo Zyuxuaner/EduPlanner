@@ -4,6 +4,7 @@ import {StudentService} from "../service/student.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {CommonService} from "../service/common.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {School} from "../entity/school";
 
 @Component({
   selector: 'app-student',
@@ -37,8 +38,8 @@ export class StudentComponent implements OnInit {
   }
 
   // 当学校选择变化时，更新 schoolId
-  onSchoolChange(schoolId: number): void {
-    this.schoolId = schoolId;
+  onSchoolChange(schoolId: School): void {
+    // this.schoolId = schoolId;
   }
 
   onEdit(id: number): void {

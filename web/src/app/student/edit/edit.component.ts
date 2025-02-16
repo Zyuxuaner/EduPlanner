@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {StudentService} from "../../service/student.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {School} from "../../entity/school";
 
 @Component({
   selector: 'app-edit',
@@ -25,8 +26,8 @@ export class EditComponent implements OnInit {
   }
 
   // 当学校选择变化时，更新 schoolId
-  onSchoolChange(schoolId: number): void {
-    this.schoolId = schoolId;
+  onSchoolChange(schoolId: School): void {
+    // this.schoolId = schoolId;
   }
 
   ngOnInit(): void {
@@ -39,7 +40,7 @@ export class EditComponent implements OnInit {
           username: student.user.username
         });
         console.log(student);
-        this.onSchoolChange(student.school.id);
+        // this.onSchoolChange(student.school.id);
       }
     })
   }
