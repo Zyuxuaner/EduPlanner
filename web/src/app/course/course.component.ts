@@ -37,7 +37,6 @@ export class CourseComponent implements OnInit{
     this.termService.checkTerm().subscribe(termResponse => {
       if (termResponse.status) {
         const termData = termResponse.data;
-        console.log(termData);
         this.termId = termData.id;
       }
     });
@@ -79,7 +78,6 @@ export class CourseComponent implements OnInit{
   // 如果该用户下没有激活的学期，不进行页面跳转并提示用户
   checkBeforeAdd(): void {
     this.termService.checkTerm().subscribe(data => {
-      console.log(data);
       if (data.status) {
         this.router.navigate(['/course/add']);
       } else {

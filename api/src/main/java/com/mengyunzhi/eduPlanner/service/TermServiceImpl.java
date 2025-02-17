@@ -21,7 +21,7 @@ import java.util.Optional;
 public class TermServiceImpl implements TermService {
     private final static Logger logger = LoggerFactory.getLogger(TermServiceImpl.class);
 
-    private TermRepository termRepository;
+    private final TermRepository termRepository;
 
     @Autowired
     private TermServiceImpl(TermRepository termRepository) {

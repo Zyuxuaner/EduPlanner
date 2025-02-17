@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.service;
 
+import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.User;
 
 public interface UserService {
@@ -17,4 +18,6 @@ public interface UserService {
      * @return
      */
     User save(User user);
+
+    Response<String> changePassword(Long userId, String oldPassword, String newPassword);
 }

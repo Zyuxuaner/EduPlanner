@@ -3,6 +3,8 @@ import {Admin} from "../entity/admin";
 import {AdminService} from "../service/admin.service";
 import {CommonService} from "../service/common.service";
 import {LoginService} from "../service/login.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin',
@@ -17,10 +19,18 @@ export class AdminComponent implements OnInit {
   admins: Admin[] = [];
   currentAdminId: number | undefined;
   currentAdminRole: number | null = null;
+  searchForm: FormGroup;
 
   constructor(private adminService: AdminService,
               private commonService: CommonService,
-              private loginService: LoginService) {
+              private loginService: LoginService,
+              private formBuilder: FormBuilder,
+              private router: Router,
+              private route: ActivatedRoute) {
+    this.searchForm = this.formBuilder.group({
+      searchName: [''],
+      searchTeacherNo: ['']
+    });
   }
 
   ngOnInit(): void {
@@ -29,8 +39,6 @@ export class AdminComponent implements OnInit {
         this.currentAdminId = response.data.id;
         this.currentAdminRole = response.data.role;
       }
-      console.log(response);
-      console.log(this.currentAdminId);
     })
     this.getAllAdmins();
   }
@@ -46,7 +54,11 @@ export class AdminComponent implements OnInit {
   }
 
   onSearch(): void {
-
+    const searchName = this.searchForm.get('searchName')?.value;
+    const searchTeacherNo = this.searchForm.get('searchTeacherNo')?.value;
+    this.adminService.searchAdmins(searchName, searchTeacherNo).subscribe(data => {
+      this.admins = data;
+    });
   }
 
   onDelete(id: number): void {
@@ -61,7 +73,7 @@ export class AdminComponent implements OnInit {
   }
 
   onEdit(id: number): void {
-
+    this.router.navigate(['edit', id], { relativeTo: this.route });
   }
 
   resetPassword(id: number): void {

@@ -47,7 +47,7 @@ export class EditComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if(this.formGroup.valid) {
+    if (this.formGroup.valid) {
       const studentData = { ...this.formGroup.value, id: this.id };
       // 将 school_id 替换为完整的 School 对象
       if (this.selectedSchool) {

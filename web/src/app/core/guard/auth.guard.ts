@@ -16,7 +16,6 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.loginService.isLogin$.pipe(map(login => {
       if (login) {
-        console.log(login);
         return true;
       } else {
         console.log('用户未认证');

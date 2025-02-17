@@ -56,11 +56,9 @@ export class AdminDashboardComponent implements OnInit{
 
   getAllSchoolIdsAndStartTime() {
     this.termService.getAllSchoolIdsAndStartTime().subscribe(response => {
-      console.log('response',response);
       if (response.status){
         this.schoolIdAndStartTimeData = response.data;
         this.calculateSchoolWeeks(this.schoolIdAndStartTimeData);
-        console.log('schoolIdAndWeeksData',this.schoolIdAndWeeksData);
         this.getAllCourseInfo();
         this.mergeSchoolData();
       }
