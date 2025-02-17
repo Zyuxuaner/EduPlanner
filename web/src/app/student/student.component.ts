@@ -4,7 +4,7 @@ import {StudentService} from "../service/student.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {CommonService} from "../service/common.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {School} from "../entity/school";
+import {SchoolImpl} from "../entity/school";
 
 @Component({
   selector: 'app-student',
@@ -12,10 +12,9 @@ import {School} from "../entity/school";
   styleUrls: ['./student.component.css']
 })
 export class StudentComponent implements OnInit {
-  schoolId: number | null = null;
+  selectedSchool: SchoolImpl | null = null;
   formGroup: FormGroup = new FormGroup({
     schoolId: new FormControl(),
-    clazzId: new FormControl(),
     searchName: new FormControl(),
     searchStudentSno: new FormControl()
   });
@@ -37,9 +36,9 @@ export class StudentComponent implements OnInit {
     });
   }
 
-  // 当学校选择变化时，更新 schoolId
-  onSchoolChange(schoolId: School): void {
-    // this.schoolId = schoolId;
+  // 当学校选择变化时，更新 school
+  onSchoolChange(school: SchoolImpl | null): void {
+    this.selectedSchool = school;
   }
 
   onEdit(id: number): void {
@@ -60,8 +59,9 @@ export class StudentComponent implements OnInit {
   }
 
   onSearch(): void {
-    const { schoolId, clazzId, searchName, searchStudentSno } = this.formGroup.value;
-    this.studentService.search(schoolId, clazzId, searchName, searchStudentSno).subscribe(data => {
+    const { schoolId, searchName, searchStudentSno } = this.formGroup.value;
+    console.log(schoolId, searchName, searchStudentSno);
+    this.studentService.search(schoolId, searchName, searchStudentSno).subscribe(data => {
       this.students = data;
     });
   }

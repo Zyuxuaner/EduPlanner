@@ -20,7 +20,6 @@ export class AddComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    console.log(this.formGroup.value);
   }
 
   constructor(private studentService: StudentService,
@@ -38,7 +37,6 @@ export class AddComponent implements OnInit {
       username: formValue.username!,
       sno: formValue.sno!,
     };
-    console.log(student);
     this.studentService.add(student).subscribe(response => {
       if (response.status) {
         this.commonService.showSuccessAlert(response.message);
@@ -49,8 +47,8 @@ export class AddComponent implements OnInit {
     });
   }
 
-  // 当学校选择变化时，更新 schoolId
-  onSchoolChange(school: SchoolImpl): void {
+  // 当学校选择变化时，更新 selectedSchool
+  onSchoolChange(school: SchoolImpl | null): void {
     this.selectedSchool = school;
   }
 }

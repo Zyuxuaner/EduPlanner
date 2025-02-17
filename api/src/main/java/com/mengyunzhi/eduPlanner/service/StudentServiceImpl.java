@@ -127,16 +127,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> search(Long schoolId, Long clazzId, String searchName, String searchStudentSno) {
+    public List<Student> search(Long schoolId, String searchName, String searchStudentSno) {
         Specification<Student> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (schoolId != null) {
-                predicates.add(criteriaBuilder.equal(root.get("clazz").get("school").get("id"), schoolId));
-            }
-
-            if (clazzId != null) {
-                predicates.add(criteriaBuilder.equal(root.get("clazz").get("id"), clazzId));
+                predicates.add(criteriaBuilder.equal(root.get("school").get("id"), schoolId));
             }
 
             if (searchName != null && !searchName.isEmpty()) {
@@ -175,5 +171,30 @@ public class StudentServiceImpl implements StudentService {
             return new Response<>(true, "删除成功", null);
         }
         return new Response<>(false, "未找到对应的学生记录", null);
+    }
+
+    @Override
+    public Student updateStudent(Long id, StudentRequest studentRequest) {
+        return studentRepository.findById(id)
+                .map(student -> {
+                    // 更新基本信息
+                    if (studentRequest.getName() != null) {
+                        student.setName(studentRequest.getName());
+                    }
+                    if (studentRequest.getUsername() != null && student.getUser() != null) {
+                        student.getUser().setUsername(studentRequest.getUsername());
+                    }
+                    if (studentRequest.getSno() != null) {
+                        student.setSno(studentRequest.getSno());
+                    }
+
+                    // 直接使用DTO中的School对象
+                    if (studentRequest.getSchool() != null) {
+                        student.setSchool(studentRequest.getSchool());
+                    }
+
+                    return studentRepository.save(student);
+                })
+                .orElse(null); // 学生不存在时返回null
     }
 }
