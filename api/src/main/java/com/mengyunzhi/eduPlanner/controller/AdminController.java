@@ -3,6 +3,7 @@ package com.mengyunzhi.eduPlanner.controller;
 import com.mengyunzhi.eduPlanner.dto.AdminRequest;
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.Admin;
+import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
 import com.mengyunzhi.eduPlanner.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,10 @@ public class AdminController {
     @DeleteMapping("delete/{id}")
     public Response<Void> delete(@PathVariable Long id) {
         return this.adminService.delete(id);
+    }
+
+    @PatchMapping("/resetPassword/{id}")
+    public Response<Admin> resetPassword(@PathVariable Long id, @RequestBody String newPassword) {
+        return this.adminService.resetPassword(id,newPassword);
     }
 }

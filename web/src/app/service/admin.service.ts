@@ -23,4 +23,8 @@ export class AdminService {
   delete(id: number): Observable<ResponseBody> {
     return this.httpClient.delete<ResponseBody>(`${this.baseUrl}/delete/${id}`);
   }
+
+  resetPassword(id: number, newPassword: string): Observable<ResponseBody> {
+    return this.httpClient.patch<ResponseBody>(`${this.baseUrl}/resetPassword/${id}`, newPassword);
+  }
 }

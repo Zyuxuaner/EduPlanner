@@ -21,4 +21,6 @@ public interface AdminService {
     List<Admin> getAll();
 
     Response<Void> delete(Long id);
+
+    Response<Admin> resetPassword(Long id, String newPassword);
 }
