@@ -60,7 +60,6 @@ export class StudentComponent implements OnInit {
 
   onSearch(): void {
     const { schoolId, searchName, searchStudentSno } = this.formGroup.value;
-    console.log(schoolId, searchName, searchStudentSno);
     this.studentService.search(schoolId, searchName, searchStudentSno).subscribe(data => {
       this.students = data;
     });

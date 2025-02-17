@@ -60,7 +60,6 @@ export class AdminScheduleComponent implements OnInit{
 
       this.courseService.getAllStudentsCourse(params).subscribe(
         data => {
-          console.log(data.data);
           this.schedule = this.convertToWeeklySchedule(data.data);
         }
       );

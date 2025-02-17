@@ -3,12 +3,9 @@ package com.mengyunzhi.eduPlanner.controller;
 import com.mengyunzhi.eduPlanner.dto.AdminRequest;
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.Admin;
-import com.mengyunzhi.eduPlanner.entity.Student;
-import com.mengyunzhi.eduPlanner.entity.Term;
 import com.mengyunzhi.eduPlanner.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +15,6 @@ import java.util.logging.Logger;
 @RequestMapping("Admin")
 public class AdminController {
     private final static Logger logger = Logger.getLogger(AdminController.class.getName());
-
-    @Autowired
-    JdbcTemplate jdbcTemplate;
 
     @Autowired
     AdminService adminService;
@@ -44,5 +38,20 @@ public class AdminController {
     @PatchMapping("/resetPassword/{id}")
     public Response<Admin> resetPassword(@PathVariable Long id, @RequestBody String newPassword) {
         return this.adminService.resetPassword(id,newPassword);
+    }
+
+    @GetMapping("/search")
+    public List<Admin> searchAdmins(@RequestParam(required = false) String name, @RequestParam(required = false) String ano) {
+        return adminService.searchAdmins(name, ano);
+    }
+
+    @GetMapping("/getAdminById/{id}")
+    public Admin getAdminById(@PathVariable Long id) {
+        return adminService.getAdminById(id);
+    }
+
+    @PatchMapping("/update/{id}")
+    public Response<Admin> updateTerm(@PathVariable Long id, @RequestBody AdminRequest adminRequest) {
+        return this.adminService.updateAdmin(id, adminRequest);
     }
 }

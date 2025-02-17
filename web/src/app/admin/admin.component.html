@@ -1,9 +1,9 @@
 <nav class="navbar navbar-light bg-light">
-  <form class="form-inline">
-    <input name="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入姓名" aria-label="Search" >
-    <input name="searchTeacherNo" class="form-control mr-sm-2" type="search" placeholder="请输入工号" aria-label="Search" >
+  <form [formGroup]="searchForm" class="form-inline">
+    <input formControlName="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入姓名" aria-label="Search">
+    <input formControlName="searchTeacherNo" class="form-control mr-sm-2" type="search" placeholder="请输入工号" aria-label="Search">
     <span class="btn btn-outline-success my-2 my-sm-0" (click)="onSearch()">
-          <i class="fa fa-search" aria-hidden="true"></i>查询
+      <i class="fa fa-search" aria-hidden="true"></i>查询
     </span>
   </form>
 </nav>

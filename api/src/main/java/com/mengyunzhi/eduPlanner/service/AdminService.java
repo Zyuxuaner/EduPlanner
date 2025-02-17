@@ -23,4 +23,10 @@ public interface AdminService {
     Response<Void> delete(Long id);
 
     Response<Admin> resetPassword(Long id, String newPassword);
+
+    List<Admin> searchAdmins(String name, String ano);
+
+    Admin getAdminById(Long id);
+
+    Response<Admin> updateAdmin(Long id, AdminRequest adminRequest);
 }

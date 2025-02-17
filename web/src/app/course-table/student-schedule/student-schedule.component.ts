@@ -69,7 +69,6 @@ export class StudentScheduleComponent implements OnInit{
         this.termMessage = AllData.term;
         // 获取到 term ，开始计算当前周
         this.getCurrentWeek();
-        console.log(this.selectedWeek);
         this.getCourseInfoByStudent();
       }
     })

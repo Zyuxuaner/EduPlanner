@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable, Subject, tap} from "rxjs";
+import {Observable} from "rxjs";
 import {Admin} from "../entity/admin";
 import {ResponseBody} from "../entity/response-body";
 
@@ -26,5 +26,18 @@ export class AdminService {
 
   resetPassword(id: number, newPassword: string): Observable<ResponseBody> {
     return this.httpClient.patch<ResponseBody>(`${this.baseUrl}/resetPassword/${id}`, newPassword);
+  }
+
+  searchAdmins(name: string, ano: string): Observable<Admin[]> {
+    const params = { name, ano };
+    return this.httpClient.get<Admin[]>(`${this.baseUrl}/search`, { params });
+  }
+
+  getAdminById(id: number): Observable<Admin> {
+    return this.httpClient.get<Admin>(`${this.baseUrl}/getAdminById/${id}`);
+  }
+
+  updateAdmin(admin: any): Observable<ResponseBody> {
+    return this.httpClient.patch<ResponseBody>(`${this.baseUrl}/update/${admin.id}`, admin);
   }
 }
