@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {School, SchoolImpl} from "../../entity/school";
 import {TermService} from "../../service/term.service";
 import {Router} from "@angular/router";
+import {CommonService} from "../../service/common.service";
 
 @Component({
   selector: 'app-add',
@@ -18,7 +19,8 @@ export class AddComponent implements OnInit {
   });
 
   constructor(private termService: TermService,
-              private router: Router) {
+              private router: Router,
+              private commonService: CommonService) {
   }
 
   ngOnInit(): void {
@@ -59,8 +61,13 @@ export class AddComponent implements OnInit {
       endTime: new Date(formValue.endTime!).getTime(),
       school: new SchoolImpl(schoolId, 'undefined')
     } as {name: string; startTime: number; endTime: number; school: School};
-    this.termService.add(term).subscribe(value => {
-      this.router.navigate(['/term']);
+    this.termService.add(term).subscribe(response => {
+      if (response.status) {
+        this.commonService.showSuccessAlert(response.message);
+        this.router.navigate(['/term']);
+      } else {
+        this.commonService.showErrorAlert(response.message);
+      }
     });
   }
 }

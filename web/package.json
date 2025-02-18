@@ -24,7 +24,7 @@
     "autoprefixer": "^10.4.20",
     "bootstrap": "^4.6.0",
     "jquery": "^3.5.1",
-    "ng-zorro-antd": "^15.1.0",
+    "ng-zorro-antd": "^15.1.1",
     "popper.js": "^1.16.1",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.14.1",

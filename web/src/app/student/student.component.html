@@ -1,7 +1,7 @@
 <nav class="navbar navbar-light bg-light">
   <form class="form-inline" [formGroup]="formGroup">
     <div class="mr-2" >
-      <app-school-select formControlName="schoolId" (schoolIdChange)="onSchoolChange($event)"></app-school-select>
+      <app-school-select formControlName="schoolId" (schoolChange)="onSchoolChange($event)"></app-school-select>
     </div>
     <div>
       <input formControlName="searchName" name="searchName" class="form-control mr-sm-2" type="search" placeholder="请输入学生姓名" aria-label="Search" >

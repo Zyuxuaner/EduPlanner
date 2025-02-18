@@ -24,38 +24,40 @@ import {CourseModule} from "./course/course.module";
 import {MeModule} from "./me/me.module";
 import { AdminDashboardComponent } from './dashboard/admin-dashboard/admin-dashboard.component';
 import {MyScheduleModule} from "./my-schedule/my-schedule.module";
+import {WeekSelectorModule} from "./core/week-selector/week-selector.module";
 
 registerLocaleData(zh);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DashboardComponent,
-    LayoutComponent,
-    LoginComponent,
-    AdminDashboardComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HeaderModule,
-    NavModule,
-    AdminModule,
-    HttpClientModule,
-    AuthTokenInterceptorModule,
-    // ApiMockModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    SchoolSelectModule,
-    CourseTableModule,
-    ReactiveFormsModule,
-    CourseModule,
-    MeModule,
-    MyScheduleModule
-  ],
-  providers: [
-    { provide: NZ_I18N, useValue: zh_CN }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        DashboardComponent,
+        LayoutComponent,
+        LoginComponent,
+        AdminDashboardComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HeaderModule,
+        NavModule,
+        AdminModule,
+        HttpClientModule,
+        AuthTokenInterceptorModule,
+        // ApiMockModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        SchoolSelectModule,
+        CourseTableModule,
+        ReactiveFormsModule,
+        CourseModule,
+        MeModule,
+        MyScheduleModule,
+        WeekSelectorModule
+    ],
+    providers: [
+        {provide: NZ_I18N, useValue: zh_CN}
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

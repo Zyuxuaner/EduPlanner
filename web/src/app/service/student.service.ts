@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Student} from "../entity/student";
-import {Clazz} from "../entity/clazz";
-import {School} from "../entity/school";
+import {SchoolImpl} from "../entity/school";
 import {ResponseBody} from "../entity/response-body";
 
 @Injectable({
@@ -13,7 +12,7 @@ export class StudentService {
   private baseUrl = 'http://localhost:8080/Student';
   constructor(private httpClient: HttpClient) { }
 
-  add(student: {school: School, clazz: Clazz, name: string, username: string, sno: string}): Observable<ResponseBody> {
+  add(student: {school: SchoolImpl, name: string, username: string, sno: string}): Observable<ResponseBody> {
     return this.httpClient.post<ResponseBody>(`${this.baseUrl}/add`, student);
   }
 
@@ -37,22 +36,25 @@ export class StudentService {
     return this.httpClient.patch<ResponseBody>(`${this.baseUrl}/resetPassword/${id}`, newPassword);
   }
 
-  search(schoolId: number | null, clazzId: number | null, searchName: string, searchStudentSno: string): Observable<Student[]> {
-    let url = `${this.baseUrl}/search?`;
+  search(schoolId: number | null, searchName: string, searchStudentSno: string): Observable<Student[]> {
+    let params = new HttpParams();
+
     if (schoolId) {
-      url += `schoolId=${schoolId}&`;
+      params = params.set('schoolId', schoolId);
     }
-    if (clazzId) {
-      url += `clazzId=${clazzId}&`;
-    }
+
     if (searchName) {
-      url += `searchName=${searchName}&`;
+      params = params.set('searchName', searchName);
     }
+
     if (searchStudentSno) {
-      url += `searchStudentSno=${searchStudentSno}&`;
+      params = params.set('searchStudentSno', searchStudentSno);
     }
-    // 移除最后一个多余的 &
-    url = url.replace(/&$/, '');
-    return this.httpClient.get<Student[]>(url);
+
+    return this.httpClient.get<Student[]>(`${this.baseUrl}/search`, { params });
+  }
+
+  updateStudent(student: any): Observable<ResponseBody> {
+    return this.httpClient.patch<ResponseBody>(`${this.baseUrl}/update/${student.id}`, student);
   }
 }

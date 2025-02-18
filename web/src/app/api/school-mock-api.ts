@@ -18,7 +18,6 @@ export class SchoolMockApi implements MockApiInterface {
           url: '/school/add',
           result: (urlMatcher: any, options: {body: {name: string, id: number}}) => {
             let body = options.body;
-            console.log(body);
             return {
               id: Math.floor(Math.random() * 10000),
               name: body.name

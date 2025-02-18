@@ -37,24 +37,19 @@ public class CourseController {
         this.termService = termService;
     }
 
+    @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response<String> add(@RequestBody CourseDto.SaveRequest saveRequest) {
 
 
-//    @PostMapping("/add")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Response<Void> add(@RequestBody CourseDto.SaveRequest saveRequest) {
-//        if (!courseService.isTimeLegal(saveRequest)) {
-//            return new Response<>(false, "课程时间冲突，请重新添加", null);
-//        }
-//
-//        Response<CurrentUser> currentUser = loginService.getCurrentLoginUser();
-//        logger.info("currentUser:" + currentUser);
-//        Long userId = currentUser.getData().getId();
-//        Long schoolId = currentUser.getData().getSchoolId();
-//
-//        courseService.save(saveRequest, userId, schoolId);
-//        return new Response<>(true, "课程新增成功", null);
-//    }
-//
+        Response<CurrentUser> currentUser = loginService.getCurrentLoginUser();
+        Long userId = currentUser.getData().getId();
+        Long schoolId = currentUser.getData().getSchoolId();
+
+        courseService.save(saveRequest, userId, schoolId);
+        return Response.success("课程新增成功");
+    }
+
 //    /**
 //     * 根据当前登录用户的 clazzId 和 studentId 获取有关该用户的全部课程
 //     * @return List<CourseResponse>

@@ -11,16 +11,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author zhangyuxuan
+ */
 public interface CourseService {
-//    /**
-//     * 新增课程
-//     * @param saveRequest 新增的课程
-//     * @param userId 登录用户的id
-//     * @param schoolId 登录用户的 学校id
-//     * @return course
-//     */
-//    Course save(CourseDto.SaveRequest saveRequest, Long userId, Long schoolId);
-//
+    /**
+     * 新增课程
+     * @param saveRequest 新增的课程
+     * @param userId 登录用户的id
+     * @param schoolId 登录用户的 学校id
+     * @return course
+     */
+    Response<String> save(CourseDto.SaveRequest saveRequest, Long userId, Long schoolId);
+
 //    /**
 //     * 获取课程列表
 //     * @param clazzId 当前登录用户的班级id

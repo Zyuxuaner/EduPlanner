@@ -38,20 +38,8 @@ public class UserController {
             return new Response<>(false, "用户未登录", null);
         }
         Long userId = currentUserResponse.getData().getId();
-        User user = userService.findById(userId);
-        if (user == null) {
-            return new Response<>(false, "用户不存在", null);
-        }
 
-        // 验证旧密码
-        if (!user.getPassword().equals(oldPassword)) {
-            return new Response<>(false, "旧密码错误", null);
-        }
-
-        // 更新密码
-        user.setPassword(newPassword);
-        userService.save(user);
-
-        return new Response<>(true, "密码修改成功", null);
+        // 调用服务层方法修改密码
+        return userService.changePassword(userId, oldPassword, newPassword);
     }
 }

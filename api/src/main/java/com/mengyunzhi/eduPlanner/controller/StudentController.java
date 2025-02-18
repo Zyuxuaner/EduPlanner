@@ -23,11 +23,11 @@ public class StudentController {
         return this.studentService.changeStatus(id,status);
     }
 
-//    @PostMapping("/add")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Response<Void> save(@RequestBody StudentRequest studentRequest) {
-//         return this.studentService.save(studentRequest);
-//    }
+    @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response<Void> save(@RequestBody StudentRequest studentRequest) {
+         return this.studentService.save(studentRequest);
+    }
 
     @GetMapping("/getAll")
     public List<Student> getAll() {
@@ -50,15 +50,28 @@ public class StudentController {
     @GetMapping("/search")
     public List<Student> searchStudents(
             @RequestParam(required = false) Long schoolId,
-            @RequestParam(required = false) Long clazzId,
             @RequestParam(required = false) String searchName,
             @RequestParam(required = false) String searchStudentSno
     ) {
-        return studentService.search(schoolId, clazzId, searchName, searchStudentSno);
+        return studentService.search(schoolId, searchName, searchStudentSno);
     }
 
     @GetMapping("/getStudentById/{id}")
     public Student getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id);
+    }
+
+    @PatchMapping("/update/{id}")
+    public Response<Student> updateStudent(@PathVariable Long id, @RequestBody StudentRequest studentRequest) {
+        try {
+            Student updatedStudent = studentService.updateStudent(id, studentRequest);
+            if (updatedStudent != null) {
+                return new Response<>(true, "编辑成功", updatedStudent);
+            } else {
+                return Response.fail("未找到对应的学生信息，更新失败");
+            }
+        } catch (Exception e) {
+            return Response.fail("更新学生信息时发生错误：" + e.getMessage());
+        }
     }
 }

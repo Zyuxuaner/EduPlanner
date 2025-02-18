@@ -6,7 +6,7 @@
           <div class="mb-3 row">
             <label for="school_id" class="col-sm-2 col-form-label" id="school_id">学校：</label>
             <div class="col-sm-10">
-              <app-school-select formControlName="school_id" (schoolIdChange)="onSchoolChange($event)"></app-school-select>
+              <app-school-select formControlName="school_id" (schoolChange)="onSchoolChange($event)"></app-school-select>
               <div class="text-danger mt-1"
                    *ngIf="formGroup.get('school_id')?.invalid">
                 必须指定一个学校

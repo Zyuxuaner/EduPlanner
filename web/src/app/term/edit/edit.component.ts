@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TermService} from "../../service/term.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CommonService} from "../../service/common.service";
+import {SchoolImpl} from "../../entity/school";
 
 @Component({
   selector: 'app-edit',
@@ -11,6 +12,7 @@ import {CommonService} from "../../service/common.service";
 })
 export class EditComponent implements OnInit {
   formGroup: FormGroup;
+  selectedSchool: SchoolImpl | null = null;
   readonly id = Number(this.route.snapshot.paramMap.get('id'));
 
   constructor(
@@ -51,12 +53,19 @@ export class EditComponent implements OnInit {
           endTime: term.endTime
         });
       }
+      // 保存完整的 School 对象，用于提交时使用
+      this.selectedSchool = term.school;
     });
   }
 
   onSubmit(): void {
     if (this.formGroup?.valid) {
       const termData = { ...this.formGroup.value, id: this.id };
+      // 将 school_id 替换为完整的 School 对象
+      if (this.selectedSchool) {
+        termData.school = this.selectedSchool;
+        delete termData.school_id;
+      }
       this.termService.updateTerm(termData).subscribe(response => {
         if (response.status) {
           this.commonService.showSuccessAlert(response.message);
@@ -66,6 +75,11 @@ export class EditComponent implements OnInit {
         }
       });
     }
+  }
+
+  // 当学校选择变化时，更新 school
+  onSchoolChange(school: SchoolImpl | null): void {
+    this.selectedSchool = school;
   }
 
   disableEndDate = (endDate: Date): boolean => {
@@ -81,10 +95,20 @@ export class EditComponent implements OnInit {
   disableNotMonday = (current: Date): boolean => current.getDay()!== 1;
 
   onStartTimeChange(): void {
-    this.formGroup.get('endTime')?.updateValueAndValidity();
+    const startTime = this.formGroup.get('startTime')?.value;
+    const endTime = this.formGroup.get('endTime')?.value;
+    if (startTime && endTime && startTime >= endTime) {
+      // 只有当 startTime 大于等于 endTime 时才更新 endTime
+      this.formGroup.get('endTime')?.updateValueAndValidity();
+    }
   }
 
   onEndTimeChange(): void {
-    this.formGroup.get('startTime')?.updateValueAndValidity();
+    const startTime = this.formGroup.get('startTime')?.value;
+    const endTime = this.formGroup.get('endTime')?.value;
+    if (startTime && endTime && endTime <= startTime) {
+      // 只有当 endTime 小于等于 startTime 时才更新 startTime
+      this.formGroup.get('startTime')?.updateValueAndValidity();
+    }
   }
 }

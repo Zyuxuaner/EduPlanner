@@ -6,7 +6,6 @@ import com.mengyunzhi.eduPlanner.entity.Admin;
 import com.mengyunzhi.eduPlanner.entity.User;
 import com.mengyunzhi.eduPlanner.repository.AdminRepository;
 import com.mengyunzhi.eduPlanner.repository.UserRepository;
-import com.mengyunzhi.eduPlanner.service.validator.AdminValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.Optional;
 public class AdminServiceImpl implements AdminService {
     private final static Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
 
-    private AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
 
     @Autowired
     private AdminServiceImpl(AdminRepository adminRepository) {
@@ -29,13 +28,8 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private AdminValidator adminValidator;
-
     @Override
     public Response<Void> save(AdminRequest adminRequest) {
-//        adminValidator.validateAno(adminRequest.getAno().toString());
-
         if (adminRepository.existsByAno(adminRequest.getAno())) {
             return new Response<>(false, "该工号已存在", null);
         }
@@ -80,5 +74,66 @@ public class AdminServiceImpl implements AdminService {
         } catch (Exception e) {
             return new Response<>(false, "删除失败: " + e.getMessage(), null);
         }
+    }
+
+    @Override
+    public Response<Admin> resetPassword(Long id, String newPassword) {
+        // 根据 ID 查找管理员
+        Optional<Admin> optionalAdmin = adminRepository.findById(id);
+        if (optionalAdmin.isPresent()) {
+            Admin admin = optionalAdmin.get();
+            // 获取管理员对应的用户
+            if (admin.getUser() != null) {
+                User user = admin.getUser();
+                // 更新用户的密码
+                user.setPassword(newPassword);
+                // 保存更新后的用户信息到数据库
+                userRepository.save(user);
+                return new Response<>(true, "密码重置成功", admin);
+            } else {
+                return new Response<>(false, "管理员对应的用户信息为空，无法重置密码", null);
+            }
+        } else {
+            return new Response<>(false, "未找到对应的管理员信息", null);
+        }
+    }
+
+    @Override
+    public List<Admin> searchAdmins(String name, String ano) {
+        return adminRepository.searchAdmins(name, ano);
+    }
+
+    @Override
+    public Admin getAdminById(Long id) {
+        return this.adminRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Response<Admin> updateAdmin(Long id, AdminRequest adminRequest) {
+        Optional<Admin> optionalAdmin = adminRepository.findById(id);
+        if (!optionalAdmin.isPresent()) {
+            return new Response<>(false, "管理员不存在", null);
+        }
+        Admin admin = optionalAdmin.get();
+
+        // 更新 Admin 表中的字段
+        if (adminRequest.getName() != null) {
+            admin.setName(adminRequest.getName());
+        }
+        if (adminRequest.getAno() != null) {
+            admin.setAno(adminRequest.getAno());
+        }
+
+        // 更新关联的 User 表中的 username 字段
+        User user = admin.getUser();
+        if (user != null && adminRequest.getUsername() != null) {
+            user.setUsername(adminRequest.getUsername());
+            userRepository.save(user);
+        }
+
+        // 保存更新后的管理员信息
+        Admin updatedAdmin = adminRepository.save(admin);
+
+        return new Response<>(true, "管理员信息更新成功", updatedAdmin);
     }
 }

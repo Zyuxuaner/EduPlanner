@@ -14,37 +14,39 @@ import {SchoolService} from "../../service/school.service";
   }]
 })
 export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
-  schoolIdControl = new FormControl();
+  schoolIdControl = new FormControl<number | null>(null);
   schools: School[] = [];
 
-  @Output() schoolIdChange = new EventEmitter<number>();
+  @Output() schoolChange = new EventEmitter<School | null>();
 
-  constructor(private schoolService: SchoolService,) {
+  constructor(private schoolService: SchoolService) {
   }
 
   ngOnInit(): void {
     this.schoolService.getAll().subscribe(schools => {
       this.schools = schools;
 
-      this.schoolIdControl.valueChanges.subscribe(value => {
-        this.schoolIdChange.emit(value);
+      this.schoolIdControl.valueChanges.subscribe((id: number | null) => {
+        const selectedSchool = id != null
+          ? this.schools.find(school => school.id === id)
+          : null;
+        this.schoolChange.emit(selectedSchool ?? null);
       });
-    })
-  }
-
-  writeValue(schoolId: number): void {
-      if (schoolId) {
-          this.schoolIdControl.setValue(schoolId);
-      }
-  }
-
-  registerOnChange(fn: (schoolId: number) => void): void {
-    this.schoolIdControl.valueChanges.subscribe((value: number) => {
-      fn(value);
     });
   }
+
+  writeValue(schoolId: number | null): void {
+    this.schoolIdControl.setValue(schoolId);
+  }
+
+  registerOnChange(fn: (id: number | null) => void): void {
+    this.schoolIdControl.valueChanges.subscribe(fn);
+  }
+
   registerOnTouched(fn: any): void {
   }
+
   setDisabledState?(isDisabled: boolean): void {
+    isDisabled ? this.schoolIdControl.disable() : this.schoolIdControl.enable();
   }
 }

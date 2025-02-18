@@ -6,6 +6,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * @author zhangyuxuan
+ */
 @Entity
 @Data
 public class CourseInfo {
@@ -13,7 +16,8 @@ public class CourseInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long weekType;
+    @Column(name = "week_type")
+    private String weekType;
 
     @ElementCollection
     @CollectionTable(name = "course_weeks", joinColumns = @JoinColumn(name = "course_info_id"))

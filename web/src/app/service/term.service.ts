@@ -13,8 +13,8 @@ export class TermService {
 
   constructor(private httpClient: HttpClient) {}
 
-  add(term: {name: string, startTime: number, endTime: number, school: School}): Observable<Term> {
-    return this.httpClient.post<Term>(`${this.baseUrl}/add`, term);
+  add(term: {name: string, startTime: number, endTime: number, school: School}): Observable<ResponseBody> {
+    return this.httpClient.post<ResponseBody>(`${this.baseUrl}/add`, term);
   }
 
   active(termId: number): Observable<ResponseBody> {

@@ -68,7 +68,6 @@ export class AdminScheduleComponent implements OnInit{
 
       this.courseService.getCourseMessage(params).subscribe(
         data => {
-          console.log(data.data);
           this.schedule = this.convertToWeeklySchedule(data.data);
           console.log(this.schedule);
         }

@@ -22,8 +22,6 @@ export class CourseMockApi implements MockApiInterface {
               const schoolId = option.params.get('schoolId');
               const week = option.params.get('week');
 
-              console.log("mock schoolId:", schoolId); // 打印结果：1
-              console.log("mock week:", week); // 打印结果：1
               // 确保 schoolId 和 week 不为 null
               if (schoolId && week) {
                 const studentCourseData: Record<number, Record<number, { week: number; begin: number; length: number; students: string[] }[]>> = {

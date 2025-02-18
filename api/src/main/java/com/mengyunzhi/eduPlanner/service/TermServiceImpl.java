@@ -23,14 +23,14 @@ import java.util.Optional;
 public class TermServiceImpl implements TermService {
     private final static Logger logger = LoggerFactory.getLogger(TermServiceImpl.class);
 
-    private TermRepository termRepository;
-    private StudentRepository studentRepository;
+    private final TermRepository termRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
     private TermServiceImpl(TermRepository termRepository,
                             StudentRepository studentRepository) {
-       this.termRepository = termRepository;
-       this.studentRepository = studentRepository;
+        this.termRepository = termRepository;
+        this.studentRepository = studentRepository;
     }
 
     /**
@@ -69,10 +69,11 @@ public class TermServiceImpl implements TermService {
     }
 
     @Override
-    public Term save(Term term) {
+    public Response<Term> save(Term term) {
         // 新增学期，状态默认为冻结（status = 0）
         term.setStatus(0L);
-        return this.termRepository.save(term);
+        termRepository.save(term);
+        return new Response<>(true,"新增成功",null);
     }
 
     @Override
@@ -166,9 +167,6 @@ public class TermServiceImpl implements TermService {
             if (term.getName() != null) {
                 existingTerm.setName(term.getName());
             }
-            if (term.getStatus() != null) {
-                existingTerm.setStatus(term.getStatus());
-            }
             if (term.getStartTime() != null) {
                 existingTerm.setStartTime(term.getStartTime());
             }
@@ -187,7 +185,6 @@ public class TermServiceImpl implements TermService {
             return new Response<>(false, "未找到指定 ID 的学期信息", null);
         }
     }
-
     @Override
     public Response<TermDto.TermAndWeeksAndStudentsResponse> getTermAndWeeksAndStudents(Long schoolId) {
         Response<TermDto.TermAndWeeksResponse> termAndWeeksResponse = getTermAndWeeks(schoolId);

@@ -1,0 +1,19 @@
+<div>
+  <label>
+    <input type="radio" [(ngModel)]="weekType" value="all" (change)="selectAllWeeks()"> 全周
+  </label>
+  <label>
+    <input type="radio" [(ngModel)]="weekType" value="odd" (change)="selectAllWeeks()"> 单周
+  </label>
+  <label>
+    <input type="radio" [(ngModel)]="weekType" value="even" (change)="selectAllWeeks()"> 双周
+  </label>
+  <div class="week-buttons">
+    <button *ngFor="let week of allWeekList; let i = index"
+            [class.selected]="selectedWeeks.includes(week)"
+            [class.deselected]="!selectedWeeks.includes(week)"
+            (click)="toggleWeek(week)">
+      {{ i + 1 }}
+    </button>
+  </div>
+</div>

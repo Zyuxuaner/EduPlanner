@@ -18,7 +18,6 @@ export class AdminMockApi implements MockApiInterface {
         url: '/admin/add',
         result: (urlMatcher: any, options: {body: {name: string, username: string, ano: number, role: number}}) => {
           let body = options.body;
-          console.log(body);
           return  {
             id: Math.floor(Math.random() * 10000),
             username: body.username,

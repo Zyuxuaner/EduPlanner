@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {ResponseBody} from "../entity/response-body";
 import {Course} from "../entity/course";
 import {schoolIdAndWeeks} from "../entity/schoolIdAndWeeks";
+import {CourseDto} from "../dto/courseDto";
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,7 @@ export class CourseService {
   baseUrl = 'http://localhost:8080/Course';
   constructor(private httpClient: HttpClient) { }
 
-  add(course: {
-    name: string;
-    type: number;
-    status: number;
-    startWeek: number;
-    endWeek: number;
-    week: number;
-    begin: number;
-    end: number
-  }): Observable<ResponseBody> {
+  add(course: CourseDto): Observable<ResponseBody> {
     return this.httpClient.post<ResponseBody>(`${this.baseUrl}/add`, course);
   }
 
