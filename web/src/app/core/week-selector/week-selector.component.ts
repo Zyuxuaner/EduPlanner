@@ -16,10 +16,10 @@ import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/for
 export class WeekSelectorComponent implements ControlValueAccessor, OnInit {
   @Input() allWeeks: number = 0; // 接收父组件传递的总周数
   @Input() formControl: FormControl = new FormControl();
-  @Output() weekSelectionChange = new EventEmitter<{ weeks: number[], weekType: 'any' | 'all' | 'odd' | 'even' }>(); // 向父组件传递选择结果
+  @Output() weekSelectionChange = new EventEmitter<{ weeks: number[], weekType: 'other' | 'all' | 'odd' | 'even' }>(); // 向父组件传递选择结果
 
   selectedWeeks: number[] = []; // 存储已选择的周数
-  weekType: 'any' | 'all' | 'odd' | 'even'= 'all'; // 周数类型，默认全选
+  weekType: 'other' | 'all' | 'odd' | 'even'= 'all'; // 周数类型，默认全选
   allWeekList: number[] = [];
 
   ngOnInit(): void {
@@ -73,7 +73,7 @@ export class WeekSelectorComponent implements ControlValueAccessor, OnInit {
       this.weekType = 'even';
     } else {
       // 如果选中的周数包含单周和双周
-      this.weekType = 'any';  // 不选中任何周类型
+      this.weekType = 'other';  // 不选中任何周类型
     }
   }
   // 向父组件传递已选周数

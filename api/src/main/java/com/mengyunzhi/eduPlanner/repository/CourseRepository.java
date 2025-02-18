@@ -5,7 +5,12 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
+/**
+ * @author zhangyuxuan
+ */
 public interface CourseRepository extends CrudRepository<Course, Long> {
+
+    Course findByNameAndTermId(String name, Long termId);
 
 //    List<Course> findByClazzIdAndTermIdAndType(Long clazzId, Long termId, Long type);
 //    List<Course> findByStudentIdAndTermIdAndType(Long studentId, Long termId, Long type);
@@ -14,5 +19,5 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
 //
 //    List<Course> findByStudentIdAndType(Long studentId, Long type);
 //    List<Course> findByTermIdAndClazzId(Long termId, Long clazzId);
-//    Course findByNameAndTypeAndTermIdAndClazzIdAndStudentId(String name, Long type, Long termId, Long clazzId, Long studentId);
+
 }

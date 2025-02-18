@@ -5,25 +5,21 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author zhangyuxuan
+ */
 public class CourseDto {
     @Data
     public static class SaveRequest {
         private String name;
-
         /**
-         * 1:选修，2:必修
+         * all:全周，odd:单周，even:双周，other:自定义（其他）
          */
-        private Long type;
-
-        /**
-         * 1:单周，2:双周，3:全周
-         */
-        private Long status;
-        private Long startWeek;
-        private Long endWeek;
-        private Long week;
+        private String weekType;
+        private List<Integer> weeks;
+        private Long day;
         private Long begin;
-        private Long end;
+        private Long length;
     }
 
     @Data

@@ -39,49 +39,47 @@ public class CourseServiceImpl implements CourseService{
 //        courseInfo.setLength(saveRequest.getEnd() - saveRequest.getBegin() + 1);
 //        return courseInfo;
 //    }
-//
-//    @Override
-//    public Course save(CourseDto.SaveRequest saveRequest, Long userId, Long schoolId) {
-//        Term activeTerm = termRepository.findBySchoolIdAndStatus(schoolId, 1L)
-//                .orElseThrow(() -> new IllegalArgumentException("该学校下没有激活学期"));
-//
-//        Student student = studentRepository.findByUserId(userId);
-//
-//        Long clazzId = student.getClazz().getId();
-//        Long studentId = null;
-//        if (saveRequest.getType().equals(1L)) {
-//            studentId = student.getId();
-//        }
-//
-//        School school = student.getClazz().getSchool();
-//
-//        Course course = new Course();
-//        course.setName(saveRequest.getName());
-//        course.setType(saveRequest.getType());
-//        course.setTerm(activeTerm);
-//        course.setClazz(new Clazz(clazzId, school));
-//        course.setStudentId(studentId);
-//        Course isExistCourse = courseRepository.findByNameAndTypeAndTermIdAndClazzIdAndStudentId(
-//                saveRequest.getName(),
-//                saveRequest.getType(),
-//                activeTerm.getId(),
-//                clazzId,
-//                studentId
-//        );
-//        if (isExistCourse != null) {
-//            CourseInfo courseInfo = saveCourseInfo(saveRequest);
-//            courseInfo.setCourse(isExistCourse);
-//            courseInfoRepository.save(courseInfo);
-//            return isExistCourse;
-//        } else {
-//            Course savedCourse = courseRepository.save(course);
-//            CourseInfo courseInfo = saveCourseInfo(saveRequest);
-//            courseInfo.setCourse(savedCourse);
-//            courseInfoRepository.save(courseInfo);
-//            return savedCourse;
-//        }
-//    }
-//
+
+
+    @Override
+    public Response<String> save(CourseDto.SaveRequest saveRequest, Long userId, Long schoolId) {
+        Long ACTIVE_STATUS = 1L;
+        Term activeTerm = termRepository.findBySchoolIdAndStatus(schoolId, ACTIVE_STATUS)
+                .orElseThrow(() -> new IllegalArgumentException("该学校下没有激活学期"));
+
+        Student student = studentRepository.findByUserId(userId);
+        if (student == null) {
+            throw new IllegalArgumentException("学生信息不存在");
+        }
+
+        Course existingCourse = courseRepository.findByNameAndTermId(saveRequest.getName(), activeTerm.getId());
+        CourseInfo newCourseInfo = new CourseInfo();
+
+        if (existingCourse != null) {
+            // 如果课程已存在，使用现有的课程
+            newCourseInfo.setCourse(existingCourse);
+        } else {
+            // 如果课程不存在，创建新课程
+            Course newCourse = new Course();
+            newCourse.setName(saveRequest.getName());
+            newCourse.setTerm(activeTerm);
+
+            courseRepository.save(newCourse);
+            newCourseInfo.setCourse(newCourse);
+        }
+
+        newCourseInfo.setWeekType(saveRequest.getWeekType());
+        newCourseInfo.setDay(saveRequest.getDay());
+        newCourseInfo.setBegin(saveRequest.getBegin());
+        newCourseInfo.setLength(saveRequest.getLength());
+        newCourseInfo.setWeeks(saveRequest.getWeeks());
+        newCourseInfo.setStudent(student);
+
+        courseInfoRepository.save(newCourseInfo);
+        return Response.success("课程新增成功");
+
+    }
+
 //    /**
 //     * 首先获取该班级下的所有必修课
 //     * 接着获取该学生的所有选修课

@@ -30,9 +30,6 @@ public class Student {
     )
     private Set<Course> courses;
 
-    @OneToMany(mappedBy = "student")
-    private Set<CourseInfo> courseInfos;
-
     @OneToOne
     private User user;
 
