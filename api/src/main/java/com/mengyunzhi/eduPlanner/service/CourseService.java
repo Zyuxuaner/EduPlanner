@@ -24,14 +24,12 @@ public interface CourseService {
      */
     Response<String> save(CourseDto.SaveRequest saveRequest, Long userId, Long schoolId);
 
-//    /**
-//     * 获取课程列表
-//     * @param clazzId 当前登录用户的班级id
-//     * @param studentId 当前登录用户的学生id
-//     * @return
-//     */
-//    List<CourseDto.GetAllCoursesForCurrentUserResponse> getAllCoursesForCurrentUser(Long clazzId, Long studentId);
-//
+    /**
+     * 获取课程列表
+     * @return 课程安排列表
+     */
+    List<CourseDto.GetAllCoursesResponse> getAllCourses();
+
 //    /**
 //     * 根据学校id 和 确定的第几周week 来查询该学校下所有学生的有课情况(激活学期)
 //     * @param schoolId 学校id

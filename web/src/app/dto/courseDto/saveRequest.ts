@@ -1,4 +1,4 @@
-export interface CourseDto {
+export interface SaveRequest {
   name: string;
   weekType: string;
   weeks: number[];

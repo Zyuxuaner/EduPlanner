@@ -64,4 +64,10 @@ export class LoginService {
     const url = 'http://localhost:8080/Login/currentLoginUser';
     return this.httpClient.get<ResponseBody>(url);
   }
+
+  // 确定当前登录用户为学生，获取该学生
+  getCurrentStudent(): Observable<ResponseBody> {
+    const url = 'http://localhost:8080/Login/currentStudent';
+    return this.httpClient.get<ResponseBody>(url);
+  }
 }

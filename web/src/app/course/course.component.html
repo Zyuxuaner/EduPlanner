@@ -19,17 +19,11 @@
   </form>
 </nav>
 
-<div class="row">
-  <div class="col-12 text-right">
-    <a class="btn btn-primary mr-2" (click)="checkBeforeAdd()"><i class="fas fa-plus"></i>新增</a>
-  </div>
-</div>
-<table class="table table-striped mt-2">
+<table class="table table-striped mt-4">
   <thead>
   <tr class="table-primary">
     <th>序号</th>
     <th>课名</th>
-    <th>类型</th>
     <th>节次</th>
     <th>星期</th>
     <th>周</th>
@@ -41,10 +35,9 @@
   <tr *ngFor="let course of courses; index as i">
     <td>{{ i + 1 }}</td>
     <td>{{ course.name}}</td>
-    <td *ngIf="course.type === 2; else choose">必修</td>
     <td>{{ getRange(course.begin, course.length) }}</td>
-    <td>{{ getWeekday(course.week) }}</td>
-    <td>{{ getWeeks(course.startWeek, course.endWeek, course.weekType) }}</td>
+    <td>{{ getWeekday(course.day) }}</td>
+    <td>{{ course.weeks | weekRangeFormat: course.weekType}} {{course.weekType | weekTypeFormat}}</td>
     <td *ngIf="course.term.id == termId; else courseOver">
       <span class="badge badge-pill badge-success">置入</span>
     </td>
@@ -53,15 +46,20 @@
       <a  *ngIf="course.term.id == termId" class="btn btn-outline-primary btn-sm">
         <i class="fa fa-pen"></i>编辑
       </a>
-      <span class="btn btn-outline-danger btn-sm">
+      <span *ngIf="course.term.id == termId && course.student.id == currentStudentId" class="btn btn-outline-danger btn-sm">
           <i class="far fa-trash-alt"></i>删除
+      </span>
+      <span class="btn btn-sm btn-outline-info">
+         <i class="fa fa-plus" aria-hidden="true"></i>复用课程
       </span>
     </td>
   </tr>
   </tbody>
 </table>
-<ng-template #choose>
-  <td>选修</td>
+<ng-template #useOrNot>
+  <span class="btn btn-sm btn-outline-secondary">
+          <i class="fa fa-times" aria-hidden="true"></i>取消复用
+  </span>
 </ng-template>
 <ng-template #courseOver>
   <td>

@@ -5,6 +5,8 @@ import {CourseService} from "../service/course.service";
 import {Router} from "@angular/router";
 import {TermService} from "../service/term.service";
 import {CommonService} from "../service/common.service";
+import {GetAllResponse} from "../dto/courseDto/getAllResponse";
+import {LoginService} from "../service/login.service";
 
 @Component({
   selector: 'app-course',
@@ -12,24 +14,27 @@ import {CommonService} from "../service/common.service";
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit{
-  courses = [] as Course[];
+  courses = [] as GetAllResponse[];
   formGroup = new FormGroup({
     searchCourse: new FormControl(null),
     type: new FormControl(''),
   });
+  currentStudentId: number | null = null;
   termId: number | null = null;
 
   constructor(private courseService: CourseService,
               private termService: TermService,
               private commonService: CommonService,
+              private loginService: LoginService,
               private router: Router){}
 
   ngOnInit(): void {
-      // this.courseService.getAll().subscribe(courses => {
-      //   this.courses = courses;
-      //   console.log(this.courses);
-      //   this.getActiveTerm();
-      // });
+      this.setCurrentStudentId();
+      this.courseService.getAll().subscribe(courses => {
+        this.courses = courses;
+        console.log(this.courses);
+        this.getActiveTerm();
+      });
   }
 
   // 获取当前登录用户的所在学校的激活学期
@@ -84,5 +89,12 @@ export class CourseComponent implements OnInit{
         this.commonService.showErrorAlert(data.message);
       }
     });
+  }
+
+  setCurrentStudentId() {
+    this.loginService.getCurrentStudent().subscribe(data => {
+      const currentStudent = data.data;
+      this.currentStudentId = currentStudent.id;
+    })
   }
 }

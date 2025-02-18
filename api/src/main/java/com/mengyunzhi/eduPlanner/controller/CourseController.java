@@ -50,19 +50,14 @@ public class CourseController {
         return Response.success("课程新增成功");
     }
 
-//    /**
-//     * 根据当前登录用户的 clazzId 和 studentId 获取有关该用户的全部课程
-//     * @return List<CourseResponse>
-//     */
-//    @GetMapping("/getAll")
-//    public List<CourseDto.GetAllCoursesForCurrentUserResponse> getAllCoursesForCurrentUser() {
-//        Response<CurrentUser> currentUser = loginService.getCurrentLoginUser();
-//        Long userId = currentUser.getData().getId();
-//        Student student = studentService.findByUserId(userId);
-//        Long studentId = student.getId();
-//        Long clazzId = student.getClazz().getId();
-//        return courseService.getAllCoursesForCurrentUser(clazzId, studentId);
-//    }
+    /**
+     * 获取全部课程
+     * @return List<CourseResponse>
+     */
+    @GetMapping("/getAll")
+    public List<CourseDto.GetAllCoursesResponse> getAllCoursesForCurrentUser() {
+        return this.courseService.getAllCourses();
+    }
 //
 //    /**
 //     * 获取选中的学校、周数下的该学校所有学生的课程安排

@@ -8,8 +8,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author zhangyuxuan
+ */
 public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
     CourseInfo findByCourseId(Long courseId);
+
+    @Override
+    List<CourseInfo> findAll();
 
     /**
      * 根据课程id查询课程安排

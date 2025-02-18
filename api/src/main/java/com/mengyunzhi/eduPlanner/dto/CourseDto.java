@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.dto;
 
+import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
 import lombok.Data;
 
@@ -23,19 +24,15 @@ public class CourseDto {
     }
 
     @Data
-    public static class GetAllCoursesForCurrentUserResponse {
+    public static class GetAllCoursesResponse {
         private String name;
-        /**
-         * 1：选修，2：必修
-         */
-        private Long type;
-        private Long weekType;
-        private Long startWeek;
-        private Long endWeek;
-        private Long week;
+        private String weekType;
+        private List<Integer> weeks;
+        private Long day;
         private Long begin;
         private Long length;
         private Term term;
+        private Student student;
     }
 
     /**

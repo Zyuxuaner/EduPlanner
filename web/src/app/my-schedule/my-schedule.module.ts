@@ -21,7 +21,7 @@ import * as fromPipes from '../pipe/course-pipes';
         ReactiveFormsModule,
         WeekSelectorModule,
         fromPipes.DayFormatPipe,
-        fromPipes.WeekFormatPipe
+        fromPipes.WeekDayFormatPipe
     ]
 })
 export class MyScheduleModule { }
