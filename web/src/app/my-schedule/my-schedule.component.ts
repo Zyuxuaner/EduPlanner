@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CourseInfo, WeeklySchedule} from "../entity/course-info";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-my-schedule',
@@ -10,8 +11,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 export class MyScheduleComponent implements OnInit {
 
   currentWeek: number | null = null;  // 当前周数
-  totalWeeks: number | null = null;   // 总周数
-  days = ['1', '2', '3', '4', '5', '6', '7'];  // 星期数组
+  totalWeeks: number = 0;   // 总周数
+  days = [1, 2, 3, 4, 5, 6, 7];  // 星期数组
   periods = [
     { time: 1 },
     { time: 2 },
@@ -26,40 +27,31 @@ export class MyScheduleComponent implements OnInit {
     { time: 11 },
   ];  // 每天的时间段
   weeklySchedule: WeeklySchedule = {};
+  termName: string = '';
+  totalPeriodsPerDay = 11; // 每天的总节数
+  availableLengths: number[] = []; // 可选的持续节数数组
+
 
   // 用于模态框的课程信息
-  courseName: string = '';
-  weeks: string = '';
-  length: number | null = null;
-  selectedSlot: number | null = null;
+  formGroup = new FormGroup({
+    weeks: new FormControl([], [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    day: new FormControl(0, [Validators.required]),
+    begin: new FormControl(0, [Validators.required]),
+    length: new FormControl(1, [Validators.required]),
+    weekType: new FormControl('', [Validators.required]),
+  });
+
   allWeeks: number[] = [];
 
   constructor(private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
+    this.termName = 'tute2024-2025';
     this.totalWeeks = 18;  // 假设一学期有18周
     this.currentWeek = 1;  // 默认为当前周
     this.initializeCourses();  // 初始化课表数据
-  }
-
-  calculateWeeks(item: any): number[] {
-    let weeks: number[];
-
-    if (item.status === '全') {
-      weeks = Array.from({ length: this.allWeeks.length }, (_, index) => index + 1);
-    }
-    else if (item.status === '单') {
-      weeks = this.allWeeks.filter((week, index) => index % 2 !== 0);
-    }
-    else if (item.status === '双') {
-      weeks = this.allWeeks.filter((week, index) => index % 2 === 0);
-    }
-    else if (item.weeks) {
-      weeks = item.weeks;
-    }
-    // @ts-ignore
-    return weeks;
   }
 
   // 判断是否能添加课程
@@ -93,7 +85,6 @@ export class MyScheduleComponent implements OnInit {
             courseName: item.name,
             begin: item.begin,
             length: item.length,
-            weeks: this.calculateWeeks(item)
           };
 
           // 将课程信息填入对应的 daySchedule 中
@@ -147,20 +138,27 @@ export class MyScheduleComponent implements OnInit {
     this.allWeeks = Array.from({length: this.totalWeeks!}, (_, index) => index + 1);
   }
 
-  openAddCourseModal(day: any, slot: number, content: any) {
-    if (this.canAddCourse(day, slot)) {
-      this.selectedSlot = slot;
-      this.courseName = '';
-      this.weeks = '';
-      this.length = 1;
-
-      // 打开模态框
-      this.modalService.open(content, { size: 'lg' });
-    }
-
+  // 打开模态框并根据选择的单元格设置 day 和 begin 的默认值
+  openAddCourseModal(day: number, time: number) {
+    this.formGroup.patchValue({
+      day:day,
+      begin: time
+    });
+    this.updateAvailableLengths(time);
   }
 
-  submitCourseForm() {
+  onSubmit() {
+    const result = this.formGroup.value;
+    console.log('result:', result);
+  }
+
+  // 处理子组件（week-selector）传来的数据
+  onWeekSelectionChange(event: { weeks: number[], weekType: 'any' | 'all' | 'odd' | 'even' }) {
+    this.formGroup.patchValue({
+      // @ts-ignore
+      weeks: event.weeks,
+      weekType: event.weekType
+    })
   }
 
   // 判断是否显示课程单元格
@@ -168,5 +166,11 @@ export class MyScheduleComponent implements OnInit {
     const classInfo = this.getClassInfo(day, time);
     // 仅在课程的开始时间显示单元格
     return !classInfo || classInfo.begin === time;
+  }
+
+  // 选择了某个单元格时更新可选持续节数
+  updateAvailableLengths(begin: number) {
+    const remainingPeriods = this.periods.length - begin + 1;
+    this.availableLengths = Array.from({ length: remainingPeriods }, (_, i) => i + 1);
   }
 }
