@@ -69,17 +69,22 @@ public class CourseController {
 //        return courseService.getAllCoursesForCurrentUser(clazzId, studentId);
 //    }
 //
-//    /**
-//     * 获取选中的学校、周数下的该学校所有学生的课程安排
-//     * @param schoolId 选中的学校id
-//     * @param week 选中的周数
-//     * @return responseData
-//     */
-//    @GetMapping("/getAllStudentsCourse")
-//    public Response<Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>>> getAllStudentsCourse(@RequestParam Long schoolId, @RequestParam Long week) {
-//        Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> responseData = this.courseService.getAllStudentsCoursesOfSchool(schoolId, week);
-//        return new Response<>(true, "成功获取所有学生课程信息", responseData);
-//    }
+    /**
+     * 获取选中的学校、周数下的该学校所有学生的课程安排
+     * 如果有学生id，则获取该学生的课程安排
+     * @param schoolId 选中的学校id
+     * @param week 选中的周数
+     * @param studentId 选中的学生（非必须）
+     * @return responseData
+     */
+    @GetMapping("/getCourseMessage")
+    public Response<Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> getMessage(
+            @RequestParam Long schoolId, @RequestParam Long week, @RequestParam(required = false) Long studentId) {
+            Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> allStudentsMessage =
+                    this.courseService.getMessage(schoolId, week, studentId);
+            return new Response<>(true, "成功获取学生的课程信息", allStudentsMessage);
+    }
+
 //
 //    /**
 //     * 获取所有学校的当前周的课程安排（激活学期）

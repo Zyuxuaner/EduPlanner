@@ -3,7 +3,9 @@ package com.mengyunzhi.eduPlanner.service;
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.dto.TermDto;
 import com.mengyunzhi.eduPlanner.entity.School;
+import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
+import com.mengyunzhi.eduPlanner.repository.StudentRepository;
 import com.mengyunzhi.eduPlanner.repository.TermRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +24,13 @@ public class TermServiceImpl implements TermService {
     private final static Logger logger = LoggerFactory.getLogger(TermServiceImpl.class);
 
     private TermRepository termRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
-    private TermServiceImpl(TermRepository termRepository) {
+    private TermServiceImpl(TermRepository termRepository,
+                            StudentRepository studentRepository) {
        this.termRepository = termRepository;
+       this.studentRepository = studentRepository;
     }
 
     /**
@@ -180,6 +185,30 @@ public class TermServiceImpl implements TermService {
             return new Response<>(true, "学期信息更新成功", updatedTerm);
         } else {
             return new Response<>(false, "未找到指定 ID 的学期信息", null);
+        }
+    }
+
+    @Override
+    public Response<TermDto.TermAndWeeksAndStudentsResponse> getTermAndWeeksAndStudents(Long schoolId) {
+        Response<TermDto.TermAndWeeksResponse> termAndWeeksResponse = getTermAndWeeks(schoolId);
+
+        if (!termAndWeeksResponse.isStatus()) {
+            // 如果获取学期和周数失败，直接返回错误信息
+            return new Response<>(false, termAndWeeksResponse.getMessage(), null);
+        }
+
+        List<Student> students = studentRepository.findBySchoolId(schoolId);
+
+        TermDto.TermAndWeeksAndStudentsResponse responseData = new TermDto.TermAndWeeksAndStudentsResponse();
+        responseData.setTerm(termAndWeeksResponse.getData().getTerm());
+        responseData.setWeeks(termAndWeeksResponse.getData().getWeeks());
+
+        if (students == null || students.isEmpty()) {
+            responseData.setStudents(null);
+            return new Response<>(true, "成功获取学期、周数", responseData);
+        } else {
+            responseData.setStudents(students);
+            return new Response<>(true, "成功获取学期、周数及学生信息", responseData);
         }
     }
 }

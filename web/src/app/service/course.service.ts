@@ -30,8 +30,8 @@ export class CourseService {
   }
 
   // 根据学校和周数，获取该学校所有学生的时间表
-  getAllStudentsCourse(params: HttpParams): Observable<ResponseBody> {
-    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getAllStudentsCourse`, {params});
+  getCourseMessage(params: HttpParams): Observable<ResponseBody> {
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getCourseMessage`, {params});
   }
 
   getAllCourseInfo(schoolIdAndWeeksData: schoolIdAndWeeks[]): Observable<ResponseBody> {

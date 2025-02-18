@@ -18,6 +18,7 @@ public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
      */
     List<CourseInfo> findAllByCourseId(Long courseId);
 
+    List<CourseInfo> findByStudentId(Long studentId);
 //    @Query("SELECT ci FROM CourseInfo ci " +
 //            "JOIN ci.course c " +
 //            "JOIN c.term t " +

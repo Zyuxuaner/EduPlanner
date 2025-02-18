@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,6 +20,6 @@ public class Course {
     private Term term;
 
     @ManyToMany(mappedBy = "courses")
+    @JsonIgnore
     private Set<Student> students;
-
 }

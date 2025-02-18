@@ -44,14 +44,12 @@ public class CourseDto {
 
     /**
      * 确定学校，确定周数的所有学生课程安排
-     * week 周几
      * begin 开始的小节
      * length 持续几节
      * students 学生名单
      */
     @Data
     public static class StudentsCoursesOfSchoolResponse {
-        private Long week;
         private Long begin;
         private Long length;
         private List<String> students;

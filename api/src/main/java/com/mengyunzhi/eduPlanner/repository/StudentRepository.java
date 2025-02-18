@@ -24,4 +24,5 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
 
     List<Student> findAll(Specification<Student> spec);
 
+    List<Student> findBySchoolId(Long schoolId);
 }

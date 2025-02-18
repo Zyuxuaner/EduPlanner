@@ -55,4 +55,11 @@ public interface TermService {
      * @return SchoolIdAndStartTimeResponse数组
      */
     List<TermDto.SchoolIdAndStartTimeResponse> getSchoolIdAndStartTime ();
+
+    /**
+     *
+     * @param schoolId
+     * @return
+     */
+    Response<TermDto.TermAndWeeksAndStudentsResponse> getTermAndWeeksAndStudents(Long schoolId);
 }
