@@ -1,0 +1,51 @@
+/* 样式：每行 5 个按钮 */
+.week-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.week-buttons button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.week-buttons button:hover {
+  background-color: #e0e0e0;
+}
+
+/* 选中的按钮样式 */
+.week-buttons button.selected {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* 未选中的按钮暗色 */
+.week-buttons button.deselected {
+  background-color: #aaa;
+  color: #fff;
+}
+
+/* 确认按钮样式 */
+.confirm-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.confirm-button:hover {
+  background-color: #0056b3;
+}

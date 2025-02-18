@@ -68,11 +68,11 @@ export class AdminDashboardComponent implements OnInit{
   }
 
   getAllCourseInfo() {
-    this.courseService.getAllCourseInfo(this.schoolIdAndWeeksData).subscribe(response => {
-      if (response.status){
-        this.schedule = this.convertToWeeklySchedule(response.data);
-      }
-    });
+    // this.courseService.getAllCourseInfo(this.schoolIdAndWeeksData).subscribe(response => {
+    //   if (response.status){
+    //     this.schedule = this.convertToWeeklySchedule(response.data);
+    //   }
+    // });
   }
 
   // 将从后端获得的数据转换为 WeeklySchedule 类型

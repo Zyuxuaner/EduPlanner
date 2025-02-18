@@ -34,7 +34,8 @@
           </ng-container>
           <ng-template #noCourse>
             <button *ngIf="canAddCourse(day, period.time)"
-                    (click)="openAddCourseModal(day, period.time, addCourseModal)"
+                    (click)="openAddCourseModal(day, period.time)"
+                    data-toggle="modal" data-target="#addCourseModal"
                     class="btn btn-sm d-flex align-items-center justify-content-center add-course-button">
               <span>➕</span>
             </button>
@@ -46,27 +47,69 @@
   </table>
 </div>
 
-<!-- 模态框：用于新增课程 -->
-<ng-template #addCourseModal let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">新增课程</h4>
-    <button type="button" class="close" (click)="modal.dismiss()">×</button>
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">课程新增</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formGroup">
+          <div class="mb-3 row">
+            <label for="term" class="col-sm-2 col-form-label">学期</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="term" id="term" [value]="termName" readonly />
+            </div>
+          </div>
+          <div class="form-group mb-3 row">
+            <label for="name" class="col-sm-2 col-form-label">课程名:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="name" formControlName="name">
+              <div class="text-danger"
+                   *ngIf="formGroup.get('name')?.invalid">
+                课名不能为空
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="weeks" class="col-form-label" id="weeks">周次:</label>
+            <app-week-selector [allWeeks]="totalWeeks" (weekSelectionChange)="onWeekSelectionChange($event)" formControlName="weeks"></app-week-selector>
+            <div class="text-danger" *ngIf="formGroup.get('week')?.invalid">
+              周数不能为空
+            </div>
+          </div>
+          <div class="form-group mb-3 row">
+            <label for="day" class="col-sm-2 col-form-label">星期:</label>
+            <div class="col-sm-10">
+              <!-- 使用管道将数字转换为格式化字符串 -->
+              <input type="text" class="form-control" id="day" formControlName="day"
+                     [value]="(formGroup.get('day')?.value || 0) | weekFormat" readonly />
+            </div>
+          </div>
+          <div class="form-group mb-3 row">
+            <label for="begin" class="col-sm-2 col-form-label">开始节数:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="begin" formControlName="begin"
+              [value]="(formGroup.get('begin')?.value || 0) | dayFormat" readonly />
+            </div>
+          </div>
+          <div class="form-group mb-3 row">
+            <label for="length" class="col-sm-2 col-form-label">持续节数:</label>
+            <div class="col-sm-10">
+              <select class="custom-select my-1 mr-sm-2" id="length" formControlName="length">
+                <option *ngFor="let length of availableLengths" [value]=length>{{ length }}</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">添加</button>
+      </div>
+    </div>
   </div>
-  <div class="modal-body">
-    <form (ngSubmit)="submitCourseForm()">
-      <div class="form-group">
-        <label for="courseName">课程名</label>
-        <input type="text" id="courseName" [(ngModel)]="courseName" name="courseName" class="form-control" required />
-      </div>
-      <div class="form-group">
-        <label for="weeks">周数</label>
-        <input type="text" id="weeks" [(ngModel)]="weeks" name="weeks" class="form-control" placeholder="如：1,2,3" required />
-      </div>
-      <div class="form-group">
-        <label for="length">持续节数</label>
-        <input type="number" id="length" [(ngModel)]="length" name="length" class="form-control" required />
-      </div>
-      <button type="submit" class="btn btn-primary">确认</button>
-    </form>
-  </div>
-</ng-template>
+</div>
