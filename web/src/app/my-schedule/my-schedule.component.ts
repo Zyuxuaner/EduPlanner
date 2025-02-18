@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CourseInfo, WeeklySchedule} from "../entity/course-info";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {CourseService} from "../service/course.service";
+import {CourseDto} from "../dto/courseDto";
 
 @Component({
   selector: 'app-my-schedule',
@@ -44,7 +45,7 @@ export class MyScheduleComponent implements OnInit {
 
   allWeeks: number[] = [];
 
-  constructor(private modalService: NgbModal) {
+  constructor(private courseService: CourseService,) {
   }
 
   ngOnInit(): void {
@@ -148,12 +149,16 @@ export class MyScheduleComponent implements OnInit {
   }
 
   onSubmit() {
-    const result = this.formGroup.value;
-    console.log('result:', result);
+    const result = this.formGroup.value as CourseDto;
+    this.courseService.add(result).subscribe(
+      (response) => {
+        console.log('添加成功', response.message);
+      }
+    );
   }
 
   // 处理子组件（week-selector）传来的数据
-  onWeekSelectionChange(event: { weeks: number[], weekType: 'any' | 'all' | 'odd' | 'even' }) {
+  onWeekSelectionChange(event: { weeks: number[], weekType: 'other' | 'all' | 'odd' | 'even' }) {
     this.formGroup.patchValue({
       // @ts-ignore
       weeks: event.weeks,
