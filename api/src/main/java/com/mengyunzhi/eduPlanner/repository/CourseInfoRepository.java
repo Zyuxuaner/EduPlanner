@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author zhangyuxuan
@@ -26,6 +27,13 @@ public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
     List<CourseInfo> findAllByCourseId(Long courseId);
 
     List<CourseInfo> findByCreator(Student creator);
+
+    /**
+     * 多对多关系，使用衍生查询，根据students的id进行查询
+     * @param studentsId 学生id
+     * @return courseInfo
+     */
+    List<CourseInfo> findByStudentsId(Long studentsId);
 //    @Query("SELECT ci FROM CourseInfo ci " +
 //            "JOIN ci.course c " +
 //            "JOIN c.term t " +
