@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.dto;
 
+import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
 import lombok.Data;
 
@@ -19,5 +20,12 @@ public class TermDto {
         private Long schoolId;
         private Timestamp startTime;
         private String name;
+    }
+
+    @Data
+    public static class TermAndWeeksAndStudentsResponse {
+        private Term term;
+        private List<Integer> weeks;
+        private List<Student> students;
     }
 }

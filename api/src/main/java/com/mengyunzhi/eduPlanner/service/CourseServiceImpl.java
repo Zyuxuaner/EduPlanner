@@ -29,6 +29,7 @@ public class CourseServiceImpl implements CourseService{
     @Autowired
     private LoginService loginService;
 
+    private final static Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
 //    private CourseInfo saveCourseInfo(CourseDto.SaveRequest saveRequest) {
 //        CourseInfo courseInfo = new CourseInfo();
 //        courseInfo.setStartWeek(saveRequest.getStartWeek());
@@ -158,6 +159,71 @@ public class CourseServiceImpl implements CourseService{
 //
 //        return studentCourseData;
 //    }
+
+    @Override
+    public Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> getMessage(Long schoolId, Long week, Long studentId) {
+        // 用来存储返回的数据结构
+        Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> studentCourseData = new HashMap<>();
+
+        // 获取激活状态的学期 ID
+        Long ACTIVE_STATUS = 1L;
+        Optional<Term> term = this.termRepository.findBySchoolIdAndStatus(schoolId, ACTIVE_STATUS);
+        Long termId = term.get().getId();
+
+        List<Student> students;
+        if (studentId != null) {
+            Optional<Student> data = studentRepository.findById(studentId);
+            students = Collections.singletonList(data.get());
+        } else {
+            // 查询该学校的所有学生
+            students = studentRepository.findBySchoolId(schoolId);
+        }
+
+
+        // 遍历每个学生，获取他们的课程安排
+        for (Student student : students) {
+            Long studentsId = student.getId();
+            // 获取该学生的课程信息
+            List<CourseInfo> courseInfos = courseInfoRepository.findByStudentId(studentsId);
+
+            for (CourseInfo courseInfo : courseInfos) {
+                // 检查是否属于当前学期，并且周次匹配
+                if (courseInfo.getCourse().getTerm().getId().equals(termId) && courseInfo.getWeeks().contains(week.intValue())) {
+                    // 提取课程安排信息
+                    Long day = courseInfo.getDay();
+                    Long begin = courseInfo.getBegin();
+                    Long length = courseInfo.getLength();
+
+                    // 获取当天的课程安排列表
+                    List<CourseDto.StudentsCoursesOfSchoolResponse> daySchedule = studentCourseData.computeIfAbsent(day, k -> new ArrayList<>());
+
+                    // 查找是否有已存在的相同时间段的课程安排
+                    boolean found = false;
+                    for (CourseDto.StudentsCoursesOfSchoolResponse response : daySchedule) {
+                        if (response.getBegin().equals(begin) && response.getLength().equals(length)) {
+                            // 如果存在，则将当前学生添加到 students 列表中
+                            response.getStudents().add(student.getName());
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // 如果未找到，则创建新的课程安排对象
+                    if (!found) {
+                        CourseDto.StudentsCoursesOfSchoolResponse response = new CourseDto.StudentsCoursesOfSchoolResponse();
+                        response.setBegin(begin);
+                        response.setLength(length);
+                        response.setStudents(new ArrayList<>(Arrays.asList(student.getName())));
+                        daySchedule.add(response);
+                    }
+                }
+            }
+        }
+
+        return studentCourseData;
+    }
+
+
 //
 //    /**
 //     * 获取对应课程的课程安排

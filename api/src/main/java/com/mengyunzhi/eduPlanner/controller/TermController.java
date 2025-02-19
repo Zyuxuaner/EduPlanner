@@ -71,9 +71,9 @@ public class TermController {
         return this.termService.getTermAndWeeks(schoolId);
     }
 
-    @GetMapping("/getTermAndWeeksBySchoolId/{schoolId}")
-    public Response<TermDto.TermAndWeeksResponse> getTermAndWeeksBySchoolId(@PathVariable Long schoolId) {
-        return this.termService.getTermAndWeeks(schoolId);
+    @GetMapping("/getTermAndWeeksAndStudentsBySchoolId/{schoolId}")
+    public Response<TermDto.TermAndWeeksAndStudentsResponse> getTermAndWeeksAndStudentsBySchoolId(@PathVariable Long schoolId) {
+        return this.termService.getTermAndWeeksAndStudents(schoolId);
     }
 
     @GetMapping("/getAllSchoolIdsAndStartTime")

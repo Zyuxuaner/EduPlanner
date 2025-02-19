@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class CourseInfo {
     private Course course;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 }

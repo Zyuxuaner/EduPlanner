@@ -5,6 +5,7 @@ import {HttpParams} from "@angular/common/http";
 import {CourseService} from "../../service/course.service";
 import {TermService} from "../../service/term.service";
 import {CommonService} from "../../service/common.service";
+import {Student} from "../../entity/student";
 
 @Component({
   selector: 'app-admin-schedule',
@@ -14,9 +15,12 @@ import {CommonService} from "../../service/common.service";
 export class AdminScheduleComponent implements OnInit{
   selectedSchool: number | null = null;
   allWeeks: number[] = [];
+  allStudents: Student[] = [];
   termMessage = {} as Term;
   // 记录被选中的周数
   selectedWeek: number | null = null;
+  // 记录被选中的学生
+  selectedStudent: number | null = null;
   schedule: WeeklySchedule = {};
   days = ['1', '2', '3', '4', '5', '6', '7'];
   periods = [
@@ -51,16 +55,21 @@ export class AdminScheduleComponent implements OnInit{
     return !classInfo || classInfo.begin === time;
   }
 
-  // 根据学校和周数，获取该学校所有学生的有课时间表
-  getAllStudentsCourse() {
+  // 根据学校和周数，获取该学校所有学生的有课时间表。加上studentId作为参数，获取指定学生的有课时间表
+  getCourseMessage() {
     if (this.selectedSchool !== null && this.selectedWeek !== null) {
-      const params = new HttpParams()
+      let params = new HttpParams()
         .append('schoolId', this.selectedSchool.toString())
         .append('week', this.selectedWeek.toString());
 
-      this.courseService.getAllStudentsCourse(params).subscribe(
+      if (this.selectedStudent !== null) {
+        params = params.append('studentId', this.selectedStudent.toString());
+      }
+
+      this.courseService.getCourseMessage(params).subscribe(
         data => {
           this.schedule = this.convertToWeeklySchedule(data.data);
+          console.log(this.schedule);
         }
       );
     } else {
@@ -73,7 +82,7 @@ export class AdminScheduleComponent implements OnInit{
     this.allWeeks = [];
     this.selectedWeek = null; // 清空选中的周数
 
-    this.termService.getTermAndWeeksBySchoolId(schoolId).subscribe(
+    this.termService.getTermAndWeeksAndStudentsBySchoolId(schoolId).subscribe(
       responseBody => {
         if (!responseBody.status) {
           this.commonService.showErrorAlert(responseBody.message);
@@ -81,6 +90,7 @@ export class AdminScheduleComponent implements OnInit{
           const AllData = responseBody.data;
           this.allWeeks = AllData.weeks;
           this.termMessage = AllData.term;
+          this.allStudents = AllData.students;
         }
       }
     );
@@ -90,41 +100,34 @@ export class AdminScheduleComponent implements OnInit{
   convertToWeeklySchedule(data: any): WeeklySchedule {
     const weeklySchedule: WeeklySchedule = {};
 
-    // 遍历课程数据 (遍历 courseId)
-    Object.keys(data).forEach((courseId) => {
-      const courseData = data[courseId];
+    // 遍历 data 的每个键（周几）
+    Object.keys(data).forEach((dayKey) => {
+      const day = Number(dayKey);
+      const dayData = data[day]; // 获取该天的课程数据
 
-      // 遍历课程的每一天 (day)
-      Object.keys(courseData).forEach((day) => {
-        const dayData = courseData[day];
+      // 如果该天的课表尚未初始化，则初始化为空对象
+      if (!weeklySchedule[day]) {
+        weeklySchedule[day] = {};
+      }
 
-        // 如果该课程的 day 没有初始化，则初始化
-        if (!weeklySchedule[Number(day)]) {
-          weeklySchedule[Number(day)] = {};
-        }
+      // 获取当天的课表
+      const daySchedule = weeklySchedule[day];
 
-        // 获取对应的 daySchedule
-        const daySchedule = weeklySchedule[Number(day)];
+      // 遍历该天的每一条课程数据
+      dayData.forEach((item: any) => {
+        const { begin, length, students } = item;
 
-        // 遍历每个时间段 (课程安排)
-        dayData.forEach((item: any) => {
-          const courseInfo: CourseInfo = {
-            courseName: `课程名-${courseId}`,  // 可以根据需要设置课程名
-            startWeek: item.week,              // 当前课程的周次
-            endWeek: item.week,                // 可以根据需要调整 endWeek
-            status: this.getStatus(item.week), // 获取课程的状态 (单双周或全周)
-            students: item.students,           // 学生名单
-            begin: item.begin,                 // 课程开始时间
-            length: item.length                // 课程长度（总小节数）
+        // 将课程信息填入对应的时间段
+        for (let time = begin; time < begin + length; time++) {
+          daySchedule[time] = {
+            begin,
+            length,
+            students,
           };
-
-          // 将课程信息填入对应的 daySchedule 中
-          for (let time = item.begin; time < item.begin + item.length; time++) {
-            daySchedule[time] = courseInfo;
-          }
-        });
+        }
       });
     });
+    console.log(weeklySchedule);
     return weeklySchedule;
   }
 
