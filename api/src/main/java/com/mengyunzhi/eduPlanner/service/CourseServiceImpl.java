@@ -81,55 +81,32 @@ public class CourseServiceImpl implements CourseService{
 
     }
 
-//    /**
-//     * 首先获取该班级下的所有必修课
-//     * 接着获取该学生的所有选修课
-//     * 合并所有课程（选修 + 必修）
-//     * 转换成 CourseResponse 类型，并填充课程安排信息
-//     * @param clazzId 当前登录用户的班级id
-//     * @param studentId 当前登录用户的学生id
-//     * @return courseResponses
-//     */
-//    @Override
-//    public List<CourseDto.GetAllCoursesForCurrentUserResponse> getAllCoursesForCurrentUser(Long clazzId, Long studentId) {
-//        List<Course> requiredCourses = courseRepository.findByClazzIdAndType(clazzId, 2L);
-//        List<Course> electiveCourses = courseRepository.findByStudentIdAndType(studentId, 1L);
-//
-//        List<Course> allCourses = new ArrayList<>();
-//        allCourses.addAll(requiredCourses);
-//        allCourses.addAll(electiveCourses);
-//
-//        List<CourseDto.GetAllCoursesForCurrentUserResponse> courseResponses = new ArrayList<>();
-//        for (Course course : allCourses) {
-//            // 获取该课程的所有课程安排
-//            List<CourseInfo> courseInfos = courseInfoRepository.findAllByCourseId(course.getId());
-//
-//            // 如果该课程有课程安排
-//            if (courseInfos != null && !courseInfos.isEmpty()) {
-//                // 遍历所有课程安排
-//                for (CourseInfo courseInfo : courseInfos) {
-//                    CourseDto.GetAllCoursesForCurrentUserResponse courseResponse = new CourseDto.GetAllCoursesForCurrentUserResponse();
-//                    courseResponse.setName(course.getName());
-//                    courseResponse.setType(course.getType());
-//
-//                    // 填充课程安排信息
-//                    courseResponse.setWeekType(courseInfo.getType());
-//                    courseResponse.setStartWeek(courseInfo.getStartWeek());
-//                    courseResponse.setEndWeek(courseInfo.getEndWeek());
-//                    courseResponse.setWeek(courseInfo.getDay());
-//                    courseResponse.setBegin(courseInfo.getBegin());
-//                    courseResponse.setLength(courseInfo.getLength());
-//                    courseResponse.setTerm(course.getTerm());
-//
-//                    // 将该课程信息添加到响应列表
-//                    courseResponses.add(courseResponse);
-//                }
-//            }
-//        }
-//
-//        return courseResponses;
-//    }
-//
+    /**
+     * 转换成 GetAllCoursesResponse 类型，并填充课程安排信息
+     * @return courseResponses
+     */
+    @Override
+    public List<CourseDto.GetAllCoursesResponse> getAllCourses() {
+        List<CourseInfo> courseInfoList = courseInfoRepository.findAll();
+        List<CourseDto.GetAllCoursesResponse> coursesResponses = new ArrayList<>();
+
+        for (CourseInfo courseInfo : courseInfoList) {
+            CourseDto.GetAllCoursesResponse response = new CourseDto.GetAllCoursesResponse();
+
+            response.setName(courseInfo.getCourse().getName());
+            response.setWeekType(courseInfo.getWeekType());
+            response.setWeeks(courseInfo.getWeeks());
+            response.setDay(courseInfo.getDay());
+            response.setBegin(courseInfo.getBegin());
+            response.setLength(courseInfo.getLength());
+            response.setTerm(courseInfo.getCourse().getTerm());
+            response.setStudent(courseInfo.getStudent());
+
+            coursesResponses.add(response);
+        }
+        return coursesResponses;
+    }
+
 //    @Override
 //    public Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> getAllStudentsCoursesOfSchool(Long schoolId, Long week) {
 //        List<Clazz> clazzList = clazzRepository.findClazzBySchoolId(schoolId);

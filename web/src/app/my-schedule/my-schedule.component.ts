@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CourseInfo, WeeklySchedule} from "../entity/course-info";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CourseService} from "../service/course.service";
-import {CourseDto} from "../dto/courseDto";
+import {SaveRequest} from "../dto/courseDto/saveRequest";
 
 @Component({
   selector: 'app-my-schedule',
@@ -149,7 +149,7 @@ export class MyScheduleComponent implements OnInit {
   }
 
   onSubmit() {
-    const result = this.formGroup.value as CourseDto;
+    const result = this.formGroup.value as SaveRequest;
     this.courseService.add(result).subscribe(
       (response) => {
         console.log('添加成功', response.message);

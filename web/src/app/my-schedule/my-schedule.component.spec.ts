@@ -4,7 +4,7 @@ import { MyScheduleComponent } from './my-schedule.component';
 import {WeekSelectorModule} from "../core/week-selector/week-selector.module";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {ReactiveFormsModule} from "@angular/forms";
-import {DayFormatPipe, WeekFormatPipe} from "../pipe/course-pipes";
+import {DayFormatPipe, WeekDayFormatPipe} from "../pipe/course-pipes";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('MyScheduleComponent', () => {
@@ -20,7 +20,7 @@ describe('MyScheduleComponent', () => {
         NzRadioModule,
         ReactiveFormsModule,
         DayFormatPipe,
-        WeekFormatPipe
+        WeekDayFormatPipe
       ]
     })
     .compileComponents();
