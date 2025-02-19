@@ -40,4 +40,16 @@ export class CourseService {
   cancelReuse(courseInfoId: number): Observable<ResponseBody> {
     return this.httpClient.post<ResponseBody>(`${this.baseUrl}/cancelReuse/${courseInfoId}`, {});
   }
+
+  getAllCourseInfo(schoolIdAndWeeksData: schoolIdAndWeeks[]): Observable<ResponseBody> {
+    let params = new HttpParams();
+
+    // 将每个 schoolId 和 weeks 添加到查询参数中
+    schoolIdAndWeeksData.forEach(item => {
+      params = params.append('schoolId', item.schoolId.toString());
+      params = params.append('weeks', item.weeks.toString());
+    });
+
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getAllCourseInfo`, {params});
+  }
 }
