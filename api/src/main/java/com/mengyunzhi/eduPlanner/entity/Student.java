@@ -21,9 +21,6 @@ public class Student {
     @JoinColumn(name = "school_id", nullable = false)
     private School school;
 
-    @ManyToMany(mappedBy = "students")
-    private Set<CourseInfo> reusedCourses;
-
     @OneToOne
     private User user;
 

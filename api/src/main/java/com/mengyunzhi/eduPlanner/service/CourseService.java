@@ -30,6 +30,22 @@ public interface CourseService {
      */
     List<CourseDto.GetAllCoursesResponse> getAllCourses();
 
+    /**
+     * 课程复用
+     * @param courseInfoId 被复用的课程安排id
+     * @param studentId 需要复用的学生id
+     * @return 响应
+     */
+    Response<String> reuseCourseInfo(Long courseInfoId, Long studentId);
+
+    /**
+     * 取消课程复用
+     * @param courseInfoId 需要取消的课程安排id
+     * @param studentId 操作的学生id
+     * @return 响应
+     */
+    Response<String> cancelReuseCourseInfo(Long courseInfoId, Long studentId);
+
 //    /**
 //     * 获取当前登录用户对应的学期id
 //     * @param currentUser

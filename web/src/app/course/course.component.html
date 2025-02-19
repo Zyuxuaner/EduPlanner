@@ -1,16 +1,5 @@
 <nav class="navbar navbar-light bg-light">
   <form class="form-inline" [formGroup]="formGroup">
-    <div class="mr-2">
-      <nz-select nzAllowClear  nzPlaceHolder="选择课程类型"
-                 formControlName="type">
-        <nz-option nzCustomContent [nzLabel]="'必修'" [nzValue]="2">
-          必修
-        </nz-option>
-        <nz-option nzCustomContent [nzLabel]="'选修'" [nzValue]="1">
-          选修
-        </nz-option>
-      </nz-select>
-    </div>
     <div>
       <input formControlName="searchCourse" name="searchTeacherNo" class="form-control mr-sm-2" type="search"
              placeholder="请输入课程名称" aria-label="Search">
@@ -28,6 +17,7 @@
     <th>星期</th>
     <th>周</th>
     <th>状态</th>
+    <th>创建者</th>
     <th>操    作</th>
   </tr>
   </thead>
@@ -35,32 +25,31 @@
   <tr *ngFor="let course of courses; index as i">
     <td>{{ i + 1 }}</td>
     <td>{{ course.name}}</td>
-    <td>{{ getRange(course.begin, course.length) }}</td>
-    <td>{{ getWeekday(course.day) }}</td>
-    <td>{{ course.weeks | weekRangeFormat: course.weekType}} {{course.weekType | weekTypeFormat}}</td>
+    <td>{{ getRange(course.courseInfo.begin, course.courseInfo.length) }}</td>
+    <td>{{ getWeekday(course.courseInfo.day) }}</td>
+    <td>{{ course.courseInfo.weeks | weekRangeFormat: course.courseInfo.weekType}} {{course.courseInfo.weekType | weekTypeFormat}}</td>
     <td *ngIf="course.term.id == termId; else courseOver">
       <span class="badge badge-pill badge-success">置入</span>
     </td>
+    <td>{{ course.creator.name }}</td>
     <td>
       <!-- 如果结课了，就不允许编辑课程 -->
       <a  *ngIf="course.term.id == termId" class="btn btn-outline-primary btn-sm">
         <i class="fa fa-pen"></i>编辑
       </a>
-      <span *ngIf="course.term.id == termId && course.student.id == currentStudentId" class="btn btn-outline-danger btn-sm">
+      <span *ngIf="course.term.id == termId && course.creator.id == currentStudentId" class="btn btn-outline-danger btn-sm">
           <i class="far fa-trash-alt"></i>删除
       </span>
-      <span class="btn btn-sm btn-outline-info">
+      <span *ngIf="course.term.id == termId && course.creator.id !== currentStudentId && !isCourseReused(course.courseInfo.id)" class="btn btn-sm btn-outline-info" (click)="reuseCourse(course.courseInfo.id)">
          <i class="fa fa-plus" aria-hidden="true"></i>复用课程
       </span>
+      <span *ngIf="course.term.id == termId && isCourseReused(course.courseInfo.id)" class="btn btn-sm btn-outline-secondary" (click)="cancelReuse(course.courseInfo.id)">
+          <i class="fa fa-times" aria-hidden="true"></i>取消复用
+  </span>
     </td>
   </tr>
   </tbody>
 </table>
-<ng-template #useOrNot>
-  <span class="btn btn-sm btn-outline-secondary">
-          <i class="fa fa-times" aria-hidden="true"></i>取消复用
-  </span>
-</ng-template>
 <ng-template #courseOver>
   <td>
     <span class="badge badge-pill badge-secondary">结课</span>

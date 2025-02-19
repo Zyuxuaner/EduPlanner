@@ -9,6 +9,7 @@ import com.mengyunzhi.eduPlanner.service.StudentService;
 import com.mengyunzhi.eduPlanner.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -47,7 +48,7 @@ public class CourseController {
         Long schoolId = currentUser.getData().getSchoolId();
 
         courseService.save(saveRequest, userId, schoolId);
-        return Response.success("课程新增成功");
+        return Response.success(null,"课程新增成功");
     }
 
     /**
@@ -73,6 +74,30 @@ public class CourseController {
             Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> allStudentsMessage =
                     this.courseService.getMessage(schoolId, week, studentId);
             return new Response<>(true, "成功获取学生的课程信息", allStudentsMessage);
+    }
+
+    @PostMapping("/cancelReuse/{courseInfoId}")
+    public Response<String> cancelReuseCourseInfo(@PathVariable Long courseInfoId) {
+        Response<CurrentUser> currentUser = this.loginService.getCurrentLoginUser();
+        Long role = currentUser.getData().getRole();
+        if (role != 1) {
+            return Response.fail("获取当前登录学生失败");
+        }
+        Long userId = currentUser.getData().getId();
+        Student currentStudent = this.studentService.findByUserId(userId);
+        return this.courseService.cancelReuseCourseInfo(courseInfoId, currentStudent.getId());
+    }
+
+    @PostMapping("/reuse/{courseInfoId}")
+    public Response<String> reuseCourseInfo(@PathVariable Long courseInfoId) {
+        Response<CurrentUser> currentUser = this.loginService.getCurrentLoginUser();
+        Long role = currentUser.getData().getRole();
+        if (role != 1) {
+            return Response.fail("获取当前登录学生失败");
+        }
+        Long userId = currentUser.getData().getId();
+        Student currentStudent = this.studentService.findByUserId(userId);
+        return this.courseService.reuseCourseInfo(courseInfoId, currentStudent.getId());
     }
 
 //

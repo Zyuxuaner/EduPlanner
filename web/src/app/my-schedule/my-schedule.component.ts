@@ -3,6 +3,8 @@ import {CourseInfo, WeeklySchedule} from "../entity/course-info";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CourseService} from "../service/course.service";
 import {SaveRequest} from "../dto/courseDto/saveRequest";
+import {Router} from "@angular/router";
+import {CommonService} from "../service/common.service";
 
 @Component({
   selector: 'app-my-schedule',
@@ -45,7 +47,9 @@ export class MyScheduleComponent implements OnInit {
 
   allWeeks: number[] = [];
 
-  constructor(private courseService: CourseService,) {
+  constructor(private courseService: CourseService,
+              private router: Router,
+              private commonService: CommonService) {
   }
 
   ngOnInit(): void {
@@ -152,7 +156,12 @@ export class MyScheduleComponent implements OnInit {
     const result = this.formGroup.value as SaveRequest;
     this.courseService.add(result).subscribe(
       (response) => {
-        console.log('添加成功', response.message);
+        if (response.status) {
+          // 关闭模态框
+          ($('#addCourseModal') as any).modal('hide');
+        } else {
+          this.commonService.showErrorAlert(response.message);
+        }
       }
     );
   }

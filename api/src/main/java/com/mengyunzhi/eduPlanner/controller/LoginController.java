@@ -46,7 +46,7 @@ public class LoginController {
         if (role == 1) {
             Long userId = currentUser.getData().getId();
             Student currentStudent = this.studentRepository.findByUserId(userId);
-            return Response.success(currentStudent);
+            return Response.success(currentStudent, "获取成功");
         } else {
             return Response.fail("获取当前登录学生失败");
         }

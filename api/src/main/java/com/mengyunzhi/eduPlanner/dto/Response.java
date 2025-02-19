@@ -28,7 +28,7 @@ public class Response<T> {
 
     public Response() {}
 
-    public static <T> Response<T> success(T data) {
+    public static <T> Response<T> success(T data, String message) {
         Response<T> response = new Response<>();
         response.setStatus(true);
         response.setData(data);

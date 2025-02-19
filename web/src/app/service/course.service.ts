@@ -27,6 +27,16 @@ export class CourseService {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getCourseMessage`, {params});
   }
 
+  // 复用课程安排
+  reuse(courseInfoId: number): Observable<ResponseBody> {
+    return this.httpClient.post<ResponseBody>(`${this.baseUrl}/reuse/${courseInfoId}`, {});
+  }
+
+  // 取消复用
+  cancelReuse(courseInfoId: number): Observable<ResponseBody> {
+    return this.httpClient.post<ResponseBody>(`${this.baseUrl}/cancelReuse/${courseInfoId}`, {});
+  }
+
   getAllCourseInfo(schoolIdAndWeeksData: schoolIdAndWeeks[]): Observable<ResponseBody> {
     let params = new HttpParams();
 

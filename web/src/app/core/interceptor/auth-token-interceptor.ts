@@ -21,7 +21,6 @@ export class AuthTokenInterceptor implements HttpInterceptor{
    * @param next 下一个处理者（可能是一个拦截器，也可能直接转发给后台）
    */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('拦截到请求信息。请求地址：' + req.url + '；请求方法：' + req.method);
     const reqClone = req.clone({
       setHeaders: {'auth-token': CacheService.getAuthToken()}
     });

@@ -77,7 +77,7 @@ public class CourseServiceImpl implements CourseService{
         newCourseInfo.setCreator(student);
 
         courseInfoRepository.save(newCourseInfo);
-        return Response.success("课程新增成功");
+        return Response.success(null, "课程新增成功");
 
     }
 
@@ -94,17 +94,57 @@ public class CourseServiceImpl implements CourseService{
             CourseDto.GetAllCoursesResponse response = new CourseDto.GetAllCoursesResponse();
 
             response.setName(courseInfo.getCourse().getName());
-            response.setWeekType(courseInfo.getWeekType());
-            response.setWeeks(courseInfo.getWeeks());
-            response.setDay(courseInfo.getDay());
-            response.setBegin(courseInfo.getBegin());
-            response.setLength(courseInfo.getLength());
+            response.setCourseInfo(courseInfo);
             response.setTerm(courseInfo.getCourse().getTerm());
-            response.setStudent(courseInfo.getCreator());
+            response.setCreator(courseInfo.getCreator());
+            // 设置复用该课程的学生
+            response.setReuseStudents(new ArrayList<>(courseInfo.getStudents()));
 
             coursesResponses.add(response);
         }
         return coursesResponses;
+    }
+
+    @Override
+    public Response<String> reuseCourseInfo(Long courseInfoId, Long studentId) {
+
+        Optional<CourseInfo> courseInfoOptional = courseInfoRepository.findById(courseInfoId);
+        if (!courseInfoOptional.isPresent()) {
+            return Response.fail("该课程不存在");
+        }
+        CourseInfo courseInfo = courseInfoOptional.get();
+
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if (!studentOptional.isPresent()) {
+            return Response.fail("该学生不存在");
+        }
+        Student student = studentOptional.get();
+
+        courseInfo.getStudents().add(student);
+        courseInfoRepository.save(courseInfo);
+
+        return Response.success(null,"复用成功");
+
+    }
+
+    @Override
+    public Response<String> cancelReuseCourseInfo(Long courseInfoId, Long studentId) {
+        Optional<CourseInfo> courseInfoOptional = courseInfoRepository.findById(courseInfoId);
+        if (!courseInfoOptional.isPresent()) {
+            return Response.fail("该课程不存在");
+        }
+        CourseInfo courseInfo = courseInfoOptional.get();
+
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if (!studentOptional.isPresent()) {
+            return Response.fail("该学生不存在");
+        }
+        Student student = studentOptional.get();
+
+        courseInfo.getStudents().remove(student);
+        courseInfoRepository.save(courseInfo);
+
+        return Response.success(null,"取消复用成功");
     }
 
 //    @Override
