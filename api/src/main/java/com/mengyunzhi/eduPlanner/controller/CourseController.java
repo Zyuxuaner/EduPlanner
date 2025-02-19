@@ -100,32 +100,22 @@ public class CourseController {
         return this.courseService.reuseCourseInfo(courseInfoId, currentStudent.getId());
     }
 
-//
-//    /**
-//     * 获取所有学校的当前周的课程安排（激活学期）
-//     * @param schoolId 学校id数组
-//     * @param weeks 当前周 数组
-//     * @return 嵌套数据
-//     */
-//    @GetMapping("/getAllCourseInfo")
-//    public Response<Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>>> getAllCourseInfo(
-//            @RequestParam List<Long> schoolId,
-//            @RequestParam List<Long> weeks) {
-//        Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> allStudentCourseData = new HashMap<>();
-//
-//        // 遍历 schoolId 和 weeks 进行处理
-//        for (int i = 0; i < schoolId.size(); i++) {
-//            Long schoolIdValue = schoolId.get(i);
-//            Long weekValue = weeks.get(i);
-//
-//            Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> studentCourseData =
-//                    this.courseService.getAllStudentsCoursesOfSchool(schoolIdValue, weekValue);
-//
-//            allStudentCourseData.putAll(studentCourseData);
-//        }
-//        return new Response<>(true, "成功获取所有学生课程信息", allStudentCourseData);
-//    }
-//
+
+    /**
+     * 获取所有学校的当前周的课程安排（激活学期）
+     * @param schoolId 学校id数组
+     * @param weeks 当前周 数组
+     * @return 嵌套数据
+     */
+    @GetMapping("/getAllCourseInfo")
+    public Response<Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> getAllMessage(
+            @RequestParam List<Long> schoolId,
+            @RequestParam List<Long> weeks) {
+        Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> allStudentCourseInfos =
+                this.courseService.getAllMessage(schoolId, weeks);
+        return Response.success(allStudentCourseInfos, "成功获取所有学生课程信息");
+    }
+
 //    /**
 //     * 根据 week，来查询当前学生在 week 周下的课程安排
 //     * @param week 查询的周数

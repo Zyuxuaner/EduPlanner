@@ -22,7 +22,6 @@ import { LoginComponent } from './login/login.component';
 import {AuthTokenInterceptorModule} from "./core/interceptor/auth-token-interceptor.module";
 import {CourseModule} from "./course/course.module";
 import {MeModule} from "./me/me.module";
-import { AdminDashboardComponent } from './dashboard/admin-dashboard/admin-dashboard.component';
 import {MyScheduleModule} from "./my-schedule/my-schedule.module";
 import {WeekSelectorModule} from "./core/week-selector/week-selector.module";
 
@@ -34,7 +33,6 @@ registerLocaleData(zh);
         DashboardComponent,
         LayoutComponent,
         LoginComponent,
-        AdminDashboardComponent
     ],
     imports: [
         BrowserModule,
