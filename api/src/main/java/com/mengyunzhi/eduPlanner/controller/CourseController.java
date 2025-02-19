@@ -51,6 +51,11 @@ public class CourseController {
         return Response.success(null,"课程新增成功");
     }
 
+    @DeleteMapping("/delete/{courseInfoId}")
+    public Response<String> delete(@PathVariable Long courseInfoId) {
+        return courseService.delete(courseInfoId);
+    }
+
     /**
      * 获取全部课程
      * @return List<CourseResponse>
@@ -99,56 +104,4 @@ public class CourseController {
         Student currentStudent = this.studentService.findByUserId(userId);
         return this.courseService.reuseCourseInfo(courseInfoId, currentStudent.getId());
     }
-
-//
-//    /**
-//     * 获取所有学校的当前周的课程安排（激活学期）
-//     * @param schoolId 学校id数组
-//     * @param weeks 当前周 数组
-//     * @return 嵌套数据
-//     */
-//    @GetMapping("/getAllCourseInfo")
-//    public Response<Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>>> getAllCourseInfo(
-//            @RequestParam List<Long> schoolId,
-//            @RequestParam List<Long> weeks) {
-//        Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> allStudentCourseData = new HashMap<>();
-//
-//        // 遍历 schoolId 和 weeks 进行处理
-//        for (int i = 0; i < schoolId.size(); i++) {
-//            Long schoolIdValue = schoolId.get(i);
-//            Long weekValue = weeks.get(i);
-//
-//            Map<Long, Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> studentCourseData =
-//                    this.courseService.getAllStudentsCoursesOfSchool(schoolIdValue, weekValue);
-//
-//            allStudentCourseData.putAll(studentCourseData);
-//        }
-//        return new Response<>(true, "成功获取所有学生课程信息", allStudentCourseData);
-//    }
-//
-//    /**
-//     * 根据 week，来查询当前学生在 week 周下的课程安排
-//     * @param week 查询的周数
-//     * @return
-//     */
-//    @GetMapping("/getCourseInfoByStudent")
-//    public Response<Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>>> getCourseInfoByStudent(@RequestParam Long week) {
-//        Response<CurrentUser> currentUser = loginService.getCurrentLoginUser();
-//        Long schoolId = currentUser.getData().getSchoolId();
-//        Long userId = currentUser.getData().getId();
-//        Student student = studentService.findByUserId(userId);
-//        Long clazzId = student.getClazz().getId();
-//        Long studentId = student.getId();
-//        // 定义激活学期的状态值
-//        Long ACTIVE_STATUS = 1L;
-//        // 获取当前学校激活学期id
-//        Optional<Term> optTerm = this.termService.checkTermActive(schoolId, ACTIVE_STATUS);
-//
-//        Long termId = optTerm.get().getId();
-//
-//        Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> courseInfoResponse =
-//                this.courseService.getCourseInfoByCurrentUserOfWeek(clazzId, studentId, week, termId);
-//
-//        return new Response<>(true, "成功获取所选周的课程安排", courseInfoResponse);
-//    }
 }

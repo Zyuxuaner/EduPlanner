@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LoginService} from "../service/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {CommonService} from "../service/common.service";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private loginService: LoginService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private commonService: CommonService) {
   }
 
   ngOnInit(): void {
@@ -42,7 +44,7 @@ export class LoginComponent implements OnInit {
         this.loginService.setIsLogin(true);
         this.router.navigate([this.redirectUrl]);
       } else {
-        console.log(response.message);
+        this.commonService.showErrorAlert(response.message)
       }
     }, error => console.log(error));
   }

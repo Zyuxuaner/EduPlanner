@@ -16,6 +16,12 @@ import java.util.Set;
  */
 public interface CourseService {
     /**
+     * 删除课程安排
+     * @param courseInfoId 课程安排id
+     * @return 响应
+     */
+    Response<String> delete(Long courseInfoId);
+    /**
      * 新增课程
      * @param saveRequest 新增的课程
      * @param userId 登录用户的id
@@ -46,48 +52,13 @@ public interface CourseService {
      */
     Response<String> cancelReuseCourseInfo(Long courseInfoId, Long studentId);
 
-//    /**
-//     * 获取当前登录用户对应的学期id
-//     * @param currentUser
-//     * @return
-//     */
-//    Long getTermIdByLoginUser(Response<CurrentUser> currentUser);
-//
-//    /**
-//     * 根据选择的周数，来获取当前登录用户在所选周的课程安排
-//     * @param clazzId 当前登录学生用户的班级id
-//     * @param studentId 当前登录学生用户的学生id
-//     * @param week 被选中的周数
-//     * @param termId 当前激活的学期id
-//     * @return StudentsCoursesOfSchoolResponse嵌套数据结构
-//     */
-//    Map<Long, Map<Long, List<CourseDto.StudentCourseInfoResponse>>> getCourseInfoByCurrentUserOfWeek(Long clazzId, Long studentId, Long week, Long termId);
-//    /**
-//     * 获取当前登录用户的班级id
-//     * @param currentUser
-//     * @return
-//     */
-//    Long getClassIdByLoginUser(Response<CurrentUser> currentUser);
-//
-//    boolean isTimeLegal(CourseDto.SaveRequest saveRequest);
-//
-//    boolean isTimeConflict(CourseInfo newCourseInfo, CourseInfo existingCourseInfo);
-//
-//    /**
-//     * 返回开始周到结束周，包括开始周和结束周。比如{1, 2, 3, 4, 5}
-//     * @param startWeek
-//     * @param endWeek
-//     * @return
-//     */
-//    Set<Long> getWeeksInRange(Long startWeek, Long endWeek, Long type);
-
     /**
      * 根据school和week获取所有学生的课程安排
      * 如果传了student id，那么获取该周单个学生的课程安排
-     * @param schoolId
-     * @param week
-     * @param studentId
-     * @return
+     * @param schoolId 学校id
+     * @param week 周数
+     * @param studentId 学生id
+     * @return 数组
      */
     Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> getMessage(Long schoolId, Long week, Long studentId);
 }

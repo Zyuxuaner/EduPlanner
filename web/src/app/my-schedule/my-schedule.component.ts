@@ -145,9 +145,13 @@ export class MyScheduleComponent implements OnInit {
 
   // 打开模态框并根据选择的单元格设置 day 和 begin 的默认值
   openAddCourseModal(day: number, time: number) {
-    this.formGroup.patchValue({
-      day:day,
-      begin: time
+    this.formGroup.reset({
+      weeks: [],
+      name: '',
+      day: day,
+      begin: time,
+      length: 1,
+      weekType: '',
     });
     this.updateAvailableLengths(time);
   }

@@ -72,7 +72,7 @@ export class CourseTableComponent implements OnInit{
         }
       );
     } else {
-      console.error("School or week is null");
+      console.log("School or week is null");
     }
   }
 
@@ -95,7 +95,7 @@ export class CourseTableComponent implements OnInit{
         }
       );
     } else {
-      console.error("schoolId 为 null");
+      console.log("schoolId 为 null");
     }
 
   }

@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Course} from "../entity/course";
 import {FormControl, FormGroup} from "@angular/forms";
 import {CourseService} from "../service/course.service";
-import {Router} from "@angular/router";
 import {TermService} from "../service/term.service";
 import {CommonService} from "../service/common.service";
 import {GetAllResponse} from "../dto/courseDto/getAllResponse";
 import {LoginService} from "../service/login.service";
+import {Student} from "../entity/student";
+import {StudentService} from "../service/student.service";
 
 @Component({
   selector: 'app-course',
@@ -17,16 +17,17 @@ export class CourseComponent implements OnInit{
   courses = [] as GetAllResponse[];
   formGroup = new FormGroup({
     searchCourse: new FormControl(null),
-    type: new FormControl(''),
+    creatorStudent: new FormControl(''),
   });
   currentStudentId: number = 0;
   termId: number | null = null;
+  allStudents: Student[] = [];
 
   constructor(private courseService: CourseService,
               private termService: TermService,
               private commonService: CommonService,
               private loginService: LoginService,
-              private router: Router){}
+              private studentService: StudentService){}
 
   ngOnInit(): void {
       this.setCurrentStudentId();
@@ -34,6 +35,9 @@ export class CourseComponent implements OnInit{
         this.courses = courses;
         this.getActiveTerm();
       });
+      this.studentService.getAll().subscribe(data => {
+        this.allStudents = data;
+      })
   }
 
   // 获取当前登录用户的所在学校的激活学期
@@ -72,7 +76,14 @@ export class CourseComponent implements OnInit{
   }
 
   onDelete(courseInfoId: any) {
-
+    this.courseService.delete(courseInfoId).subscribe(data => {
+      if (data.status) {
+        this.commonService.showSuccessAlert(data.message);
+        this.reload();
+      } else {
+        this.commonService.showErrorAlert(data.message);
+      }
+    });
   }
 
   onEdit(id: number, courseInfoId: number | undefined) {

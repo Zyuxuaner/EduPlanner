@@ -18,6 +18,10 @@ export class CourseService {
     return this.httpClient.post<ResponseBody>(`${this.baseUrl}/add`, course);
   }
 
+  delete(courseInfoId: number): Observable<ResponseBody> {
+    return this.httpClient.delete<ResponseBody>(`${this.baseUrl}/delete/${courseInfoId}`);
+  }
+
   getAll(): Observable<GetAllResponse[]> {
     return this.httpClient.get<GetAllResponse[]>(`${this.baseUrl}/getAll`);
   }
@@ -35,21 +39,5 @@ export class CourseService {
   // 取消复用
   cancelReuse(courseInfoId: number): Observable<ResponseBody> {
     return this.httpClient.post<ResponseBody>(`${this.baseUrl}/cancelReuse/${courseInfoId}`, {});
-  }
-
-  getAllCourseInfo(schoolIdAndWeeksData: schoolIdAndWeeks[]): Observable<ResponseBody> {
-    let params = new HttpParams();
-
-    // 将每个 schoolId 和 weeks 添加到查询参数中
-    schoolIdAndWeeksData.forEach(item => {
-      params = params.append('schoolId', item.schoolId.toString());
-      params = params.append('weeks', item.weeks.toString());
-    });
-
-    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getAllCourseInfo`, {params});
-  }
-
-  getCourseInfoByStudent(week: number): Observable<ResponseBody> {
-    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getCourseInfoByStudent`, {params: {week: week.toString()}});
   }
 }

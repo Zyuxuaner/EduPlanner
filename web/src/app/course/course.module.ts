@@ -12,15 +12,15 @@ import {WeekRangeFormatPipe, WeekTypeFormatPipe} from "../pipe/course-pipes";
 
 @NgModule({
   declarations: [CourseComponent],
-  imports: [
-    CommonModule,
-    CourseRoutingModule,
-    NzSelectModule,
-    ReactiveFormsModule,
-    NzRadioModule,
-    SchoolSelectModule,
-    WeekRangeFormatPipe,
-    WeekTypeFormatPipe
-  ]
+    imports: [
+        CommonModule,
+        CourseRoutingModule,
+        NzSelectModule,
+        ReactiveFormsModule,
+        NzRadioModule,
+        SchoolSelectModule,
+        WeekRangeFormatPipe,
+        WeekTypeFormatPipe
+    ]
 })
 export class CourseModule { }
