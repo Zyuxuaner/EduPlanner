@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author zhangyuxuan
@@ -20,7 +21,7 @@ public class CourseInfo {
     private String weekType;
 
     @ElementCollection
-    @CollectionTable(name = "course_weeks", joinColumns = @JoinColumn(name = "course_info_id"))
+    @CollectionTable(name = "course_info_week", joinColumns = @JoinColumn(name = "course_info_id"))
     @Column(name = "week")
     private List<Integer> weeks;
 
@@ -36,6 +37,14 @@ public class CourseInfo {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    @JoinColumn(name = "creator_student_id", nullable = false)
+    private Student creator;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_course_info",
+            joinColumns = @JoinColumn(name = "course_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private Set<Student> students;
 }

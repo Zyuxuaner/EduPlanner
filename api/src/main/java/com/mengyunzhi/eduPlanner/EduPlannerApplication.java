@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/**
+ * @author zhangyuxuan
+ */
 @SpringBootApplication
 @ServletComponentScan
 @EnableScheduling

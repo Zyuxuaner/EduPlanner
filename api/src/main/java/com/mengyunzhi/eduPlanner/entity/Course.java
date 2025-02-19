@@ -18,8 +18,4 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "term_id", referencedColumnName = "id")
     private Term term;
-
-    @ManyToMany(mappedBy = "courses")
-    @JsonIgnore
-    private Set<Student> students;
 }
