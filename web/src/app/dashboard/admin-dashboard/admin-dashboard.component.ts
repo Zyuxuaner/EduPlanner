@@ -97,8 +97,6 @@ export class AdminDashboardComponent implements OnInit{
         dayData.forEach((item: any) => {
           const courseInfo: CourseInfo = {
             courseName: `课程名-${courseId}`,  // 可以根据需要设置课程名
-            startWeek: item.week,              // 当前课程的周次
-            endWeek: item.week,                // 可以根据需要调整 endWeek
             students: item.students,           // 学生名单
             begin: item.begin,                 // 课程开始时间
             length: item.length                // 课程长度（总小节数）

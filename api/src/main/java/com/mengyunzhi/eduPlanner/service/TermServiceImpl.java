@@ -65,7 +65,7 @@ public class TermServiceImpl implements TermService {
         term.setStatus(ACTIVE_STATUS);
         termRepository.save(term);
 
-        return Response.success("学期激活成功");
+        return Response.success(null,"学期激活成功");
     }
 
     @Override

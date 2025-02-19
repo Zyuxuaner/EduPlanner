@@ -42,7 +42,6 @@ export class WeekRangeFormatPipe implements PipeTransform {
 
     // 排序 weeks 数组
     weeks.sort((a, b) => a - b);
-    console.log(weeks);
 
     let result = '';
 

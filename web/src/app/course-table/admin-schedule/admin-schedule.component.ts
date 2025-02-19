@@ -69,7 +69,6 @@ export class AdminScheduleComponent implements OnInit{
       this.courseService.getCourseMessage(params).subscribe(
         data => {
           this.schedule = this.convertToWeeklySchedule(data.data);
-          console.log(this.schedule);
         }
       );
     } else {
@@ -81,19 +80,23 @@ export class AdminScheduleComponent implements OnInit{
     // 当学校被重新选择之后，清空周数选择器的内容
     this.allWeeks = [];
     this.selectedWeek = null; // 清空选中的周数
-
-    this.termService.getTermAndWeeksAndStudentsBySchoolId(schoolId).subscribe(
-      responseBody => {
-        if (!responseBody.status) {
-          this.commonService.showErrorAlert(responseBody.message);
-        } else {
-          const AllData = responseBody.data;
-          this.allWeeks = AllData.weeks;
-          this.termMessage = AllData.term;
-          this.allStudents = AllData.students;
+    if (schoolId !== null) {
+      this.termService.getTermAndWeeksAndStudentsBySchoolId(schoolId).subscribe(
+        responseBody => {
+          if (!responseBody.status) {
+            this.commonService.showErrorAlert(responseBody.message);
+          } else {
+            const AllData = responseBody.data;
+            this.allWeeks = AllData.weeks;
+            this.termMessage = AllData.term;
+            this.allStudents = AllData.students;
+          }
         }
-      }
-    );
+      );
+    } else {
+      console.error("schoolId 为 null");
+    }
+
   }
 
   // 将从后端获得的数据转换为 WeeklySchedule 类型
@@ -127,7 +130,6 @@ export class AdminScheduleComponent implements OnInit{
         }
       });
     });
-    console.log(weeklySchedule);
     return weeklySchedule;
   }
 

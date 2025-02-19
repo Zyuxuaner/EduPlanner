@@ -19,7 +19,7 @@ export class CourseComponent implements OnInit{
     searchCourse: new FormControl(null),
     type: new FormControl(''),
   });
-  currentStudentId: number | null = null;
+  currentStudentId: number = 0;
   termId: number | null = null;
 
   constructor(private courseService: CourseService,
@@ -32,7 +32,6 @@ export class CourseComponent implements OnInit{
       this.setCurrentStudentId();
       this.courseService.getAll().subscribe(courses => {
         this.courses = courses;
-        console.log(this.courses);
         this.getActiveTerm();
       });
   }
@@ -80,21 +79,47 @@ export class CourseComponent implements OnInit{
 
   }
 
-  // 如果该用户下没有激活的学期，不进行页面跳转并提示用户
-  checkBeforeAdd(): void {
-    this.termService.checkTerm().subscribe(data => {
-      if (data.status) {
-        this.router.navigate(['/course/add']);
-      } else {
-        this.commonService.showErrorAlert(data.message);
-      }
-    });
-  }
-
   setCurrentStudentId() {
     this.loginService.getCurrentStudent().subscribe(data => {
       const currentStudent = data.data;
       this.currentStudentId = currentStudent.id;
     })
   }
+
+  // 判断课程是否已被当前学生复用
+  isCourseReused(courseInfo: number): boolean {
+    const course = this.courses.find(course => course.courseInfo.id === courseInfo) as GetAllResponse;
+    return course && course.reuseStudents && course.reuseStudents.some(student => student.id === this.currentStudentId);
+  }
+
+  reload() {
+    this.courseService.getAll().subscribe(courses => {
+      this.courses = courses;
+    });
+  }
+
+  // 复用课程
+  reuseCourse(courseInfo: number) {
+    this.courseService.reuse(courseInfo).subscribe(data => {
+      if (data.status) {
+        this.commonService.showSuccessAlert(data.message);
+        this.reload();
+      } else {
+        this.commonService.showErrorAlert(data.message);
+      }
+    })
+  }
+
+  // 取消复用
+  cancelReuse(courseInfo: number) {
+    this.courseService.cancelReuse(courseInfo).subscribe(data => {
+      if (data.status) {
+        this.commonService.showSuccessAlert(data.message);
+        this.reload();
+      } else {
+        this.commonService.showErrorAlert(data.message);
+      }
+    })
+  }
+
 }

@@ -7,6 +7,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {WeekSelectorModule} from "../core/week-selector/week-selector.module";
 import * as fromPipes from '../pipe/course-pipes';
+import * as $ from "jquery";
 
 @NgModule({
   declarations: [

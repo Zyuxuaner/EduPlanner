@@ -1,5 +1,6 @@
 package com.mengyunzhi.eduPlanner.dto;
 
+import com.mengyunzhi.eduPlanner.entity.CourseInfo;
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
 import lombok.Data;
@@ -26,13 +27,10 @@ public class CourseDto {
     @Data
     public static class GetAllCoursesResponse {
         private String name;
-        private String weekType;
-        private List<Integer> weeks;
-        private Long day;
-        private Long begin;
-        private Long length;
+        private CourseInfo courseInfo;
         private Term term;
-        private Student student;
+        private Student creator;
+        private List<Student> reuseStudents;
     }
 
     /**

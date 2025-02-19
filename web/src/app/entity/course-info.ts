@@ -1,8 +1,5 @@
 export interface CourseInfo {
   courseName ?: string;   // 课程名称
-  startWeek ?: number;   // 开始周数
-  endWeek ?: number;     // 结束周数
-  status ?: string;     // 状态(单周、双周、全周)
   weekType?: string;    // todo：后续需要使用改字段来替换 status 字段
   students ?: string[];
   begin ?: number;  // 第几小节开始上课
