@@ -90,4 +90,12 @@ public interface CourseService {
      * @return
      */
     Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> getMessage(Long schoolId, Long week, Long studentId);
+
+    /**
+     * 获取所有学校所有学生的课程安排信息
+     * @param schoolId 学校id列表
+     * @param weeks 学校对应的当前周
+     * @return
+     */
+    Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> getAllMessage(List<Long> schoolId, List<Long> weeks);
 }
