@@ -1,6 +1,7 @@
 package com.mengyunzhi.eduPlanner.repository;
 
 import com.mengyunzhi.eduPlanner.entity.CourseInfo;
+import com.mengyunzhi.eduPlanner.entity.Student;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -24,7 +25,7 @@ public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
      */
     List<CourseInfo> findAllByCourseId(Long courseId);
 
-    List<CourseInfo> findByStudentId(Long studentId);
+    List<CourseInfo> findByCreator(Student creator);
 //    @Query("SELECT ci FROM CourseInfo ci " +
 //            "JOIN ci.course c " +
 //            "JOIN c.term t " +

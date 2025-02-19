@@ -74,7 +74,7 @@ public class CourseServiceImpl implements CourseService{
         newCourseInfo.setBegin(saveRequest.getBegin());
         newCourseInfo.setLength(saveRequest.getLength());
         newCourseInfo.setWeeks(saveRequest.getWeeks());
-        newCourseInfo.setStudent(student);
+        newCourseInfo.setCreator(student);
 
         courseInfoRepository.save(newCourseInfo);
         return Response.success("课程新增成功");
@@ -100,7 +100,7 @@ public class CourseServiceImpl implements CourseService{
             response.setBegin(courseInfo.getBegin());
             response.setLength(courseInfo.getLength());
             response.setTerm(courseInfo.getCourse().getTerm());
-            response.setStudent(courseInfo.getStudent());
+            response.setStudent(courseInfo.getCreator());
 
             coursesResponses.add(response);
         }
@@ -161,7 +161,7 @@ public class CourseServiceImpl implements CourseService{
         for (Student student : students) {
             Long studentsId = student.getId();
             // 获取该学生的课程信息
-            List<CourseInfo> courseInfos = courseInfoRepository.findByStudentId(studentsId);
+            List<CourseInfo> courseInfos = courseInfoRepository.findByCreator(student);
 
             for (CourseInfo courseInfo : courseInfos) {
                 // 检查是否属于当前学期，并且周次匹配

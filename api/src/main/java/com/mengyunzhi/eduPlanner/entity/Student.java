@@ -21,14 +21,8 @@ public class Student {
     @JoinColumn(name = "school_id", nullable = false)
     private School school;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_course",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    @JsonManagedReference
-    private Set<Course> courses;
+    @ManyToMany(mappedBy = "students")
+    private Set<CourseInfo> reusedCourses;
 
     @OneToOne
     private User user;
