@@ -202,8 +202,12 @@ public class CourseServiceImpl implements CourseService{
             Long studentsId = student.getId();
             // 获取该学生的课程信息
             List<CourseInfo> courseInfos = courseInfoRepository.findByCreator(student);
+            List<CourseInfo> reusedCourseInfos = courseInfoRepository.findByStudentsId(studentsId);
 
-            for (CourseInfo courseInfo : courseInfos) {
+            List<CourseInfo> allCourseInfos = new ArrayList<>(courseInfos);
+            allCourseInfos.addAll(reusedCourseInfos);
+
+            for (CourseInfo courseInfo : allCourseInfos) {
                 // 检查是否属于当前学期，并且周次匹配
                 if (courseInfo.getCourse().getTerm().getId().equals(termId) && courseInfo.getWeeks().contains(week.intValue())) {
                     // 提取课程安排信息
