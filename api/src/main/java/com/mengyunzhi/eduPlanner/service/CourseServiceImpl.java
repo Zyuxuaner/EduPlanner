@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-/**
- * @author zhangyuxuan wangyuhanhhh
- */
 @Service
 public class CourseServiceImpl implements CourseService{
     @Autowired
@@ -222,32 +219,40 @@ public class CourseServiceImpl implements CourseService{
 
         return studentCourseData;
     }
-//    @Override
-//    public boolean isTimeLegal(CourseDto.SaveRequest saveRequest) {
-//        Response<CurrentUser> currentUser = this.loginService.getCurrentLoginUser();
-//
-//        Long termId = this.getTermIdByLoginUser(currentUser);
-//        Long clazzId = this.getClassIdByLoginUser(currentUser);
-//
-//        // courseRequest对应的courseInfo
-//        CourseInfo courseInfoRequest = saveCourseInfo(saveRequest);
-//
-//        // 查询所有相关课程
-//        List<Course> courses = this.courseRepository.findByTermIdAndClazzId(termId, clazzId);
-//
-//        for (Course existingCourse : courses) {
-//            // 获取已经存在的course对应的courseInfos
-//            Long courseId = existingCourse.getId();
-//            List<CourseInfo> courseInfos = this.courseInfoRepository.findAllByCourseId(courseId);
-//            for (CourseInfo existingCourseInfo : courseInfos) {
-//                if (isTimeConflict(courseInfoRequest, existingCourseInfo)) {
-//                    return false;
-//                }
-//            }
-//        }
-//        return true;
-//    }
-//
+
+    @Override
+    public Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> getAllMessage(List<Long> schoolId, List<Long> weeks) {
+        // 用来存储最终的合并数据结构
+        Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> combinedStudentCourseData = new HashMap<>();
+
+        for (int i = 0; i < schoolId.size(); i++) {
+            Long schoolIdValue = schoolId.get(i);
+            Long weekValue = weeks.get(i);
+
+            try {
+                // 调用getMessage获取单个学校的课程安排信息
+                Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> schoolCourseData = getMessage(schoolIdValue, weekValue, null);
+
+                // 合并结果.entrySet()方法返回Map中所有键值对集合
+                for (Map.Entry<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> entry : schoolCourseData.entrySet()) {
+                    Long day = entry.getKey();
+                    // 获取当前键值对中的值，及对应的课程安排
+                    List<CourseDto.StudentsCoursesOfSchoolResponse> daySchedule = entry.getValue();
+
+                    // day键不存在，自动为这个键创建一个新的ArrayList作为值。若存在，直接返回对应值
+                    List<CourseDto.StudentsCoursesOfSchoolResponse> existingDaySchedule =
+                            combinedStudentCourseData.computeIfAbsent(day, k -> new ArrayList<>());
+                    existingDaySchedule.addAll(daySchedule);
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        logger.info(combinedStudentCourseData.toString());
+        return combinedStudentCourseData;
+    }
+
 //    @Override
 //    public boolean isTimeConflict(CourseInfo newCourseInfo, CourseInfo existingCourseInfo) {
 //        Set<Long> newWeeks = getWeeksInRange(newCourseInfo.getStartWeek(), newCourseInfo.getEndWeek(), newCourseInfo.getType());

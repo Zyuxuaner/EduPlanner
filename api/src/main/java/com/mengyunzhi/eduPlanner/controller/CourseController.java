@@ -64,7 +64,7 @@ public class CourseController {
     public List<CourseDto.GetAllCoursesResponse> getAllCoursesForCurrentUser() {
         return this.courseService.getAllCourses();
     }
-//
+
     /**
      * 获取选中的学校、周数下的该学校所有学生的课程安排
      * 如果有学生id，则获取该学生的课程安排
@@ -103,5 +103,20 @@ public class CourseController {
         Long userId = currentUser.getData().getId();
         Student currentStudent = this.studentService.findByUserId(userId);
         return this.courseService.reuseCourseInfo(courseInfoId, currentStudent.getId());
+    }
+
+    /**
+     * 获取所有学校的当前周的课程安排（激活学期）
+     * @param schoolId 学校id数组
+     * @param weeks 当前周 数组
+     * @return 嵌套数据
+     */
+    @GetMapping("/getAllCourseInfo")
+    public Response<Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>>> getAllMessage(
+            @RequestParam List<Long> schoolId,
+            @RequestParam List<Long> weeks) {
+        Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> allStudentCourseInfos =
+                this.courseService.getAllMessage(schoolId, weeks);
+        return Response.success(allStudentCourseInfos, "成功获取所有学生课程信息");
     }
 }
