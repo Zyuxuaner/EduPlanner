@@ -18,6 +18,10 @@ export class CourseService {
     return this.httpClient.post<ResponseBody>(`${this.baseUrl}/add`, course);
   }
 
+  delete(courseInfoId: number): Observable<ResponseBody> {
+    return this.httpClient.delete<ResponseBody>(`${this.baseUrl}/delete/${courseInfoId}`);
+  }
+
   getAll(): Observable<GetAllResponse[]> {
     return this.httpClient.get<GetAllResponse[]>(`${this.baseUrl}/getAll`);
   }
@@ -47,9 +51,5 @@ export class CourseService {
     });
 
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getAllCourseInfo`, {params});
-  }
-
-  getCourseInfoByStudent(week: number): Observable<ResponseBody> {
-    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getCourseInfoByStudent`, {params: {week: week.toString()}});
   }
 }
