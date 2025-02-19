@@ -6,6 +6,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
 import {ReactiveFormsModule} from "@angular/forms";
 import {DayFormatPipe, WeekDayFormatPipe} from "../pipe/course-pipes";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
+import * as $ from 'jquery';
 
 describe('MyScheduleComponent', () => {
   let component: MyScheduleComponent;
