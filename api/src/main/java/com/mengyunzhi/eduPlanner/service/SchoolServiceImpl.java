@@ -73,7 +73,18 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public Response<Void> deleteSchool(Long id) {
+        // 检查学校是否存在
+        if (!schoolRepository.existsById(id)) {
+            return new Response<>(false, "学校不存在", null);
+        }
+
+        // 检查该学校下是否有学生
+        if (schoolRepository.existsStudentsBySchoolId(id)) {
+            return new Response<>(false, "该学校下有学生，无法删除", null);
+        }
+
+        // 如果没有学生，删除学校
         schoolRepository.deleteById(id);
-        return new Response<>(true,"删除成功",null);
+        return new Response<>(true, "删除成功", null);
     }
 }

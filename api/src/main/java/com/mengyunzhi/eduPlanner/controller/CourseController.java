@@ -119,4 +119,12 @@ public class CourseController {
                 this.courseService.getAllMessage(schoolId, weeks);
         return Response.success(allStudentCourseInfos, "成功获取所有学生课程信息");
     }
+
+    @GetMapping("/search")
+    public List<CourseDto.GetAllCoursesResponse> search(
+            @RequestParam(required = false) String searchCourse,
+            @RequestParam(required = false) Long creatorStudent
+    ) {
+        return courseService.search(searchCourse, creatorStudent);
+    }
 }

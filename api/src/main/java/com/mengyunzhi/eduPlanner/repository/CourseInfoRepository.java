@@ -34,6 +34,13 @@ public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
      * @return courseInfo
      */
     List<CourseInfo> findByStudentsId(Long studentsId);
+
+    @Query("SELECT ci FROM CourseInfo ci " +
+            "JOIN ci.course c " +
+            "WHERE (:searchCourse IS NULL OR c.name LIKE %:searchCourse%) " +
+            "AND (:creatorStudent IS NULL OR ci.creator.id = :creatorStudent)")
+    List<CourseInfo> searchCourseInfos(@Param("searchCourse") String searchCourse, @Param("creatorStudent") Long creatorStudent);
+
 //    @Query("SELECT ci FROM CourseInfo ci " +
 //            "JOIN ci.course c " +
 //            "JOIN c.term t " +

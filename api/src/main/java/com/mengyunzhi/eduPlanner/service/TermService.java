@@ -28,6 +28,8 @@ public interface TermService {
      */
     Response<Term> save(Term term);
 
+    List<Term> search(Long schoolId, String searchName);
+
     /**
      * 获取所有学期
      *

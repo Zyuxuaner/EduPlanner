@@ -253,6 +253,25 @@ public class CourseServiceImpl implements CourseService{
         return combinedStudentCourseData;
     }
 
+    @Override
+    public List<CourseDto.GetAllCoursesResponse> search(String searchCourse, Long creatorStudent) {
+        List<CourseInfo> courseInfos = courseInfoRepository.searchCourseInfos(searchCourse, creatorStudent);
+        List<CourseDto.GetAllCoursesResponse> responses = new ArrayList<>();
+
+        for (CourseInfo courseInfo : courseInfos) {
+            Course course = courseInfo.getCourse();
+            CourseDto.GetAllCoursesResponse response = new CourseDto.GetAllCoursesResponse();
+            response.setName(course.getName());
+            response.setCourseInfo(courseInfo);
+            response.setTerm(course.getTerm());
+            response.setCreator(courseInfo.getCreator());
+            response.setReuseStudents(new ArrayList<>(courseInfo.getStudents()));
+            responses.add(response);
+        }
+
+        return responses;
+    }
+
 //    @Override
 //    public boolean isTimeConflict(CourseInfo newCourseInfo, CourseInfo existingCourseInfo) {
 //        Set<Long> newWeeks = getWeeksInRange(newCourseInfo.getStartWeek(), newCourseInfo.getEndWeek(), newCourseInfo.getType());

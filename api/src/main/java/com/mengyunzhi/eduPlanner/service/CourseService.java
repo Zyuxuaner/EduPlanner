@@ -69,4 +69,6 @@ public interface CourseService {
      * @return
      */
     Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> getAllMessage(List<Long> schoolId, List<Long> weeks);
+
+    List<CourseDto.GetAllCoursesResponse> search(String searchCourse, Long creatorStudent);
 }
