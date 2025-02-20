@@ -3,7 +3,6 @@ package com.mengyunzhi.eduPlanner.repository;
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
@@ -23,7 +22,4 @@ public interface TermRepository extends CrudRepository<Term, Long> {
 
     List<Term> findAll(Specification<Term> spec);
 
-    // 检查指定学期 ID 是否关联了课程
-    @Query("SELECT COUNT(c) > 0 FROM Course c WHERE c.term.id = :termId")
-    boolean existsCoursesByTermId(Long termId);
 }

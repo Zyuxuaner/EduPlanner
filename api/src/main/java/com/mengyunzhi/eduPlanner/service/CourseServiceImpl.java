@@ -341,7 +341,18 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public List<CourseDto.GetAllCoursesResponse> search(String searchCourse, Long creatorStudent) {
-        List<CourseInfo> courseInfos = courseInfoRepository.searchCourseInfos(searchCourse, creatorStudent);
+        List<CourseInfo> courseInfos;
+
+        if (searchCourse != null && creatorStudent != null) {
+            courseInfos = courseInfoRepository.findByCourseNameContainingAndCreatorId(searchCourse, creatorStudent);
+        } else if (searchCourse != null) {
+            courseInfos = courseInfoRepository.findByCourseNameContaining(searchCourse);
+        } else if (creatorStudent != null) {
+            courseInfos = courseInfoRepository.findByCreatorId(creatorStudent);
+        } else {
+            courseInfos = courseInfoRepository.findAll();
+        }
+
         List<CourseDto.GetAllCoursesResponse> responses = new ArrayList<>();
 
         for (CourseInfo courseInfo : courseInfos) {

@@ -19,6 +19,8 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
      */
     List<Course> findAllByTermId(Long termId);
 
+    boolean existsByTermId(Long termId);
+
 //    List<Course> findByClazzIdAndTermIdAndType(Long clazzId, Long termId, Long type);
 //    List<Course> findByStudentIdAndTermIdAndType(Long studentId, Long termId, Long type);
 //

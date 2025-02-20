@@ -5,6 +5,7 @@ import com.mengyunzhi.eduPlanner.dto.TermDto;
 import com.mengyunzhi.eduPlanner.entity.School;
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
+import com.mengyunzhi.eduPlanner.repository.CourseRepository;
 import com.mengyunzhi.eduPlanner.repository.StudentRepository;
 import com.mengyunzhi.eduPlanner.repository.TermRepository;
 import org.slf4j.Logger;
@@ -27,12 +28,15 @@ public class TermServiceImpl implements TermService {
 
     private final TermRepository termRepository;
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
     private TermServiceImpl(TermRepository termRepository,
-                            StudentRepository studentRepository) {
+                            StudentRepository studentRepository,
+                            CourseRepository courseRepository) {
         this.termRepository = termRepository;
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     /**
@@ -86,7 +90,7 @@ public class TermServiceImpl implements TermService {
         }
 
         // 检查该学期下是否有课程
-        if (termRepository.existsCoursesByTermId(id)) {
+        if (courseRepository.existsByTermId(id)) {
             return new Response<>(false, "该学期下有课程，无法删除", null);
         }
 

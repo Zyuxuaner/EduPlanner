@@ -25,4 +25,11 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
     List<Student> findAll(Specification<Student> spec);
 
     List<Student> findBySchoolId(Long schoolId);
+
+    /**
+     * 检查指定学校 ID 是否关联了学生
+     * @param schoolId 学校的 ID
+     * @return 如果存在关联学生返回 true，否则返回 false
+     */
+    boolean existsBySchoolId(Long schoolId);
 }
