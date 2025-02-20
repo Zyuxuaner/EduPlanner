@@ -20,11 +20,21 @@ public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
     List<CourseInfo> findAll();
 
     /**
-     * 根据课程id查询课程安排
-     * @param courseId 课程id
-     * @return 课程安排列表
+     * 根据 courseId 和 day 和 creatorId 查询该学生自己创建的课程安排
+     * 用于方便数据验证
+     * @param courseId 课程id（目的在于，查询该学期的课程安排）
+     * @param day 星期数（用于将验证范围缩小）
+     * @param creatorId 创建者的 studentid
+     * @return 课程安排列表 courseInfoList
      */
-    List<CourseInfo> findAllByCourseId(Long courseId);
+    List<CourseInfo> findAllByCourseIdAndDayAndCreatorId(Long courseId, Long day, Long creatorId);
+
+    /**
+     * 根据 studentId 查找所有复用的 courseInfo
+     * @param studentId 学生id
+     * @return 课程安排列表 courseInfoList
+     */
+    List<CourseInfo> findAllByStudentsId(Long studentId);
 
     List<CourseInfo> findByCreator(Student creator);
 
