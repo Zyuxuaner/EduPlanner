@@ -64,6 +64,11 @@ public class CourseController {
         return this.courseService.getAllCourses();
     }
 
+    @GetMapping("/getCourseInfoById/{courseInfoId}")
+    public Response<CourseDto.GetCourseInfoByIdResponse> getCourseInfoById(@PathVariable Long courseInfoId) {
+        return this.courseService.getCourseInfoById(courseInfoId);
+    }
+
     /**
      * 获取选中的学校、周数下的该学校所有学生的课程安排
      * 如果有学生id，则获取该学生的课程安排

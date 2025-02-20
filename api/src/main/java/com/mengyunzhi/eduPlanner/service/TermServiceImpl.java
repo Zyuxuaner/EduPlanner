@@ -245,4 +245,15 @@ public class TermServiceImpl implements TermService {
             return new Response<>(true, "成功获取学期、周数及学生信息", responseData);
         }
     }
+
+    @Override
+    public Long getTotalWeeksByTerm(Term term) {
+        Timestamp startTime = term.getStartTime();
+        Timestamp endTime = term.getEndTime();
+
+        LocalDateTime startDateTime = startTime.toLocalDateTime();
+        LocalDateTime endDateTime = endTime.toLocalDateTime();
+
+        return ChronoUnit.WEEKS.between(startDateTime, endDateTime);
+    }
 }

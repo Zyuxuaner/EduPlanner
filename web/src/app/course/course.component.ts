@@ -7,6 +7,7 @@ import {GetAllResponse} from "../dto/courseDto/getAllResponse";
 import {LoginService} from "../service/login.service";
 import {Student} from "../entity/student";
 import {StudentService} from "../service/student.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-course',
@@ -24,7 +25,9 @@ export class CourseComponent implements OnInit{
               private termService: TermService,
               private commonService: CommonService,
               private loginService: LoginService,
-              private studentService: StudentService){
+              private studentService: StudentService,
+              private router: Router,
+              private route: ActivatedRoute){
     this.formGroup = new FormGroup({
       searchCourse: new FormControl(null),
       creatorStudent: new FormControl('')
@@ -93,7 +96,8 @@ export class CourseComponent implements OnInit{
     });
   }
 
-  onEdit(id: number, courseInfoId: number | undefined) {
+  onEdit(courseInfoId: number) {
+    this.router.navigate(['edit', courseInfoId], { relativeTo: this.route });
 
   }
 

@@ -59,9 +59,16 @@ public interface TermService {
     List<TermDto.SchoolIdAndStartTimeResponse> getSchoolIdAndStartTime ();
 
     /**
-     *
-     * @param schoolId
-     * @return
+     * 获取该学校下激活学期的所有周数以及所有学生
+     * @param schoolId 学校id
+     * @return 响应
      */
     Response<TermDto.TermAndWeeksAndStudentsResponse> getTermAndWeeksAndStudents(Long schoolId);
+
+    /**
+     * 根据学期获取当前学期的总周数
+     * @param term 学期id
+     * @return totalWeeks
+     */
+    Long getTotalWeeksByTerm(Term term);
 }

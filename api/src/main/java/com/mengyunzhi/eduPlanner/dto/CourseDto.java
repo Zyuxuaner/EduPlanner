@@ -68,4 +68,12 @@ public class CourseDto {
         private Long schoolId;
         private Long week;
     }
+
+    @Data
+    public static class GetCourseInfoByIdResponse {
+        private String name;
+        private Term term;
+        private Long totalWeeks;
+        private CourseInfo courseInfo;
+    }
 }

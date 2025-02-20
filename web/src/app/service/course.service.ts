@@ -25,9 +25,17 @@ export class CourseService {
     return this.httpClient.get<GetAllResponse[]>(`${this.baseUrl}/getAll`);
   }
 
+  getCourseInfoById(id: number): Observable<ResponseBody> {
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getCourseInfoById/${id}`);
+  }
+
   // 根据学校和周数，获取该学校所有学生的时间表
   getCourseMessage(params: HttpParams): Observable<ResponseBody> {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getCourseMessage`, {params});
+  }
+
+  update(courseInfo: SaveRequest): Observable<ResponseBody> {
+    return this.httpClient.patch<ResponseBody>(`${this.baseUrl}/update`, courseInfo);
   }
 
   // 复用课程安排

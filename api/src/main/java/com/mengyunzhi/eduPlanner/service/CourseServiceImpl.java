@@ -1,7 +1,6 @@
 package com.mengyunzhi.eduPlanner.service;
 
 import com.mengyunzhi.eduPlanner.dto.CourseDto;
-import com.mengyunzhi.eduPlanner.dto.CurrentUser;
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.*;
 import com.mengyunzhi.eduPlanner.repository.*;
@@ -27,7 +26,7 @@ public class CourseServiceImpl implements CourseService{
     private CourseInfoRepository courseInfoRepository;
 
     @Autowired
-    private LoginService loginService;
+    private TermService termService;
 
     private final static Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
 
@@ -409,4 +408,24 @@ public class CourseServiceImpl implements CourseService{
 //
 //        return weeks;
 //    }
+  
+    public Response<CourseDto.GetCourseInfoByIdResponse> getCourseInfoById(Long courseInfoId) {
+        Optional<CourseInfo> courseInfoOptional = this.courseInfoRepository.findById(courseInfoId);
+
+        if (!courseInfoOptional.isPresent()) {
+            return Response.fail("该课程安排不存在");
+        }
+        CourseInfo courseInfo = courseInfoOptional.get();
+
+        CourseDto.GetCourseInfoByIdResponse response = new CourseDto.GetCourseInfoByIdResponse();
+        Long totalWeeks = this.termService.getTotalWeeksByTerm(courseInfo.getCourse().getTerm());
+
+        response.setName(courseInfo.getCourse().getName());
+        response.setTerm(courseInfo.getCourse().getTerm());
+        response.setTotalWeeks(totalWeeks);
+        response.setCourseInfo(courseInfo);
+
+        return Response.success(response, "获取成功");
+    }
+
 }
