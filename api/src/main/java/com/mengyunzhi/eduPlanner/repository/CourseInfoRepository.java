@@ -36,6 +36,11 @@ public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
      */
     List<CourseInfo> findAllByStudentsId(Long studentId);
 
+    /**
+     * 获取该学生所创建的所有课程安排 courseInfo
+     * @param creator 创建者
+     * @return courseInfoList
+     */
     List<CourseInfo> findByCreator(Student creator);
 
     /**
