@@ -341,6 +341,74 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    public List<CourseDto.GetAllCoursesResponse> search(String searchCourse, Long creatorStudent) {
+        List<CourseInfo> courseInfos;
+
+        if (searchCourse != null && creatorStudent != null) {
+            courseInfos = courseInfoRepository.findByCourseNameContainingAndCreatorId(searchCourse, creatorStudent);
+        } else if (searchCourse != null) {
+            courseInfos = courseInfoRepository.findByCourseNameContaining(searchCourse);
+        } else if (creatorStudent != null) {
+            courseInfos = courseInfoRepository.findByCreatorId(creatorStudent);
+        } else {
+            courseInfos = courseInfoRepository.findAll();
+        }
+
+        List<CourseDto.GetAllCoursesResponse> responses = new ArrayList<>();
+
+        for (CourseInfo courseInfo : courseInfos) {
+            Course course = courseInfo.getCourse();
+            CourseDto.GetAllCoursesResponse response = new CourseDto.GetAllCoursesResponse();
+            response.setName(course.getName());
+            response.setCourseInfo(courseInfo);
+            response.setTerm(course.getTerm());
+            response.setCreator(courseInfo.getCreator());
+            response.setReuseStudents(new ArrayList<>(courseInfo.getStudents()));
+            responses.add(response);
+        }
+
+        return responses;
+    }
+
+//    @Override
+//    public boolean isTimeConflict(CourseInfo newCourseInfo, CourseInfo existingCourseInfo) {
+//        Set<Long> newWeeks = getWeeksInRange(newCourseInfo.getStartWeek(), newCourseInfo.getEndWeek(), newCourseInfo.getType());
+//        Set<Long> existingWeeks = getWeeksInRange(existingCourseInfo.getStartWeek(), existingCourseInfo.getEndWeek(), newCourseInfo.getType());
+//
+//        if (newCourseInfo.getDay().equals(existingCourseInfo.getDay())) {
+//            // 合法情况：新课程的开始时间大于旧课程的结束时间 && 新课程的结束时间小于旧课程的开时间
+//            if (newCourseInfo.getBegin() < existingCourseInfo.getBegin() + existingCourseInfo.getLength() &&
+//                    newCourseInfo.getBegin() + newCourseInfo.getLength() > existingCourseInfo.getBegin()) {
+//                // 时间不合法，再检查周数是否重叠
+//                for (Long newWeek : newWeeks) {
+//                    if (existingWeeks.contains(newWeek)) {
+//                        // 如果周数有重叠，有时间冲突，返回true
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public Set<Long> getWeeksInRange(Long startWeek, Long endWeek, Long type) {
+//        Set<Long> weeks = new HashSet<>();
+//
+//        for (long week = startWeek; week <= endWeek; week++) {
+//            if (type == 1 && week % 2 != 0) {
+//                weeks.add(week);
+//            } else if (type == 2 && week % 2 == 0) {
+//                weeks.add(week);
+//            } else if (type == 3) {
+//                weeks.add(week);
+//            }
+//        }
+//
+//        return weeks;
+//    }
+  
     public Response<CourseDto.GetCourseInfoByIdResponse> getCourseInfoById(Long courseInfoId) {
         Optional<CourseInfo> courseInfoOptional = this.courseInfoRepository.findById(courseInfoId);
 

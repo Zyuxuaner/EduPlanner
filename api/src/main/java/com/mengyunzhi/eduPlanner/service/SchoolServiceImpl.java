@@ -3,6 +3,7 @@ package com.mengyunzhi.eduPlanner.service;
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.School;
 import com.mengyunzhi.eduPlanner.repository.SchoolRepository;
+import com.mengyunzhi.eduPlanner.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,12 @@ public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolRepository schoolRepository;
 
+    private final StudentRepository studentRepository;
+
     @Autowired
-    private SchoolServiceImpl(SchoolRepository schoolRepository) {
+    private SchoolServiceImpl(SchoolRepository schoolRepository, StudentRepository studentRepository) {
         this.schoolRepository = schoolRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -73,7 +77,18 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public Response<Void> deleteSchool(Long id) {
+        // 检查学校是否存在
+        if (!schoolRepository.existsById(id)) {
+            return new Response<>(false, "学校不存在", null);
+        }
+
+        // 检查该学校下是否有学生
+        if (studentRepository.existsBySchoolId(id)) {
+            return new Response<>(false, "该学校下有学生，无法删除", null);
+        }
+
+        // 如果没有学生，删除学校
         schoolRepository.deleteById(id);
-        return new Response<>(true,"删除成功",null);
+        return new Response<>(true, "删除成功", null);
     }
 }

@@ -23,7 +23,7 @@
       "ES2022",
       "dom"
     ],
-    "types": ["jquery"]
+    "types": ["jquery", "jest"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

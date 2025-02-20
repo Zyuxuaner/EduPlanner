@@ -16,10 +16,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class CourseComponent implements OnInit{
   courses = [] as GetAllResponse[];
-  formGroup = new FormGroup({
-    searchCourse: new FormControl(null),
-    creatorStudent: new FormControl(''),
-  });
+  formGroup: FormGroup;
   currentStudentId: number = 0;
   termId: number | null = null;
   allStudents: Student[] = [];
@@ -30,7 +27,12 @@ export class CourseComponent implements OnInit{
               private loginService: LoginService,
               private studentService: StudentService,
               private router: Router,
-              private route: ActivatedRoute){}
+              private route: ActivatedRoute){
+    this.formGroup = new FormGroup({
+      searchCourse: new FormControl(null),
+      creatorStudent: new FormControl('')
+    });
+  }
 
   ngOnInit(): void {
       this.setCurrentStudentId();
@@ -76,6 +78,11 @@ export class CourseComponent implements OnInit{
   }
 
   onSearch() {
+    const { searchCourse, creatorStudent } = this.formGroup.value;
+    console.log(searchCourse, creatorStudent);
+    this.courseService.search(searchCourse, creatorStudent).subscribe((data) => {
+      this.courses = data;
+    })
   }
 
   onDelete(courseInfoId: any) {

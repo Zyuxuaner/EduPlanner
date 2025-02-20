@@ -5,13 +5,16 @@ import com.mengyunzhi.eduPlanner.dto.TermDto;
 import com.mengyunzhi.eduPlanner.entity.School;
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
+import com.mengyunzhi.eduPlanner.repository.CourseRepository;
 import com.mengyunzhi.eduPlanner.repository.StudentRepository;
 import com.mengyunzhi.eduPlanner.repository.TermRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -25,12 +28,15 @@ public class TermServiceImpl implements TermService {
 
     private final TermRepository termRepository;
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
     private TermServiceImpl(TermRepository termRepository,
-                            StudentRepository studentRepository) {
+                            StudentRepository studentRepository,
+                            CourseRepository courseRepository) {
         this.termRepository = termRepository;
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     /**
@@ -78,8 +84,19 @@ public class TermServiceImpl implements TermService {
 
     @Override
     public Response<Void> deleteTerm(Long id) {
+        // 检查学期是否存在
+        if (!termRepository.existsById(id)) {
+            return new Response<>(false, "学期不存在", null);
+        }
+
+        // 检查该学期下是否有课程
+        if (courseRepository.existsByTermId(id)) {
+            return new Response<>(false, "该学期下有课程，无法删除", null);
+        }
+
+        // 如果没有课程，删除学期
         termRepository.deleteById(id);
-        return new Response<>(true,"删除成功",null);
+        return new Response<>(true, "删除成功", null);
     }
 
     @Override
@@ -153,6 +170,26 @@ public class TermServiceImpl implements TermService {
         }
 
         return responseList;
+    }
+
+    @Override
+    public List<Term> search(Long schoolId, String searchName) {
+        Specification<Term> spec = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (schoolId != null) {
+                predicates.add(criteriaBuilder.equal(root.get("school").get("id"), schoolId));
+            }
+
+            if (searchName != null && !searchName.isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("name"), "%" + searchName + "%"));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+
+        // 使用构建好的 Specification 进行查询
+        return termRepository.findAll(spec);
     }
 
     @Override

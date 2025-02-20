@@ -87,6 +87,13 @@ public class TermController {
         }
     }
 
+    @GetMapping("/search")
+    public List<Term> searchTerms(
+            @RequestParam(required = false) Long schoolId,
+            @RequestParam(required = false) String searchName) {
+        return termService.search(schoolId, searchName);
+    }
+
     @PutMapping("/updateTerm/{id}")
     public Response<Term> updateTerm(@PathVariable Long id, @RequestBody Term term) {
         return this.termService.updateTerm(id, term);

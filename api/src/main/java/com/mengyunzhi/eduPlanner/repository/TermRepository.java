@@ -2,6 +2,7 @@ package com.mengyunzhi.eduPlanner.repository;
 
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
@@ -19,5 +20,6 @@ public interface TermRepository extends CrudRepository<Term, Long> {
     @Override
     List<Term> findAll();
 
-    List<Term> findByStatusAndStartTimeAndEndTime(long status, Date startTime, Date endTime);
+    List<Term> findAll(Specification<Term> spec);
+
 }

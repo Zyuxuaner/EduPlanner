@@ -100,7 +100,15 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<Admin> searchAdmins(String name, String ano) {
-        return adminRepository.searchAdmins(name, ano);
+        if (name != null && ano != null) {
+            return adminRepository.findByNameContainingAndAnoContaining(name, ano);
+        } else if (name != null) {
+            return adminRepository.findByNameContaining(name);
+        } else if (ano != null) {
+            return adminRepository.findByAnoContaining(ano);
+        } else {
+            return adminRepository.findAll();
+        }
     }
 
     @Override

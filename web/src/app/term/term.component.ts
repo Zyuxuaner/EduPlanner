@@ -5,6 +5,8 @@ import {Person} from "../entity/person";
 import {LoginService} from "../service/login.service";
 import {CommonService} from "../service/common.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {FormControl, FormGroup} from "@angular/forms";
+import {SchoolImpl} from "../entity/school";
 
 @Component({
   selector: 'app-term',
@@ -12,8 +14,13 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./term.component.css']
 })
 export class TermComponent implements OnInit {
+  selectedSchool: SchoolImpl | null = null;
   terms: Term[] = [];
   person = {} as Person;
+  formGroup: FormGroup = new FormGroup({
+    schoolId: new FormControl(),
+    searchName: new FormControl(),
+  })
 
   constructor(private termService: TermService,
               private loginService: LoginService,
@@ -28,6 +35,18 @@ export class TermComponent implements OnInit {
         this.person.role = userData.data.role;
       }})
     this.getAll();
+  }
+
+  // 当学校选择变化时，更新 school
+  onSchoolChange(school: SchoolImpl | null): void {
+    this.selectedSchool = school;
+  }
+
+  onSearch(): void {
+    const { schoolId, searchName } = this.formGroup.value;
+    this.termService.search(schoolId, searchName).subscribe(data => {
+      this.terms = data;
+    });
   }
 
   getAll(): void {

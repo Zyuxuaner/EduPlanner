@@ -70,10 +70,13 @@ public interface CourseService {
      */
     Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> getAllMessage(List<Long> schoolId, List<Long> weeks);
 
+    List<CourseDto.GetAllCoursesResponse> search(String searchCourse, Long creatorStudent);
+
     /**
      * 根据 courseInfoId 获取需要编辑的课程安排
      * @param courseInfoId 待编辑的课程安排
      * @return 响应
      */
     Response<CourseDto.GetCourseInfoByIdResponse> getCourseInfoById(Long courseInfoId);
+
 }
