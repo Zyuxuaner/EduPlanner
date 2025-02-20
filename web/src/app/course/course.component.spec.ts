@@ -6,6 +6,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {WeekRangeFormatPipe, WeekTypeFormatPipe} from "../pipe/course-pipes";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('CourseComponent', () => {
   let component: CourseComponent;
@@ -19,6 +20,7 @@ describe('CourseComponent', () => {
         ReactiveFormsModule,
         NzSelectModule,
         BrowserAnimationsModule,
+        RouterTestingModule,
         WeekRangeFormatPipe,
         WeekTypeFormatPipe
       ]
