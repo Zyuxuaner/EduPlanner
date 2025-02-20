@@ -38,12 +38,14 @@ public class CourseDto {
      * begin 开始的小节
      * length 持续几节
      * students 学生名单
+     * courseName 课程名称
      */
     @Data
     public static class StudentsCoursesOfSchoolResponse {
         private Long begin;
         private Long length;
         private List<String> students;
+        private String courseName;
     }
 
     /**
