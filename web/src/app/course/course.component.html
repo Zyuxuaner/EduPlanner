@@ -39,7 +39,7 @@
     </td>
     <td>{{ course.creator.name }}</td>
     <td>
-      <!-- 如果结课了，就不允许编辑课程 -->
+      <!-- 如果结课了，就不允许编辑、删除、复用课程 -->
       <a class="btn btn-outline-primary btn-sm"
          *ngIf="course.term.id == termId && course.creator.id == currentStudentId">
         <i class="fa fa-pen"></i>编辑

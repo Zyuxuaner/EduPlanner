@@ -47,8 +47,7 @@ public class CourseController {
         Long userId = currentUser.getData().getId();
         Long schoolId = currentUser.getData().getSchoolId();
 
-        courseService.save(saveRequest, userId, schoolId);
-        return Response.success(null,"课程新增成功");
+        return courseService.save(saveRequest, userId, schoolId);
     }
 
     @DeleteMapping("/delete/{courseInfoId}")
