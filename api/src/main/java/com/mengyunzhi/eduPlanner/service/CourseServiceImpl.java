@@ -276,6 +276,7 @@ public class CourseServiceImpl implements CourseService{
                     Long day = courseInfo.getDay();
                     Long begin = courseInfo.getBegin();
                     Long length = courseInfo.getLength();
+                    String courseName = courseInfo.getCourse().getName();
 
                     // 获取当天的课程安排列表
                     List<CourseDto.StudentsCoursesOfSchoolResponse> daySchedule = studentCourseData.computeIfAbsent(day, k -> new ArrayList<>());
@@ -296,6 +297,7 @@ public class CourseServiceImpl implements CourseService{
                         CourseDto.StudentsCoursesOfSchoolResponse response = new CourseDto.StudentsCoursesOfSchoolResponse();
                         response.setBegin(begin);
                         response.setLength(length);
+                        response.setCourseName(courseName);
                         response.setStudents(new ArrayList<>(Arrays.asList(student.getName())));
                         daySchedule.add(response);
                     }

@@ -3,8 +3,10 @@ import {CourseInfo, WeeklySchedule} from "../entity/course-info";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CourseService} from "../service/course.service";
 import {SaveRequest} from "../dto/courseDto/saveRequest";
-import {Router} from "@angular/router";
 import {CommonService} from "../service/common.service";
+import {LoginService} from "../service/login.service";
+import {HttpParams} from "@angular/common/http";
+import {TermService} from "../service/term.service";
 
 @Component({
   selector: 'app-my-schedule',
@@ -33,6 +35,8 @@ export class MyScheduleComponent implements OnInit {
   termName: string = '';
   totalPeriodsPerDay = 11; // 每天的总节数
   availableLengths: number[] = []; // 可选的持续节数数组
+  currentStudentId: number = 0; // 当前登录用户的学生id
+  currentSchoolId: number = 0; // 当前登录用户的学校id
 
 
   // 用于模态框的课程信息
@@ -48,15 +52,16 @@ export class MyScheduleComponent implements OnInit {
   allWeeks: number[] = [];
 
   constructor(private courseService: CourseService,
-              private router: Router,
-              private commonService: CommonService) {
+              private commonService: CommonService,
+              private loginService: LoginService,
+              private termService: TermService) {
   }
 
   ngOnInit(): void {
-    this.termName = 'tute2024-2025';
-    this.totalWeeks = 18;  // 假设一学期有18周
-    this.currentWeek = 1;  // 默认为当前周
-    this.initializeCourses();  // 初始化课表数据
+    // 成功获取到了当前登录用户的信息之后再调用getTerm方法
+    this.setId().then(() => {
+      this.getTerm();
+    });
   }
 
   // 判断是否能添加课程
@@ -65,38 +70,36 @@ export class MyScheduleComponent implements OnInit {
     return !courseInfo;
   }
 
-  covertToWeeklySchedule(data: any): WeeklySchedule {
+  // 将从后端获得的数据转换为 WeeklySchedule 类型
+  convertToWeeklySchedule(data: any): WeeklySchedule {
     const weeklySchedule: WeeklySchedule = {};
 
-    // 遍历课程数据
-    Object.keys(data).forEach((courseId) => {
-      const courseData = data[courseId];
+    // 遍历 data 的每个键（周几）
+    Object.keys(data).forEach((dayKey) => {
+      const day = Number(dayKey);
+      const dayData = data[day]; // 获取该天的课程数据
 
-      // 遍历课程的每一天(day)
-      Object.keys(courseData).forEach((day) => {
-        const dayData = courseData[day];
+      // 如果该天的课表尚未初始化，则初始化为空对象
+      if (!weeklySchedule[day]) {
+        weeklySchedule[day] = {};
+      }
 
-        // 如果该课程的 day ，没有初始化，则初始化
-        if (!weeklySchedule[Number(day)]) {
-          weeklySchedule[Number(day)] = {};
-        }
+      // 获取当天的课表
+      const daySchedule = weeklySchedule[day];
 
-        // 获取对应的 daySchedule
-        const daySchedule = weeklySchedule[Number(day)];
+      // 遍历该天的每一条课程数据
+      dayData.forEach((item: any) => {
+        const { begin, length, students, courseName } = item;
 
-        // 遍历课程的每个时间段(课程安排)
-        dayData.forEach((item: any) => {
-          const courseInfo: CourseInfo = {
-            courseName: item.name,
-            begin: item.begin,
-            length: item.length,
+        // 将课程信息填入对应的时间段
+        for (let time = begin; time < begin + length; time++) {
+          daySchedule[time] = {
+            courseName,
+            begin,
+            length,
+            students,
           };
-
-          // 将课程信息填入对应的 daySchedule 中
-          for (let time = item.begin; time < item.begin + item.length; time++) {
-            daySchedule[time] = courseInfo;
-          }
-        });
+        }
       });
     });
     return weeklySchedule;
@@ -108,9 +111,23 @@ export class MyScheduleComponent implements OnInit {
       // @ts-ignore
       if (newWeek >= 1 && newWeek <= this.totalWeeks) {
         this.currentWeek = newWeek;
+        this.getCourseMessage(this.currentWeek);
       }
     }
   }
+
+  getCourseMessage(week: number) {
+    const params = new HttpParams()
+      .append('schoolId', this.currentSchoolId.toString())
+      .append('week', week.toString())
+      .append('studentId', this.currentStudentId.toString());
+    this.courseService.getCourseMessage(params).subscribe(data => {
+      if (data.status) {
+        this.weeklySchedule = this.convertToWeeklySchedule(data.data);
+      }
+    });
+  }
+
 
   getCourseColor(day: any, time: number): string {
     const courseInfo = this.getClassInfo(day, time);
@@ -128,19 +145,28 @@ export class MyScheduleComponent implements OnInit {
     return this.weeklySchedule[day]?.[time] || null;
   }
 
-  // 初始化课表数据
-  initializeCourses() {
-    // 启用服务获取后台数据
-    // 假设有一些课程数据（模拟的是从后台获取到的数据）
-    const data = {
-      1: { 4: [{name: '离散数学', begin: 4, length: 2, weeks: [1, 2], weekType: '双'}]},
-      2: { 3: [{name: '大学物理', begin: 3, length: 3, weeks: [1, 2, 3], weekType: '全'}]},
-      3: { 2: [{name: '数据库原理及其应用', begin: 5, length: 2, weeks: [1, 2], weekType: '双'}]},
-      4: { 1: [{name: '大学英语', begin: 1, length: 2, weeks: [1, 2], weekType: '双'}]},
-      5: { 2: [{name: 'C语言', begin: 2, length: 2, weeks: [1, 2], weekType: '双'}]},
-    }
-    this.weeklySchedule = this.covertToWeeklySchedule(data);
-    this.allWeeks = Array.from({length: this.totalWeeks!}, (_, index) => index + 1);
+  getTerm(): void {
+    this.termService.getTermAndWeeks().subscribe(response => {
+      if (response.status) {
+        const termMessage = response.data;
+        if (termMessage.weeks && termMessage.weeks.length > 0) {
+          this.termName = termMessage.term.name;
+          this.totalWeeks = termMessage.weeks.length;
+          this.allWeeks = Array.from({length: this.totalWeeks!}, (_, index) => index + 1);
+
+          const currentDate = new Date();
+          const startDate = new Date(termMessage.term.startTime);
+          const diffInTime = currentDate.getTime() - startDate.getTime();
+          const diffInDays = diffInTime / (1000 * 60 * 60 * 24);
+          // 将当前周设为默认
+          this.currentWeek = Math.ceil(diffInDays / 7);
+          this.getCourseMessage(this.currentWeek);
+        } else {
+          console.log("无效的周数");
+        }
+      }
+
+    });
   }
 
   // 打开模态框并根据选择的单元格设置 day 和 begin 的默认值
@@ -163,6 +189,7 @@ export class MyScheduleComponent implements OnInit {
         if (response.status) {
           // 关闭模态框
           ($('#addCourseModal') as any).modal('hide');
+          this.getTerm();
         } else {
           this.commonService.showErrorAlert(response.message);
         }
@@ -190,5 +217,23 @@ export class MyScheduleComponent implements OnInit {
   updateAvailableLengths(begin: number) {
     const remainingPeriods = this.periods.length - begin + 1;
     this.availableLengths = Array.from({ length: remainingPeriods }, (_, i) => i + 1);
+  }
+
+  // 设置当前登录用户id以及当前登录用户的学校id
+  setId(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.loginService.getCurrentStudent().subscribe(
+        data => {
+          const currentStudent = data.data;
+          this.currentStudentId = currentStudent.id;
+          this.currentSchoolId = currentStudent.school.id;
+          resolve();
+        },
+        error => {
+          console.error('获取当前的登录用户信息失败', error);
+          reject(error);
+        }
+      );
+    });
   }
 }
