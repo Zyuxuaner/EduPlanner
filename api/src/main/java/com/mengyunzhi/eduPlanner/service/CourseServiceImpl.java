@@ -31,6 +31,64 @@ public class CourseServiceImpl implements CourseService{
 
     private final static Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
 
+    /**
+     * 检查课程安排是否合理
+     * 1、获取该学期下所有课程 courseList
+     * 2、获取本学生创建的课程安排 courseInfoList
+     * 3、获取该学生复用的所有课程安排 reuseCourseInfos
+     * 4、调用 isConflict 方法判断是否存在冲突
+     * @param student 操作的学生
+     * @param activeTerm 该学生所在学校的激活学期
+     * @param newCourseInfo 需要判断的课程安排
+     * @return true：有冲突；false：没有冲突
+     */
+    private boolean check(Student student, Term activeTerm, CourseInfo newCourseInfo) {
+        List<CourseInfo> existingCourseInfoList = new ArrayList<>();
+        List<Course> courseList = this.courseRepository.findAllByTermId(activeTerm.getId());
+
+        for (Course course : courseList) {
+            // 该学生为创建者的在 day 下的所有课程安排
+            List<CourseInfo> courseInfoList = this.courseInfoRepository.findAllByCourseIdAndDayAndCreatorId(course.getId(), newCourseInfo.getDay(), student.getId());
+            existingCourseInfoList.addAll(courseInfoList);
+        }
+
+        // 找到该学生复用的课程
+        List<CourseInfo> reuseCourseInfos = this.courseInfoRepository.findAllByStudentsId(student.getId());
+        existingCourseInfoList.addAll(reuseCourseInfos);
+
+        for (CourseInfo existingCourseInfo : existingCourseInfoList) {
+            return isConflict(existingCourseInfo, newCourseInfo);
+        }
+
+        return false;
+    }
+
+    /**
+     * 判断两个课程安排是否有时间冲突
+     * 1、首先判断周次是否有交集
+     * 2、判断上课星期数是否相同（实际上是一定相同的，因为查询的时候是使用了 newCourseInfo 的 day 为查询条件进行查询的）
+     * 3、判断节次是否有交集
+     * @param existing 已持久化课程安排
+     * @param newCourseInfo 待持久化课程安排
+     * @return true：有冲突；false：没有冲突
+     */
+    private boolean isConflict(CourseInfo existing, CourseInfo newCourseInfo) {
+        for (Integer week : newCourseInfo.getWeeks()) {
+            if (existing.getWeeks().contains(week)) {
+                if (existing.getDay().equals(newCourseInfo.getDay())) {
+                    boolean result = (newCourseInfo.getBegin() < existing.getBegin() + existing.getLength() &&
+                            newCourseInfo.getBegin() + newCourseInfo.getLength() > existing.getBegin() ||
+                            (existing.getBegin() < newCourseInfo.getBegin() + newCourseInfo.getLength() &&
+                            existing.getBegin() + existing.getLength() > newCourseInfo.getBegin()));
+                    if (result) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public Response<String> delete(Long courseInfoId) {
         Optional<CourseInfo> courseInfoOptional = this.courseInfoRepository.findById(courseInfoId);
@@ -61,6 +119,8 @@ public class CourseServiceImpl implements CourseService{
 
         Course existingCourse = courseRepository.findByNameAndTermId(saveRequest.getName(), activeTerm.getId());
         CourseInfo newCourseInfo = new CourseInfo();
+        // 标记是否新创建课程
+        boolean isNewCourseCreated = false;
 
         if (existingCourse != null) {
             // 如果课程已存在，使用现有的课程
@@ -73,6 +133,8 @@ public class CourseServiceImpl implements CourseService{
 
             courseRepository.save(newCourse);
             newCourseInfo.setCourse(newCourse);
+            // 标记新课程已创建
+            isNewCourseCreated = true;
         }
 
         newCourseInfo.setWeekType(saveRequest.getWeekType());
@@ -81,6 +143,17 @@ public class CourseServiceImpl implements CourseService{
         newCourseInfo.setLength(saveRequest.getLength());
         newCourseInfo.setWeeks(saveRequest.getWeeks());
         newCourseInfo.setCreator(student);
+
+        // 数据验证
+        boolean result = check(student, activeTerm, newCourseInfo);
+
+        if (result) {
+            // 如果发生冲突，删除新创建的课程
+            if (isNewCourseCreated) {
+                courseRepository.delete(newCourseInfo.getCourse());
+            }
+            return Response.fail("课程时间发生冲突，新增失败");
+        }
 
         courseInfoRepository.save(newCourseInfo);
         return Response.success(null, "课程新增成功");
@@ -118,7 +191,7 @@ public class CourseServiceImpl implements CourseService{
         if (!courseInfoOptional.isPresent()) {
             return Response.fail("该课程不存在");
         }
-        CourseInfo courseInfo = courseInfoOptional.get();
+        CourseInfo reuseCourseInfo = courseInfoOptional.get();
 
         Optional<Student> studentOptional = studentRepository.findById(studentId);
         if (!studentOptional.isPresent()) {
@@ -126,8 +199,21 @@ public class CourseServiceImpl implements CourseService{
         }
         Student student = studentOptional.get();
 
-        courseInfo.getStudents().add(student);
-        courseInfoRepository.save(courseInfo);
+        Long ACTIVE_STATUS = 1L;
+        Optional<Term> termOptional = termRepository.findBySchoolIdAndStatus(student.getSchool().getId(), ACTIVE_STATUS);
+        if (!termOptional.isPresent()) {
+            return Response.fail("请先激活学期");
+        }
+        Term activeTerm = termOptional.get();
+
+        // 对复用课程进行验证
+        boolean result = check(student, activeTerm, reuseCourseInfo);
+        if (result) {
+            return Response.fail("课程时间发生冲突，复用失败");
+        }
+
+        reuseCourseInfo.getStudents().add(student);
+        courseInfoRepository.save(reuseCourseInfo);
 
         return Response.success(null,"复用成功");
 

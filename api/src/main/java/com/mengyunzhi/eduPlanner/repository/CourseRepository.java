@@ -12,6 +12,13 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
 
     Course findByNameAndTermId(String name, Long termId);
 
+    /**
+     * 查询学期下所有 course
+     * @param termId 学期id
+     * @return courseList
+     */
+    List<Course> findAllByTermId(Long termId);
+
 //    List<Course> findByClazzIdAndTermIdAndType(Long clazzId, Long termId, Long type);
 //    List<Course> findByStudentIdAndTermIdAndType(Long studentId, Long termId, Long type);
 //
