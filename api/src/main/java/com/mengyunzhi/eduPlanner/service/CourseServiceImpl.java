@@ -1,7 +1,6 @@
 package com.mengyunzhi.eduPlanner.service;
 
 import com.mengyunzhi.eduPlanner.dto.CourseDto;
-import com.mengyunzhi.eduPlanner.dto.CurrentUser;
 import com.mengyunzhi.eduPlanner.dto.Response;
 import com.mengyunzhi.eduPlanner.entity.*;
 import com.mengyunzhi.eduPlanner.repository.*;
@@ -27,7 +26,7 @@ public class CourseServiceImpl implements CourseService{
     private CourseInfoRepository courseInfoRepository;
 
     @Autowired
-    private LoginService loginService;
+    private TermService termService;
 
     private final static Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
 
@@ -339,42 +338,24 @@ public class CourseServiceImpl implements CourseService{
         return combinedStudentCourseData;
     }
 
-//    @Override
-//    public boolean isTimeConflict(CourseInfo newCourseInfo, CourseInfo existingCourseInfo) {
-//        Set<Long> newWeeks = getWeeksInRange(newCourseInfo.getStartWeek(), newCourseInfo.getEndWeek(), newCourseInfo.getType());
-//        Set<Long> existingWeeks = getWeeksInRange(existingCourseInfo.getStartWeek(), existingCourseInfo.getEndWeek(), newCourseInfo.getType());
-//
-//        if (newCourseInfo.getDay().equals(existingCourseInfo.getDay())) {
-//            // 合法情况：新课程的开始时间大于旧课程的结束时间 && 新课程的结束时间小于旧课程的开时间
-//            if (newCourseInfo.getBegin() < existingCourseInfo.getBegin() + existingCourseInfo.getLength() &&
-//                    newCourseInfo.getBegin() + newCourseInfo.getLength() > existingCourseInfo.getBegin()) {
-//                // 时间不合法，再检查周数是否重叠
-//                for (Long newWeek : newWeeks) {
-//                    if (existingWeeks.contains(newWeek)) {
-//                        // 如果周数有重叠，有时间冲突，返回true
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//
-//        return false;
-//    }
-//
-//    @Override
-//    public Set<Long> getWeeksInRange(Long startWeek, Long endWeek, Long type) {
-//        Set<Long> weeks = new HashSet<>();
-//
-//        for (long week = startWeek; week <= endWeek; week++) {
-//            if (type == 1 && week % 2 != 0) {
-//                weeks.add(week);
-//            } else if (type == 2 && week % 2 == 0) {
-//                weeks.add(week);
-//            } else if (type == 3) {
-//                weeks.add(week);
-//            }
-//        }
-//
-//        return weeks;
-//    }
+    @Override
+    public Response<CourseDto.GetCourseInfoByIdResponse> getCourseInfoById(Long courseInfoId) {
+        Optional<CourseInfo> courseInfoOptional = this.courseInfoRepository.findById(courseInfoId);
+
+        if (!courseInfoOptional.isPresent()) {
+            return Response.fail("该课程安排不存在");
+        }
+        CourseInfo courseInfo = courseInfoOptional.get();
+
+        CourseDto.GetCourseInfoByIdResponse response = new CourseDto.GetCourseInfoByIdResponse();
+        Long totalWeeks = this.termService.getTotalWeeksByTerm(courseInfo.getCourse().getTerm());
+
+        response.setName(courseInfo.getCourse().getName());
+        response.setTerm(courseInfo.getCourse().getTerm());
+        response.setTotalWeeks(totalWeeks);
+        response.setCourseInfo(courseInfo);
+
+        return Response.success(response, "获取成功");
+    }
+
 }

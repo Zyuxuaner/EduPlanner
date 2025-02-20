@@ -108,7 +108,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" (click)="onSubmit()">添加</button>
+        <button type="button" class="btn btn-primary" [disabled]="formGroup.invalid" (click)="onSubmit()">添加</button>
       </div>
     </div>
   </div>

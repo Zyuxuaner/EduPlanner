@@ -43,7 +43,7 @@ export class EditComponent implements OnInit{
         this.termName = data.term.name;
         this.totalWeeks = data.totalWeeks;
       }
-    })
+    });
   }
 
   onSubmit() {

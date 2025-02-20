@@ -66,7 +66,14 @@ public interface CourseService {
      * 获取所有学校所有学生的课程安排信息
      * @param schoolId 学校id列表
      * @param weeks 学校对应的当前周
-     * @return
+     * @return 课程安排信息
      */
     Map<Long, List<CourseDto.StudentsCoursesOfSchoolResponse>> getAllMessage(List<Long> schoolId, List<Long> weeks);
+
+    /**
+     * 根据 courseInfoId 获取需要编辑的课程安排
+     * @param courseInfoId 待编辑的课程安排
+     * @return 响应
+     */
+    Response<CourseDto.GetCourseInfoByIdResponse> getCourseInfoById(Long courseInfoId);
 }
