@@ -14,7 +14,6 @@ import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/for
   ]
 })
 export class WeekSelectorComponent implements ControlValueAccessor, OnInit {
-  @Input() allWeeks: number = 0; // 接收父组件传递的总周数
   @Input() formControl: FormControl = new FormControl();
   @Output() weekSelectionChange = new EventEmitter<{ weeks: number[], weekType: 'other' | 'all' | 'odd' | 'even' }>(); // 向父组件传递选择结果
 
@@ -22,22 +21,26 @@ export class WeekSelectorComponent implements ControlValueAccessor, OnInit {
   weekType: 'other' | 'all' | 'odd' | 'even'= 'all'; // 周数类型，默认全选
   allWeekList: number[] = [];
 
-  ngOnInit(): void {
-    if (this.allWeeks !== 0) {
-      this.allWeekList = Array.from({length: this.allWeeks!}, (_, index) => index + 1);
+  @Input()
+  set allWeeks(allWeeks: number) {
+    if (allWeeks !== 0) {
+      this.allWeekList = Array.from({length: allWeeks!}, (_, index) => index + 1);
+      this.selectAllWeeks();
     }
-    this.selectAllWeeks();
+  }
+
+  ngOnInit(): void {
   }
 
   // 根据周类型自动选中
   selectAllWeeks() {
     // this.selectedWeeks = [];
     if (this.weekType === 'all') {
-      this.selectedWeeks = Array.from({length: this.allWeeks}, (_, index) => index + 1);
+      this.selectedWeeks = [...this.allWeekList]; // 直接复制 allWeekList
     } else if (this.weekType === 'odd') {
-      this.selectedWeeks = Array.from({length: this.allWeeks}, (_, index) => (index + 1) % 2 === 1 ? index + 1 : null).filter(x => x !== null) as number[];
+      this.selectedWeeks = this.allWeekList.filter(week => week % 2 !== 0); // 筛选出奇数周
     } else if (this.weekType === 'even') {
-      this.selectedWeeks = Array.from({length: this.allWeeks}, (_, index) => (index + 1) % 2 === 0 ? index + 1 : null).filter(x => x!== null) as number[];
+      this.selectedWeeks = this.allWeekList.filter(week => week % 2 === 0); // 筛选出偶数周
     }
     this.updateWeekType();
     this.emitWeekSelection();
