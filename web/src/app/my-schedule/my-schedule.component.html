@@ -33,7 +33,7 @@
             <p>{{ classInfo.courseName }}</p>
           </ng-container>
           <ng-template #noCourse>
-            <button *ngIf="canAddCourse(day, period.time)"
+            <button *ngIf="canAddCourse(day, period.time) && termName !== ''"
                     (click)="openAddCourseModal(day, period.time)"
                     data-toggle="modal" data-target="#addCourseModal"
                     class="btn btn-sm d-flex align-items-center justify-content-center add-course-button">
@@ -76,9 +76,12 @@
           </div>
           <div class="form-group">
             <label for="weeks" class="col-form-label" id="weeks">周次:</label>
-            <app-week-selector [allWeeks]="totalWeeks" (weekSelectionChange)="onWeekSelectionChange($event)" formControlName="weeks"></app-week-selector>
-            <div class="text-danger" *ngIf="formGroup.get('week')?.invalid">
-              周数不能为空
+            <app-week-selector
+              formControlName="weeks"
+              [allWeeks]="totalWeeks"
+              (weekSelectionChange)="onWeekSelectionChange($event)" ></app-week-selector>
+            <div class="text-danger" *ngIf="formGroup.get('weeks')?.invalid">
+              周数不能为空，请点击进行选择
             </div>
           </div>
           <div class="form-group mb-3 row">

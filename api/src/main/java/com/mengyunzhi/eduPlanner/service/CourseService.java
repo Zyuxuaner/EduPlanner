@@ -53,6 +53,13 @@ public interface CourseService {
     Response<String> cancelReuseCourseInfo(Long courseInfoId, Long studentId);
 
     /**
+     * 检查该课程安排是否还有学生复用
+     * @param courseInfoId 该课程id
+     * @return response.status = true 未被复用
+     */
+    Response<String> checkReuseStudent(Long courseInfoId);
+
+    /**
      * 根据school和week获取所有学生的课程安排
      * 如果传了student id，那么获取该周单个学生的课程安排
      * @param schoolId 学校id
@@ -78,5 +85,14 @@ public interface CourseService {
      * @return 响应
      */
     Response<CourseDto.GetCourseInfoByIdResponse> getCourseInfoById(Long courseInfoId);
+
+    /**
+     * 更新课程安排
+     * @param saveRequest 需要更新的数据
+     * @param courseInfoId 更新的课程安排id
+     * @param studentId 学生id
+     * @return 响应
+     */
+    Response<String> update(CourseDto.SaveRequest saveRequest, Long courseInfoId, Long studentId);
 
 }

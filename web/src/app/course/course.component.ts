@@ -96,9 +96,15 @@ export class CourseComponent implements OnInit{
     });
   }
 
-  onEdit(courseInfoId: number) {
-    this.router.navigate(['edit', courseInfoId], { relativeTo: this.route });
-
+  onEdit(courseInfo: number) {
+    this.courseService.checkReuse(courseInfo).subscribe(result => {
+      if (result.status) {
+        this.router.navigate(['edit', courseInfo], { relativeTo: this.route });
+      } else {
+        const message = result.message + '，不允许编辑';
+        this.commonService.showErrorAlert(message);
+      }
+    });
   }
 
   setCurrentStudentId() {
@@ -108,7 +114,7 @@ export class CourseComponent implements OnInit{
     })
   }
 
-  // 判断课程是否已被当前学生复用
+  // 判断课程是否已被当前学生复用，true（已复用）,false（未复用）
   isCourseReused(courseInfo: number): boolean {
     const course = this.courses.find(course => course.courseInfo.id === courseInfo) as GetAllResponse;
     return course && course.reuseStudents && course.reuseStudents.some(student => student.id === this.currentStudentId);

@@ -3,6 +3,7 @@ package com.mengyunzhi.eduPlanner.controller;
 import com.mengyunzhi.eduPlanner.dto.*;
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.Term;
+import com.mengyunzhi.eduPlanner.repository.StudentRepository;
 import com.mengyunzhi.eduPlanner.service.CourseService;
 import com.mengyunzhi.eduPlanner.service.LoginService;
 import com.mengyunzhi.eduPlanner.service.StudentService;
@@ -27,15 +28,14 @@ public class CourseController {
     private final CourseService courseService;
     private final LoginService loginService;
     private final StudentService studentService;
-
-    private final TermService termService;
+    private final StudentRepository studentRepository;
 
     @Autowired
-    public CourseController(LoginService loginService, CourseService courseService, StudentService studentService, TermService termService) {
+    public CourseController(LoginService loginService, CourseService courseService, StudentService studentService, StudentRepository studentRepository) {
         this.loginService = loginService;
         this.courseService = courseService;
         this.studentService = studentService;
-        this.termService = termService;
+        this.studentRepository = studentRepository;
     }
 
     @PostMapping("/add")
@@ -53,6 +53,11 @@ public class CourseController {
     @DeleteMapping("/delete/{courseInfoId}")
     public Response<String> delete(@PathVariable Long courseInfoId) {
         return courseService.delete(courseInfoId);
+    }
+
+    @GetMapping("/checkReuse/{courseInfoId}")
+    public Response<String> checkReuse(@PathVariable Long courseInfoId) {
+        return courseService.checkReuseStudent(courseInfoId);
     }
 
     /**
@@ -130,5 +135,20 @@ public class CourseController {
             @RequestParam(required = false) Long creatorStudent
     ) {
         return courseService.search(searchCourse, creatorStudent);
+    }
+
+    @PostMapping("/update/{courseInfoId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response<String> update(@RequestBody CourseDto.SaveRequest saveRequest, @PathVariable Long courseInfoId) {
+        Response<CurrentUser> currentUser = this.loginService.getCurrentLoginUser();
+        Long role = currentUser.getData().getRole();
+        if (role == 1) {
+            Long userId = currentUser.getData().getId();
+            Student currentStudent = this.studentRepository.findByUserId(userId);
+            return this.courseService.update(saveRequest, courseInfoId, currentStudent.getId());
+        } else {
+            return Response.fail("未获取到当前登录学生，编辑失败");
+        }
+
     }
 }

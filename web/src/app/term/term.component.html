@@ -14,7 +14,7 @@
     <a class="btn btn-primary mr-2" routerLink="./add"><i class="fas fa-plus"></i>新增</a>
   </div>
 
-  <table class="table table-striped mt-2">
+  <table class="table table-striped mt-4">
     <thead>
     <tr class="table-primary">
       <th>序号</th>
@@ -23,7 +23,7 @@
       <th>开学日期</th>
       <th>结束日期</th>
       <th>状态</th>
-      <th>操作</th>
+      <th *ngIf="person.role !== 1">操作</th>
     </tr>
     </thead>
     <tbody>
@@ -36,7 +36,7 @@
       <td *ngIf="term.status; else termIsFreeze">
         <span class="badge badge-pill badge-success">激活</span>
       </td>
-      <td>
+      <td *ngIf="person.role !== 1">
         <a class="btn btn-outline-primary btn-sm" (click)="onEdit(term.id)">
           <i class="fa fa-pen"></i>编辑
         </a>

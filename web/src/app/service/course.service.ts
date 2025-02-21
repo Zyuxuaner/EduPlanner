@@ -21,6 +21,10 @@ export class CourseService {
     return this.httpClient.delete<ResponseBody>(`${this.baseUrl}/delete/${courseInfoId}`);
   }
 
+  checkReuse(courseInfoId: number): Observable<ResponseBody> {
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/checkReuse/${courseInfoId}`);
+  }
+
   getAll(): Observable<GetAllResponse[]> {
     return this.httpClient.get<GetAllResponse[]>(`${this.baseUrl}/getAll`);
   }
@@ -34,8 +38,8 @@ export class CourseService {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getCourseMessage`, {params});
   }
 
-  update(courseInfo: SaveRequest): Observable<ResponseBody> {
-    return this.httpClient.patch<ResponseBody>(`${this.baseUrl}/update`, courseInfo);
+  update(courseInfo: SaveRequest, courseInfoId: number): Observable<ResponseBody> {
+    return this.httpClient.post<ResponseBody>(`${this.baseUrl}/update/${courseInfoId}`, courseInfo);
   }
 
   // 复用课程安排
