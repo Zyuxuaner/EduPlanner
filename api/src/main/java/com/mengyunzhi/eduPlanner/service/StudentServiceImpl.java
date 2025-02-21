@@ -174,27 +174,25 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student updateStudent(Long id, StudentRequest studentRequest) {
-        return studentRepository.findById(id)
-                .map(student -> {
-                    // 更新基本信息
-                    if (studentRequest.getName() != null) {
-                        student.setName(studentRequest.getName());
-                    }
-                    if (studentRequest.getUsername() != null && student.getUser() != null) {
-                        student.getUser().setUsername(studentRequest.getUsername());
-                    }
-                    if (studentRequest.getSno() != null) {
-                        student.setSno(studentRequest.getSno());
-                    }
+    public Response<String> updateStudent(Long id, StudentRequest studentRequest) {
+        // 检查学号是否已存在
+        if (studentRepository.existsBySno(studentRequest.getSno())) {
+            return  Response.fail("该学号已存在");
+        }
 
-                    // 直接使用DTO中的School对象
-                    if (studentRequest.getSchool() != null) {
-                        student.setSchool(studentRequest.getSchool());
-                    }
+        Optional<Student> studentOptional = this.studentRepository.findById(id);
+        if (!studentOptional.isPresent()) {
+            return Response.fail("该学生不存在");
+        }
 
-                    return studentRepository.save(student);
-                })
-                .orElse(null); // 学生不存在时返回null
+        Student student = studentOptional.get();
+
+        student.setName(studentRequest.getName());
+        student.setSchool(studentRequest.getSchool());
+        student.setSno(studentRequest.getSno());
+        student.getUser().setUsername(studentRequest.getUsername());
+
+        this.studentRepository.save(student);
+        return Response.success(null, "编辑成功");
     }
 }

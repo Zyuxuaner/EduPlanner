@@ -28,5 +28,5 @@ public interface AdminService {
 
     Admin getAdminById(Long id);
 
-    Response<Admin> updateAdmin(Long id, AdminRequest adminRequest);
+    Response<String> updateAdmin(Long id, AdminRequest adminRequest);
 }
