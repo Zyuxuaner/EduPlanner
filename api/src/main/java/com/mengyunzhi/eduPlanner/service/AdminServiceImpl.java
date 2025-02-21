@@ -117,12 +117,19 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Response<Admin> updateAdmin(Long id, AdminRequest adminRequest) {
+    public Response<String> updateAdmin(Long id, AdminRequest adminRequest) {
         Optional<Admin> optionalAdmin = adminRepository.findById(id);
         if (!optionalAdmin.isPresent()) {
             return new Response<>(false, "管理员不存在", null);
         }
         Admin admin = optionalAdmin.get();
+
+        // 只有当学号发生变化时才检查学号是否已存在
+        if (adminRequest.getAno() != null && adminRequest.getAno().equals(admin.getAno())) {
+            if (adminRepository.existsByAno(adminRequest.getAno())) {
+                return Response.fail("该学号已存在");
+            }
+        }
 
         // 更新 Admin 表中的字段
         if (adminRequest.getName() != null) {
@@ -139,9 +146,8 @@ public class AdminServiceImpl implements AdminService {
             userRepository.save(user);
         }
 
-        // 保存更新后的管理员信息
-        Admin updatedAdmin = adminRepository.save(admin);
+        adminRepository.save(admin);
 
-        return new Response<>(true, "管理员信息更新成功", updatedAdmin);
+        return Response.success(null, "管理员信息更新成功");
     }
 }

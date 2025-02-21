@@ -25,8 +25,6 @@ export class EditComponent implements OnInit {
       sno: new FormControl(null, [Validators.required, Validators.minLength(6)])
     });
   }
-
-  // 当学校选择变化时，更新 school
   onSchoolChange(school: SchoolImpl | null): void {
     this.selectedSchool = school;
   }

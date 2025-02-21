@@ -39,5 +39,5 @@ public interface StudentService {
 
     Student getStudentById(Long id);
 
-    Student updateStudent(Long id, StudentRequest studentRequest);
+    Response<String> updateStudent(Long id, StudentRequest studentRequest);
 }

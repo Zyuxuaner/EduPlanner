@@ -51,7 +51,7 @@ public class AdminController {
     }
 
     @PatchMapping("/update/{id}")
-    public Response<Admin> updateTerm(@PathVariable Long id, @RequestBody AdminRequest adminRequest) {
+    public Response<String> updateTerm(@PathVariable Long id, @RequestBody AdminRequest adminRequest) {
         return this.adminService.updateAdmin(id, adminRequest);
     }
 }
