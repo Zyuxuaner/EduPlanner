@@ -5,6 +5,7 @@ import com.mengyunzhi.eduPlanner.dto.StudentRequest;
 import com.mengyunzhi.eduPlanner.entity.School;
 import com.mengyunzhi.eduPlanner.entity.Student;
 import com.mengyunzhi.eduPlanner.entity.User;
+import com.mengyunzhi.eduPlanner.repository.CourseInfoRepository;
 import com.mengyunzhi.eduPlanner.repository.SchoolRepository;
 import com.mengyunzhi.eduPlanner.repository.StudentRepository;
 import com.mengyunzhi.eduPlanner.repository.UserRepository;
@@ -32,11 +33,34 @@ public class StudentServiceImpl implements StudentService {
 
     private final SchoolRepository schoolRepository;
 
+    private final CourseInfoRepository courseInfoRepository;
+
+    /**
+     * 判断是否还存在自己创建的课程安排
+     * @param studentId 该学生id
+     * @return true：存在；false：不存在
+     */
+    private boolean hasCreatedCourseInfo(Long studentId) {
+        long count = courseInfoRepository.countByCreatorId(studentId);
+        return count > 0;
+    }
+
+    /**
+     * 判断是否还存在复用其他同学的课程安排
+     * @param studentId 该学生id
+     * @return true：存在；false：不存在
+     */
+    private boolean isReuseOtherStudentsCourses(Long studentId) {
+        long count = courseInfoRepository.countByStudentsId(studentId);
+        return count > 0;
+    }
+
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, SchoolRepository schoolRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, SchoolRepository schoolRepository, CourseInfoRepository courseInfoRepository) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.schoolRepository = schoolRepository;
+        this.courseInfoRepository = courseInfoRepository;
     }
 
     @Override
@@ -152,11 +176,20 @@ public class StudentServiceImpl implements StudentService {
 
     @Transactional
     @Override
-    public Response<Student> delete(Long id) {
+    public Response<String> delete(Long id) {
         // 根据 ID 查找学生
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {
             Student student = optionalStudent.get();
+
+            // 判断是否能进行删除，及判断该学生下是否还存在创建的课程安排和复用别人的课程
+            if (hasCreatedCourseInfo(student.getId())) {
+                return Response.fail("无法删除学生，因其创建了课程信息");
+            }
+
+            if (isReuseOtherStudentsCourses(student.getId())) {
+                return Response.fail("无法删除学生，因其已复用其他学生的课程");
+            }
             // 获取学生对应的用户
             if (student.getUser() != null) {
                 User user = student.getUser();
