@@ -30,4 +30,6 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
      * @return 如果存在关联学生返回 true，否则返回 false
      */
     boolean existsBySchoolId(Long schoolId);
+
+    Student findBySno(String sno);
 }

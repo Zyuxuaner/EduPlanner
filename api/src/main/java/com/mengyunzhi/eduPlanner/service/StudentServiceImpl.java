@@ -70,6 +70,11 @@ public class StudentServiceImpl implements StudentService {
             return new Response<>(false, "该学号已存在", null);
         }
 
+        User checkUsername = userRepository.findByUsername(studentRequest.getUsername());
+        if (checkUsername != null) {
+            return Response.fail("该用户名已存在");
+        }
+
         // 获取学校信息
         Long schoolId = studentRequest.getSchool().getId();
         School school = schoolRepository.findById(schoolId)
@@ -208,15 +213,27 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Response<String> updateStudent(Long id, StudentRequest studentRequest) {
-        // 检查学号是否已存在
-        if (studentRepository.existsBySno(studentRequest.getSno())) {
-            return  Response.fail("该学号已存在");
-        }
-
         Optional<Student> studentOptional = this.studentRepository.findById(id);
         if (!studentOptional.isPresent()) {
             return Response.fail("该学生不存在");
         }
+
+        User checkUsername = userRepository.findByUsername(studentRequest.getUsername());
+        if (checkUsername != null) {
+            return Response.fail("该用户名已存在");
+        }
+
+        if (studentRequest.getSno() != null) {
+            // 检查学号是否已存在
+            Student checkSno = studentRepository.findBySno(studentRequest.getSno());
+            if (checkSno != null) {
+                Long studentId = checkSno.getId();
+                if (!studentId.equals(id)) {
+                    return Response.fail("该学号已存在");
+                }
+            }
+        }
+
 
         Student student = studentOptional.get();
 
