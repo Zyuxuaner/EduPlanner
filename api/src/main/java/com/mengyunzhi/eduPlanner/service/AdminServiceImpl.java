@@ -33,6 +33,11 @@ public class AdminServiceImpl implements AdminService {
         if (adminRepository.existsByAno(adminRequest.getAno())) {
             return new Response<>(false, "该工号已存在", null);
         }
+        User checkUsername = userRepository.findByUsername(adminRequest.getUsername());
+        if (checkUsername != null) {
+            return Response.fail("该用户名已存在");
+        }
+
         // 创建 User 对象
         User user = new User();
         user.setUsername(adminRequest.getUsername());
@@ -124,10 +129,20 @@ public class AdminServiceImpl implements AdminService {
         }
         Admin admin = optionalAdmin.get();
 
+        // 检查是否已经存在username
+        User checkUsername = userRepository.findByUsername(adminRequest.getUsername());
+        if (checkUsername != null) {
+            return Response.fail("该用户名已存在");
+        }
+
         // 只有当学号发生变化时才检查学号是否已存在
         if (adminRequest.getAno() != null && adminRequest.getAno().equals(admin.getAno())) {
-            if (adminRepository.existsByAno(adminRequest.getAno())) {
-                return Response.fail("该学号已存在");
+            Admin checkAno = adminRepository.findByAno(adminRequest.getAno());
+            if (checkAno != null) {
+                Long adminId = admin.getId();
+                if (!adminId.equals(id)) {
+                    return Response.fail("该工号已存在");
+                }
             }
         }
 

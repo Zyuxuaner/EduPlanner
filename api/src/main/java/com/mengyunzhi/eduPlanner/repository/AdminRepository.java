@@ -34,4 +34,6 @@ public interface AdminRepository extends CrudRepository<Admin, Long> {
      * @return 符合条件的管理员列表
      */
     List<Admin> findByAnoContaining(String ano);
+
+    Admin findByAno(String ano);
 }
