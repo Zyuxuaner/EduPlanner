@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * @author zhangyuxuan
+ */
 @Service
 public class CourseServiceImpl implements CourseService{
     @Autowired
@@ -184,6 +187,71 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    public Response<String> checkReuseStudent(Long courseInfoId) {
+        Optional<CourseInfo> courseInfoOptional = this.courseInfoRepository.findById(courseInfoId);
+
+        if (!courseInfoOptional.isPresent()) {
+            return Response.fail("该课程安排不存在");
+        }
+        CourseInfo courseInfo = courseInfoOptional.get();
+
+        if (!courseInfo.getStudents().isEmpty()) {
+            return Response.fail("该课程已被其他学生复用");
+        } else {
+            return Response.success(null,"该课程未被复用");
+        }
+
+    }
+
+    /**
+     * 更新课程安排
+     * 首先，需要确定的是，该课程已经没有任何人复用了
+     * @param saveRequest 需要更新的数据
+     * @param courseInfoId 更新的课程安排id
+     * @param studentId 学生id
+     * @return
+     */
+    @Override
+    public Response<String> update(CourseDto.SaveRequest saveRequest, Long courseInfoId, Long studentId) {
+        Optional<CourseInfo> courseInfoOptional = this.courseInfoRepository.findById(courseInfoId);
+
+        if (!courseInfoOptional.isPresent()) {
+            return Response.fail("该课程安排不存在");
+        }
+        CourseInfo courseInfo = courseInfoOptional.get();
+
+        Optional<Student> studentOptional = this.studentRepository.findById(studentId);
+        if (!studentOptional.isPresent()) {
+            return Response.fail("该学生不存在");
+        }
+        Student student = studentOptional.get();
+
+        courseInfo.setWeekType(saveRequest.getWeekType());
+        courseInfo.setWeeks(saveRequest.getWeeks());
+        courseInfo.setDay(saveRequest.getDay());
+        courseInfo.setBegin(saveRequest.getBegin());
+        courseInfo.setLength(saveRequest.getLength());
+
+        Long ACTIVE_STATUS = 1L;
+        Optional<Term> termOptional = this.termRepository.findBySchoolIdAndStatus(student.getSchool().getId(), ACTIVE_STATUS);
+        if (! termOptional.isPresent()) {
+            return Response.fail("该学校没有激活学期，编辑失败");
+        }
+        Term activeTerm = termOptional.get();
+
+        // 数据验证
+        boolean result = check(student, activeTerm, courseInfo);
+
+        if (result) {
+            return Response.fail("课程时间发生冲突，编辑失败");
+        }
+
+        courseInfoRepository.save(courseInfo);
+        return Response.success(null, "课程编辑成功");
+
+    }
+
+    @Override
     public Response<String> reuseCourseInfo(Long courseInfoId, Long studentId) {
 
         Optional<CourseInfo> courseInfoOptional = courseInfoRepository.findById(courseInfoId);
@@ -341,6 +409,74 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    public List<CourseDto.GetAllCoursesResponse> search(String searchCourse, Long creatorStudent) {
+        List<CourseInfo> courseInfos;
+
+        if (searchCourse != null && creatorStudent != null) {
+            courseInfos = courseInfoRepository.findByCourseNameContainingAndCreatorId(searchCourse, creatorStudent);
+        } else if (searchCourse != null) {
+            courseInfos = courseInfoRepository.findByCourseNameContaining(searchCourse);
+        } else if (creatorStudent != null) {
+            courseInfos = courseInfoRepository.findByCreatorId(creatorStudent);
+        } else {
+            courseInfos = courseInfoRepository.findAll();
+        }
+
+        List<CourseDto.GetAllCoursesResponse> responses = new ArrayList<>();
+
+        for (CourseInfo courseInfo : courseInfos) {
+            Course course = courseInfo.getCourse();
+            CourseDto.GetAllCoursesResponse response = new CourseDto.GetAllCoursesResponse();
+            response.setName(course.getName());
+            response.setCourseInfo(courseInfo);
+            response.setTerm(course.getTerm());
+            response.setCreator(courseInfo.getCreator());
+            response.setReuseStudents(new ArrayList<>(courseInfo.getStudents()));
+            responses.add(response);
+        }
+
+        return responses;
+    }
+
+//    @Override
+//    public boolean isTimeConflict(CourseInfo newCourseInfo, CourseInfo existingCourseInfo) {
+//        Set<Long> newWeeks = getWeeksInRange(newCourseInfo.getStartWeek(), newCourseInfo.getEndWeek(), newCourseInfo.getType());
+//        Set<Long> existingWeeks = getWeeksInRange(existingCourseInfo.getStartWeek(), existingCourseInfo.getEndWeek(), newCourseInfo.getType());
+//
+//        if (newCourseInfo.getDay().equals(existingCourseInfo.getDay())) {
+//            // 合法情况：新课程的开始时间大于旧课程的结束时间 && 新课程的结束时间小于旧课程的开时间
+//            if (newCourseInfo.getBegin() < existingCourseInfo.getBegin() + existingCourseInfo.getLength() &&
+//                    newCourseInfo.getBegin() + newCourseInfo.getLength() > existingCourseInfo.getBegin()) {
+//                // 时间不合法，再检查周数是否重叠
+//                for (Long newWeek : newWeeks) {
+//                    if (existingWeeks.contains(newWeek)) {
+//                        // 如果周数有重叠，有时间冲突，返回true
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public Set<Long> getWeeksInRange(Long startWeek, Long endWeek, Long type) {
+//        Set<Long> weeks = new HashSet<>();
+//
+//        for (long week = startWeek; week <= endWeek; week++) {
+//            if (type == 1 && week % 2 != 0) {
+//                weeks.add(week);
+//            } else if (type == 2 && week % 2 == 0) {
+//                weeks.add(week);
+//            } else if (type == 3) {
+//                weeks.add(week);
+//            }
+//        }
+//
+//        return weeks;
+//    }
+  
     public Response<CourseDto.GetCourseInfoByIdResponse> getCourseInfoById(Long courseInfoId) {
         Optional<CourseInfo> courseInfoOptional = this.courseInfoRepository.findById(courseInfoId);
 

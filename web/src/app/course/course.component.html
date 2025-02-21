@@ -38,8 +38,9 @@
       <span class="badge badge-pill badge-success">置入</span>
     </td>
     <td>{{ course.creator.name }}</td>
+    <!-- 如果结课了，就不允许编辑、删除、复用课程 -->
     <td>
-      <!-- 如果结课了，就不允许编辑、删除、复用课程 -->
+      <!-- 如果有人复用该课程，就提心不允许编辑 -->
       <a class="btn btn-outline-primary btn-sm"
          *ngIf="course.term.id == termId && course.creator.id == currentStudentId"
          (click)="onEdit(course.courseInfo.id)">
@@ -51,7 +52,7 @@
           <i class="far fa-trash-alt"></i>删除
       </span>
       <span class="btn btn-sm btn-outline-info"
-            *ngIf="course.term.id == termId && course.creator.id !== currentStudentId && !isCourseReused(course.courseInfo.id)"
+            *ngIf="course.term.id == termId && course.creator.id !== currentStudentId && ! isCourseReused(course.courseInfo.id)"
             (click)="reuseCourse(course.courseInfo.id)">
          <i class="fa fa-plus" aria-hidden="true"></i>复用课程
       </span>

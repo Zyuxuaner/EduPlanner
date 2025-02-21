@@ -2,7 +2,7 @@
   <div class="row w-100">
     <div class="col-md-7 offset-md-2">
       <span class="border border-info rounded p-4 bg-light d-block">
-        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <form [formGroup]="formGroup">
           <div class="mb-3 row">
             <label for="term" class="col-sm-2 col-form-label">学期</label>
             <div class="col-sm-10">
@@ -21,7 +21,13 @@
           </div>
           <div class="form-group">
             <label for="weeks" class="col-form-label" id="weeks">周次:</label>
-            <app-week-selector [allWeeks]="totalWeeks" (weekSelectionChange)="onWeekSelectionChange($event)" formControlName="weeks"></app-week-selector>
+            <app-week-selector
+              formControlName="weeks"
+              [allWeeks]="totalWeeks"
+              [weeks]="oldWeeks"
+              [weekType]="oldWeekType"
+              (weekSelectionChange)="onWeekSelectionChange($event)"
+              ></app-week-selector>
             <div class="text-danger" *ngIf="formGroup.get('week')?.invalid">
               周数不能为空
             </div>
@@ -29,19 +35,41 @@
           <div class="form-group mb-3 row">
             <label for="day" class="col-sm-2 col-form-label">星期:</label>
             <div class="col-sm-10">
-              <!-- 使用管道将数字转换为格式化字符串 -->
-              <input type="text" class="form-control" id="day" formControlName="day"
-                     [value]="(formGroup.get('day')?.value || 0) | weekDayFormat">
+              <select class="custom-select my-1 mr-sm-2" id="day" formControlName="day">
+                <option *ngFor="let day of days" [value]=day>{{ day | weekDayFormat }}</option>
+              </select>
+            </div>
+            <div class="text-danger" *ngIf="formGroup.get('day')?.invalid">
+              星期不能为空
             </div>
           </div>
           <div class="form-group mb-3 row">
             <label for="begin" class="col-sm-2 col-form-label">开始节数:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="begin" formControlName="begin"
-                     [value]="(formGroup.get('begin')?.value || 0) | dayFormat">
+              <select class="custom-select my-1 mr-sm-2" id="begin" formControlName="begin"  (change)="onSelectChange($event)">
+                <option *ngFor="let begin of periods" [value]=begin>{{ begin | dayFormat }}</option>
+              </select>
+              <div class="text-danger" *ngIf="formGroup.get('begin')?.invalid">
+              课程开始节数不能为空
+              </div>
             </div>
           </div>
-
+          <div class="form-group mb-3 row">
+            <label for="length" class="col-sm-2 col-form-label">持续节数:</label>
+            <div class="col-sm-10">
+              <select class="custom-select my-1 mr-sm-2" id="length" formControlName="length">
+                <option *ngFor="let length of availableLengths" [value]=length>{{ length }}</option>
+              </select>
+              <div class="text-danger" *ngIf="formGroup.get('length')?.invalid">
+                课程持续节数不能为空
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <div class="col-sm-8 offset-sm-4">
+              <button class="btn btn-primary" [disabled]="formGroup.invalid" (click)="onSubmit()">保存</button>
+            </div>
+          </div>
         </form>
       </span>
     </div>

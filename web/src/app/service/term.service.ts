@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Term} from "../entity/term";
 import {School} from "../entity/school";
 import {ResponseBody} from "../entity/response-body";
+import {Student} from "../entity/student";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,20 @@ export class TermService {
 
   getAll(): Observable<Term[]> {
     return this.httpClient.get<Term[]>(`${this.baseUrl}/getAll`);
+  }
+
+  search(schoolId: number | null, searchName: string): Observable<Term[]> {
+    let params = new HttpParams();
+
+    if (schoolId) {
+      params = params.set('schoolId', schoolId);
+    }
+
+    if (searchName) {
+      params = params.set('searchName', searchName);
+    }
+
+    return this.httpClient.get<Term[]>(`${this.baseUrl}/search`, { params });
   }
 
   getTermById(id: number): Observable<Term> {

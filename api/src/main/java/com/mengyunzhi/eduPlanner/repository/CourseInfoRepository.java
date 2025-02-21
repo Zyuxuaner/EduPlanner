@@ -51,4 +51,27 @@ public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
     List<CourseInfo> findByStudentsId(Long studentsId);
 
     List<CourseInfo> findByDayAndCreator(Long day, Student creator);
+
+    /**
+     * 根据课程名称模糊查询和创建者学生 ID 精确查询课程信息
+     * @param searchCourse 课程名称，用于模糊查询
+     * @param creatorStudent 创建者学生 ID，用于精确查询
+     * @return 符合条件的课程信息列表
+     */
+    List<CourseInfo> findByCourseNameContainingAndCreatorId(String searchCourse, Long creatorStudent);
+
+    /**
+     * 仅根据课程名称模糊查询课程信息
+     * @param searchCourse 课程名称，用于模糊查询
+     * @return 符合条件的课程信息列表
+     */
+    List<CourseInfo> findByCourseNameContaining(String searchCourse);
+
+    /**
+     * 根据创建者学生 ID 精确查询课程信息
+     * @param creatorStudent 创建者学生 ID，用于精确查询
+     * @return 符合条件的课程信息列表
+     */
+    List<CourseInfo> findByCreatorId(Long creatorStudent);
+
 }

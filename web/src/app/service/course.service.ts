@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ResponseBody} from "../entity/response-body";
-import {Course} from "../entity/course";
 import {schoolIdAndWeeks} from "../entity/schoolIdAndWeeks";
 import {SaveRequest} from "../dto/courseDto/saveRequest";
 import {GetAllResponse} from "../dto/courseDto/getAllResponse";
@@ -22,6 +21,10 @@ export class CourseService {
     return this.httpClient.delete<ResponseBody>(`${this.baseUrl}/delete/${courseInfoId}`);
   }
 
+  checkReuse(courseInfoId: number): Observable<ResponseBody> {
+    return this.httpClient.get<ResponseBody>(`${this.baseUrl}/checkReuse/${courseInfoId}`);
+  }
+
   getAll(): Observable<GetAllResponse[]> {
     return this.httpClient.get<GetAllResponse[]>(`${this.baseUrl}/getAll`);
   }
@@ -35,8 +38,8 @@ export class CourseService {
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getCourseMessage`, {params});
   }
 
-  update(courseInfo: SaveRequest): Observable<ResponseBody> {
-    return this.httpClient.patch<ResponseBody>(`${this.baseUrl}/update`, courseInfo);
+  update(courseInfo: SaveRequest, courseInfoId: number): Observable<ResponseBody> {
+    return this.httpClient.post<ResponseBody>(`${this.baseUrl}/update/${courseInfoId}`, courseInfo);
   }
 
   // 复用课程安排
@@ -59,5 +62,19 @@ export class CourseService {
     });
 
     return this.httpClient.get<ResponseBody>(`${this.baseUrl}/getAllCourseInfo`, {params});
+  }
+
+  search(searchCourse: string | null, creatorStudent: number | null): Observable<GetAllResponse[]> {
+    let params = new HttpParams();
+
+    if (searchCourse) {
+      params = params.set('searchCourse', searchCourse);
+    }
+
+    if (creatorStudent) {
+      params = params.set('creatorStudent', creatorStudent);
+    }
+
+    return this.httpClient.get<GetAllResponse[]>(`${this.baseUrl}/search`, { params });
   }
 }
