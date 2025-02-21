@@ -42,7 +42,7 @@ export class CourseComponent implements OnInit{
       });
       this.studentService.getAll().subscribe(data => {
         this.allStudents = data;
-      })
+      });
   }
 
   // 获取当前登录用户的所在学校的激活学期

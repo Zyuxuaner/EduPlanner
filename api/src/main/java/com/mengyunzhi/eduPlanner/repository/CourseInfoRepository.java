@@ -50,6 +50,8 @@ public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
      */
     List<CourseInfo> findByStudentsId(Long studentsId);
 
+    List<CourseInfo> findByDayAndCreator(Long day, Student creator);
+
     /**
      * 根据课程名称模糊查询和创建者学生 ID 精确查询课程信息
      * @param searchCourse 课程名称，用于模糊查询
@@ -72,19 +74,4 @@ public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
      */
     List<CourseInfo> findByCreatorId(Long creatorStudent);
 
-//    @Query("SELECT ci FROM CourseInfo ci " +
-//            "JOIN ci.course c " +
-//            "JOIN c.term t " +
-//            "WHERE ci.day = :day " + // 明天的星期几
-//            "AND t.startTime <= :endTime " + // 学期开始时间在明天结束时间之前
-//            "AND t.endTime >= :startTime " + // 学期结束时间在明天开始时间之后
-//            "AND ci.begin <= :end " + // 课程开始时间在指定节次内
-//            "AND (ci.begin + ci.length) > :begin " + // 课程结束时间在指定节次内
-//            "AND c.studentId = :studentId") // 指定学生的id
-//    List<CourseInfo> findCoursesByTomorrow(@Param("startTime") Date startTime,
-//                                           @Param("endTime") Date endTime,
-//                                           @Param("day") Long day,
-//                                           @Param("begin") Long begin,
-//                                           @Param("end") Long end,
-//                                           @Param("studentId") Long studentId);
 }
