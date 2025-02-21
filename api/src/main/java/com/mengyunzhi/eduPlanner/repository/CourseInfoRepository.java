@@ -16,6 +16,20 @@ import java.util.Set;
 public interface CourseInfoRepository extends CrudRepository<CourseInfo, Long> {
     CourseInfo findByCourseId(Long courseId);
 
+    /**
+     * 判断改学生是否还存在自己创建的课程安排
+     * @param creatorId 学生id
+     * @return 创建个数
+     */
+    Long countByCreatorId(Long creatorId);
+
+    /**
+     * 判断该学生是否还存在复用课程的情况
+     * @param studentId 该学生id
+     * @return 复用个数
+     */
+    Long countByStudentsId(Long studentId);
+
     @Override
     List<CourseInfo> findAll();
 

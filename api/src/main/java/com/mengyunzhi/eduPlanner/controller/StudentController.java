@@ -35,7 +35,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public Response<Student> delete(@PathVariable Long id) {
+    public Response<String> delete(@PathVariable Long id) {
         if (id == null) {
             return new Response<>(false, "学生 ID 不能为空", null);
         }

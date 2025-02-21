@@ -29,7 +29,7 @@ public interface StudentService {
      */
     Student findByUserId(Long userId);
 
-    Response<Student> delete (Long id);
+    Response<String> delete (Long id);
 
     Student changeStatus(Long id, Long status);
 
