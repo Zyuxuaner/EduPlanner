@@ -15,9 +15,9 @@ public class DingTalkResponse {
     /**
      * 每节课的状态 显示有课或空
      */
-    private Map<Long, String> sections;
+    private Map<String, String> sections;
 
-    public DingTalkResponse(String name, Map<Long, String> sections) {
+    public DingTalkResponse(String name, Map<String, String> sections) {
         this.name = name;
         this.sections = sections;
     }

@@ -2,21 +2,15 @@ package com.mengyunzhi.eduPlanner.controller;
 
 import com.mengyunzhi.eduPlanner.dto.*;
 import com.mengyunzhi.eduPlanner.entity.Student;
-import com.mengyunzhi.eduPlanner.entity.Term;
-import com.mengyunzhi.eduPlanner.service.CourseService;
-import com.mengyunzhi.eduPlanner.service.LoginService;
-import com.mengyunzhi.eduPlanner.service.StudentService;
-import com.mengyunzhi.eduPlanner.service.TermService;
+import com.mengyunzhi.eduPlanner.scheduler.DingTalkTask;
+import com.mengyunzhi.eduPlanner.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
@@ -29,13 +23,18 @@ public class CourseController {
     private final StudentService studentService;
 
     private final TermService termService;
+    private final DingTalkService dingTalkService;
+    private final DingTalkTask dingTalkTask;
 
     @Autowired
-    public CourseController(LoginService loginService, CourseService courseService, StudentService studentService, TermService termService) {
+    public CourseController(LoginService loginService, CourseService courseService, StudentService studentService, TermService termService,
+                            DingTalkService dingTalkService, DingTalkTask dingTalkTask) {
         this.loginService = loginService;
         this.courseService = courseService;
         this.studentService = studentService;
         this.termService = termService;
+        this.dingTalkService = dingTalkService;
+        this.dingTalkTask = dingTalkTask;
     }
 
     @PostMapping("/add")
