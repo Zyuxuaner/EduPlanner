@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
@@ -15,26 +15,50 @@ import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/for
 })
 export class WeekSelectorComponent implements ControlValueAccessor, OnInit {
   @Input() formControl: FormControl = new FormControl();
+  @Input() weekType: 'other' | 'all' | 'odd' | 'even' = 'all'; // 接收父组件传递的weeks,默认全选
   @Output() weekSelectionChange = new EventEmitter<{ weeks: number[], weekType: 'other' | 'all' | 'odd' | 'even' }>(); // 向父组件传递选择结果
 
   selectedWeeks: number[] = []; // 存储已选择的周数
-  weekType: 'other' | 'all' | 'odd' | 'even'= 'all'; // 周数类型，默认全选
   allWeekList: number[] = [];
+  private isFirstRender = true; // 标志位，用于判断是否是首次渲染
 
   @Input()
   set allWeeks(allWeeks: number) {
     if (allWeeks !== 0) {
       this.allWeekList = Array.from({length: allWeeks!}, (_, index) => index + 1);
       this.selectAllWeeks();
+      if (this.isFirstRender) {
+        // 初次渲染时直接根据传入的weeks和weekType渲染
+        this.updateSelection();
+      }
     }
   }
 
+  @Input() weeks: number[] = [];
+
   ngOnInit(): void {
+    this.updateSelection(); // 在组件初始化时更新选择
   }
+
+  // 监听父组件传入的 weeks 和 weekType
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['weeks']) {
+      this.selectedWeeks = [...changes['weeks'].currentValue]; // 更新已选周数
+    }
+
+    if (changes['weekType']) {
+      this.weekType = changes['weekType'].currentValue; // 更新周类型
+    }
+
+    if (this.isFirstRender) {
+      this.updateSelection(); // 初次渲染时，根据传入值进行选择
+      this.isFirstRender = false;
+    }
+  }
+
 
   // 根据周类型自动选中
   selectAllWeeks() {
-    // this.selectedWeeks = [];
     if (this.weekType === 'all') {
       this.selectedWeeks = [...this.allWeekList]; // 直接复制 allWeekList
     } else if (this.weekType === 'odd') {
@@ -89,9 +113,22 @@ export class WeekSelectorComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(obj: any): void {
+    if (obj) {
+      this.selectedWeeks = [...obj]; // 如果父组件传递了值，更新 selectedWeeks
+    }
   }
   registerOnChange(fn: any): void {
+    this.formControl.valueChanges.subscribe(fn);
   }
   registerOnTouched(fn: any): void {
   }
+
+  private updateSelection() {
+    if (this.weeks.length > 0) {
+      // 如果有父组件传递的 weeks，则直接更新
+      this.selectedWeeks = [...this.weeks];
+      this.selectAllWeeks(); // 根据传入的 weeks 和 weekType 更新选择
+    }
+  }
+
 }

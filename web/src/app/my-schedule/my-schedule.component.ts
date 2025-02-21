@@ -33,11 +33,9 @@ export class MyScheduleComponent implements OnInit {
   ];  // 每天的时间段
   weeklySchedule: WeeklySchedule = {};
   termName: string = '';
-  totalPeriodsPerDay = 11; // 每天的总节数
   availableLengths: number[] = []; // 可选的持续节数数组
   currentStudentId: number = 0; // 当前登录用户的学生id
   currentSchoolId: number = 0; // 当前登录用户的学校id
-
 
   // 用于模态框的课程信息
   formGroup = new FormGroup({
@@ -135,7 +133,7 @@ export class MyScheduleComponent implements OnInit {
   }
 
   getColorForCourse(course: CourseInfo): string {
-    const colors = ['#FFDDC1', '#FFABAB', '#FFC3A0', '#FF677D', '#D4A5A5']; // 颜色池
+    const colors = ['#339966', '#CCCCFF', '#FFC3A0', '#66CC99', '#FF9999', '#FF99CC', '#FFCC99', '#FFCCCC', '#99CCCC']; // 颜色池
     // @ts-ignore
     return colors[course.begin % colors.length]; // 根据课程的日期分配颜色
   }
@@ -164,8 +162,9 @@ export class MyScheduleComponent implements OnInit {
         } else {
           console.log("无效的周数");
         }
+      } else {
+        this.commonService.showErrorAlert(response.message);
       }
-
     });
   }
 
