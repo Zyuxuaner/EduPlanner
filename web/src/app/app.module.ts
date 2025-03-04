@@ -24,6 +24,7 @@ import {CourseModule} from "./course/course.module";
 import {MeModule} from "./me/me.module";
 import {MyScheduleModule} from "./my-schedule/my-schedule.module";
 import {WeekSelectorModule} from "./core/week-selector/week-selector.module";
+import { CeshiComponent } from './ceshi/ceshi.component';
 
 registerLocaleData(zh);
 
@@ -33,6 +34,7 @@ registerLocaleData(zh);
         DashboardComponent,
         LayoutComponent,
         LoginComponent,
+        CeshiComponent,
     ],
     imports: [
         BrowserModule,
